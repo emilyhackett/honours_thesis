@@ -1,0 +1,8 @@
+\appendix
+\chapter{Title of first appendix}
+
+\begin{equation}
+\ {RH}=100.({e\over e^*})
+\label{equ:12}
+\end{equation}
+

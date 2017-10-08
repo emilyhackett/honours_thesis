@@ -1,0 +1,7 @@
+.DS_Store
+Reader.xls
+Supervisor.xls
+*.aux
+*.log
+*.toc
+*.pdf

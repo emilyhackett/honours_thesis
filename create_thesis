@@ -1,0 +1,19 @@
+#!/bin/csh -f
+#
+#
+
+#alias /usr/bin/pdflatex
+#alias /usr/bin/bibtex
+
+rm -f *.aux *.bbl *.log *.toc *.lof *.blg *.lot
+
+pdflatex thesis
+bibtex thesis
+pdflatex thesis
+pdflatex thesis
+
+rm -f *.bbl *.log *.toc *.lof *.blg *.lot
+
+echo ' '
+echo ' Created thesis.pdf' 
+echo ' '
