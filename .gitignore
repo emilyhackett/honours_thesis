@@ -1,7 +1,10 @@
 .DS_Store
+# Ignore marking keys:
 Reader.xls
 Supervisor.xls
+# Ignore produced files
 *.aux
-*.log
-*.toc
 *.pdf
+*.log
+# Ignore swap files
+~$*

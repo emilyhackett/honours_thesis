@@ -1,17 +1,18 @@
-\chapter{Geometry}
+\chapter{Introduction}
 
-\section{Riemannian Geometry}
-\subsection{Isometries}
-A transformation that preserves the shape of a space called an \emph{isometry}.
-\begin{definition}{(Isometry)}\\
-An \emph{Isometry} of a Riemannian manifold $(M,g)$ is a diffeomorphism $f: M \rightarrow M$ that preserves the metric \citep{nakahara}. eg, if $f(z) = z'$ is an isometry then 
-\[g_p(X,Y) = f^*g_p(X,Y) = g_{f(p)}(f_*X,f_*Y) \]
-\end{definition}
+\section{Introduction to OCE}
+Optical coherence elastography (OCE) is a medical imaging tool used to examine the mechanical properties of tissue. The underlying imaging technique, optical coherence tomography (OCT), relies on the optical properties of tissue to generate contrast in an image formed by backscattered light. Elastography produces images of the stiffness, or elasticity, of a tissue. The sense of touch used by a surgeon to differentiate stiff tumour from softer healthy tissue is analogous to elastography on a much coarser scale, however elastography has the potential to enable quantitative images of mechanical properties of tissue to be formed. The use of OCT as the underlying imaging tool for elastography also allows much higher resolution imaging, providing access to the mechanical properties of tissues on the micrometre scale. 
 
-In coordinates this becomes
-\[g_{kl}(z) dx^k dx^l = g_{ij}(z') \frac{\partial {z'}^i}{\partial z^k} dx^k \frac{\partial {z'}^j}{\partial z^l} dx^l\]
+\subsection{Applications}
+The significance of OCE lies in its ability to provide high resolution images at low sample depths. These properties differentiate it from other techniques, such as ultrasound elastography, which could be used to image deep within the body due to the higher penetration of sound waves into tissue. The ideal application of OCE is at surface tissue (such as imaging the retina, or skin), on excised tissue in a surgical setting, or used as a tool during surgery on uncovered tissue. The third application forms the main motive for this project.
+
+Once such area for real-time surgery application of OCE is in breast cancer surgery. (... Details about current diagnosis techniques in breast cancer surgery ...) Having a surgical tool capable of real-time in vivo imaging of excised tissue boundaries has the potential to reduce the re-excision rates in breast cancer patients.
+
+\subsection{Project Significance}
+To be able to provide real-time OCE images in surgery, the processing of the optical data from the OCT system to produce elastography images must be done in real-time also. One way to speed up the processing is to remove the need for quantitative analysis, and use qualitative only, that is, focus on the detectable difference between healthy and cancerous tissue using qualitative images. Standard OCE elastograms (elastography images), combine measurements of strain and stress to produce quantitative maps of tissue elasticity. However, to produce qualitative images of tissue mechanical properties, that differentiate softer from stiffer objects (such as healthy stroma from tumour), requires only images of strain. 
+The current processing algorithm used by the BRITELab group to process strain on a bench top OCE system can scan a 3D volume in about (??). In order to process strain in real-time, this must be sped up by a factor of (??). The purpose of this thesis is to investigate techniques of speeding up the processing of strain in OCE, for the purpose of real-time surgical application in breast cancer surgery.
+
 \subsection{Refs}
 Testing of references: 
 Bagger and Xiong \citep{baggerxiong}. Hitchin \cite{hitchin}.
-
 
