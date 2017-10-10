@@ -1,5 +1,13 @@
-\chapter{Title}
+\chapter{Review of Strain Estimation Techniques}
 
-\section{Section}
+Imaging strain is one application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is the spatial derivative of the displacement imaged by the OCE system.
 
-\subsection{Subsection}
+\section{Finite Difference}
+
+\section{Least Squares Approaches}
+
+\section{Digital Differentiation Filters}
+
+\section{Standard Approach}
+The current standard for phase-sensitive strain estimation in the BRITElab research group is to used weighted least squares, with the inverse of the optical intensity forming the variance of each phase measurement. The non-linear nature of the weighted least squares operation has implications for processing speed however. Making use of the weights means that the filter changes for each fit window, therefore each pixel must be sequentially looped over in order to calculate the approximation within the given fitting window. It cannot be implemented as a filter operation over the entire B-scan.
+
