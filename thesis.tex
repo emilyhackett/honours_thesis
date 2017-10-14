@@ -3,7 +3,9 @@
 \usepackage{setspace}
 \onehalfspacing 
 
-\usepackage{natbib}
+% NOTE -> Changed to remove natbib data error in compilation
+\usepackage[square,sort,comma,numbers]{natbib}
+%\usepackage{natbib}
 \usepackage{makeidx}
 \usepackage{graphicx}
 \usepackage{ccaption}
@@ -97,6 +99,7 @@
 \renewcommand{\bibname}{References}
 \bibliography{references/refs}
 \bibliographystyle{styles/hplain}   
+%\bibliographystyle{authordate1}
 \addcontentsline{toc}{part}{References}
 %---------------------------------------------------------
 
