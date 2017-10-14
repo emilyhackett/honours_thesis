@@ -1,14 +1,19 @@
 \chapter{The Physics of OCE}
 
+Optical coherence elastography (OCE) can be thought of as the combination of a foundational imaging technique, optical coherence tomography, and its application to imaging mechanical properties: elastography. These two pillars of OCE are examined first separately, in Sections 2.1 and 2.2, then as connected components of a composite OCE system in Section 2.3. In this section, the characteristics of standard OCE systems are discussed, with an eye to understanding the implications of the phase-sensitive, compression OCE system used in this project.
+
 \section{Optical Coherence Tomography}
-OCE uses optical coherence tomography (OCT) as the underlying technique for imaging tissue. OCT is the optical analog of ultrasound, in that it uses backscattered, or reflected, light from scatterers within the tissue to form a depth resolved image. 
+Optical coherence tomography (OCT) can be thought of as the optical equivalent to ultrasound, in that it detects the light reflected from scatterers within a tissue. The reflected light interferes with a reference beam, enabling depth-resolved reconstruction of the location of the scatterers within the sample \cite{chin_parametric_2016}. Because the speed of light in tissue is significantly higher than that of sound, OCT offers a much higher resolution than ultrasound, on the order of $5-15 \mu m$ \cite{kennedy_emergence_2017}, as limited by the coherence length of the light source \cite{huang_optical_1991}. However, this higher resolution comes at the expense of depth of penetration into the tissue, which for OCT, is only $1-2mm$ beneath the surface \cite{schmitt_optical_1999}, in comparison to the relatively deep imaging capabilities of ultrasound.
+
+Time-domain OCT uses a simple low coherence Michelson interferometer set up, where the interference signal is measured between the light reflecting from the tissue, and an scanned reference mirror that changes the depth imaged \cite{huang_optical_1991}. The scanning of the reference mirror to image into the tissue produces a 1D A-scan, that contains information about the detected irradiance of the interferometer as a function of depth. Taking multiple A-scans across by moving laterally across a sample surface produces a 2D B-scan. Multiple B-scans can be used as cross-sections to build up an entire 3D scan volume, otherwise known as a C-scan, a process which can be seen in Figure 2. These descriptions are taken from those conventionally utilised in ultrasound imaging. The disadvantage of this set up however is the expensive acquisition times for imaging of 3D volumes.
+
+Fourier-domain OCT systems remove the need for a scanning mirror, and allows the reproduction of a single A-scan with one detection event based on principles of spectral interferometry \cite{chin_parametric_2016}. Rather than detecting the reflected intensity as a function of depth as in time-domain OCT, it is detected as a function of wavenumber of a broadband or swept frequency light source. The Wiener-Khinchin theorem dictates that the inverse Fourier transform of this measured spectral density provides the complex coherence function at different depths along the A-scan line \cite{schmitt_optical_1999}. The speed up using Fourier-domain OCT over time-domain OCT allows the imaging of 3D volumes, of approximately $10mm \times 10mm \times 2mm$ to be acquired in less than 1 second \cite{kennedy_emergence_2017}. The benefit of Fourier-domain OCT over time-domain is not only in allowing a much faster acquisition time, but it also produces a complex signal that carries phase information, allowing it to be used as to quantify displacement within a sample, as described in Section 1.3.
 
 \section{Elastography}
-Elastography produces images of the mechanical properties of tissue, characterised by three deciding parameters: the underlying imaging technique, the method of loading, and the resulting measured parameter. 
+Elastography uses mechanical contrast to create images, by the application of some external stress on the system, which is then measured using an imaging technique. 
 
 \section{Optical Coherence Elastography}
-OCE is the combination of elastography with an OCT imaging system. 
-
+OCE is the combination of elastography with an OCT imaging system, as first proposed by Schmitt in 1998. 
 
 \section{Phase Sensitive OCE}
 Imaging strain is one application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is the spatial derivative of the displacement imaged by the OCE system.
