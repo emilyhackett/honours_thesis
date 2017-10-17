@@ -1,11 +1,10 @@
 \chapter{Results}
 
-\section{Assessment of Strain Processing}
-\subsection{Processing Speed}
-The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as their ease with which they can be parallelised, and the likelihood of a speed up made possible by parallelising the processing.
-\subsection{Sensitivity}
-\subsection{Image Resolution}
 
+\section{Data Acquisition}
+A silicone phantom was imaged using (...)
+
+The strain estimation algorithms described following utilise the calculated averaged phase difference as the beginning step of the processing pipeline, and assume that the phase difference data is already loaded into memory.
 
 \section{Strain Estimation Algorithms}
 A total of six different strain estimation algorithms were implemented and tested, and can be differentiated based on how the phase unwrapping issue is addressed, and the digital differentiation filter used. 
@@ -16,12 +15,11 @@ A total of six different strain estimation algorithms were implemented and teste
 \subsection{FD on Unweighted Smoothing of Phase Difference}
 \subsection{Pre-filtered Phase Difference with Smoothed FD Strain}
 
-\section{Data Acquisition}
-A silicone phantom was imaged using (...)
-
 \section{Phantom Results for Strain Elastograms}
 
 On the basis of these results, it was decided to see if implementing lateral averaging over the separated B-scans could improve the sensitivity of the lower-order differentiation techniques towards that of the WLS. 
 
 \section{Phantom Results for Laterally Averaged Strain Elastograms}
 
+\section{Analysis of Image Resolution}
+It was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral averaging, due to the noisiness of the data. The comparison between a lateral segment with no axial smoothing for the unweighted finite difference (with a fit resoliution of ??), and the same segment smoothed with a lateral resolution of (??) and their corresponding fitted error functions is shown in Figure ??.

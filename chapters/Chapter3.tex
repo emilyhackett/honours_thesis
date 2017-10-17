@@ -4,18 +4,6 @@ Imaging strain is one fundamental application of OCE, which produces qualitative
 
 To be able to compare between imaging techniques, the resolution of different strain estimation fits must be derived. This resolution can be thought of as the full-width at half maximum of the impulse response of the filter - that is, the FWHM of the output when the input signal is a delta function in the case of a smoothing filter, or a step function for the differentiation filters. This resolution offers a comparative measure of the extent to which the filtering process has blurred objects in the image together. 
 
-\section{Finite Difference}
-The simplest approximation to a derivative is to calculate the finite difference between two consecutive displacement measurements. That is, dividing the change in displacement by the change in depth, as per Equation \ref{fd_strain}.
-
-\begin{equation}
-	\label{fd_strain}
-	\epsilon_z = \frac{\Delta u_z}{\Delta z}
-\end{equation}
-
-An issue with finite difference approaches is that they tend to amplify high frequency noise in the phase values. However one of its benefits is the simplicity of implementation, and therefore the speed up it offers. In addition, by using consecutive pixels to perform the differentiation, there is little chance of a phase wrapping event to have occurred, and therefore finite difference can be performed on the complex phase data without prior unwrapping.
-
-Since there is no smoothing operation implemented in finite difference, it is assumed that it has no effect on the resolution of the image. Therefore there is no associated fit resolution to the finite difference strain estimation.
-
 \section{Least Squares Approaches}
 Least squares approach aim to fit a straight line to the phase data by minimising the squared error between the fitted and actual values. The strain value is then taken to be the gradient of this line. The ordinary least squares estimate for the strain value within a fit window of size $m$ is given in \cite{kennedy_strain_2012} as:
 
@@ -93,3 +81,26 @@ Using a Gaussian smoothing filter in addition to finite difference removes high 
 	\label{gauss_fwhm}
 	\text{FWHM}_{Gaussian} = 2 \sqrt{2 \log{2}} \sigma
 \end{equation}
+
+\section{Finite Difference}
+The simplest approximation to a derivative is to calculate the finite difference between two consecutive displacement measurements. That is, dividing the change in displacement by the change in depth, as per Equation \ref{fd_strain}.
+
+\begin{equation}
+	\label{fd_strain}
+	\epsilon_z = \frac{\Delta u_z}{\Delta z}
+\end{equation}
+
+An issue with finite difference approaches is that they tend to amplify high frequency noise in the phase values. However one of its benefits is the simplicity of implementation, and therefore the speed up it offers. In addition, by using consecutive pixels to perform the differentiation, there is little chance of a phase wrapping event to have occurred, and therefore finite difference can be performed on the complex phase data without prior unwrapping.
+
+Since there is no smoothing operation implemented in finite difference, it is assumed that it has no effect on the resolution of the image. Therefore there is no associated fit resolution to the finite difference strain estimation.
+
+\section{Strain Estimation Assessment Criteria}
+
+\subsection{Sensitivity}
+
+\subsection{Image Resolution}
+
+\subsection{Processing Speed}
+The processing speed of the strain estimation technique is not a standard metric for assessing the strain elastogram quality, but in mind of the motivation for this project it is of utmost importance.
+The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as their ease with which they can be parallelised, and the likelihood of a speed up made possible by parallelising the processing.
+
