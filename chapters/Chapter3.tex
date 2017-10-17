@@ -1,12 +1,62 @@
 \chapter{Review of Strain Estimation Techniques}
 
-Imaging strain is one application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is the spatial derivative of the displacement imaged by the OCE system.
+Imaging strain is one fundamental application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is calculated by estimating the spatial derivative of the displacement imaged by the OCE system. Making the assumption that tissue is a linearly elastic solid, the displacement can be thought of as linearly related to the depth into the sample. Under small enough compressions (such as those that result in millistrain elastograms) this assumption is valid. 
 
 \section{Finite Difference}
+The simplest approximation to a derivative is to calculate the finite difference between two consecutive displacement measurements. That is, dividing the change in displacement by the change in depth, as per Equation 1.
+
+\begin{equation}
+\epsilon_z = \frac{\Delta u_z}{\Delta z}
+\end{equation}
+
+An issue with finite difference approaches is that they tend to amplify high frequency noise in the phase values. However one of its benefits is the simplicity of implementation, and therefore the speed up it offers. In addition, by using consecutive pixels to perform the differentiation, there is little chance of a phase wrapping event to have occurred, and therefore finite difference can be performed on the complex phase data without prior unwrapping.
 
 \section{Least Squares Approaches}
+Least squares approach aim to fit a straight line to the phase data by minimising the squared error between the fitted and actual values. The strain value is then taken to be the gradient of this line. The ordinary least squares estimate for the strain value within a fit window of size $m$ is given in \cite{kennedy_strain_2012} as:
 
-\section{Digital Differentiation Filters}
+\begin{equation}
+	\epsilon_z = \sum\limits_{j=1}^{j=i+m-1} \bigg(\frac{\kappa_0 (z_j-z_{i-1})-\kappa_1}{\kappa_0 \kappa_2 - \kappa_1^2} \bigg) u_j
+\end{equation}
+
+Where $u_j$ is the displacement at the point, and the simplifying constants $\kappa_x$ are defined as:
+
+\begin{equation}
+\kappa_x = \sum \limits_{j=1}^{i+m-1} (z_j - z_{i-1})^x \text{   for   } x = 0,1,2
+\end{equation}
+
+Depending on the size of the fit window, there is a likelihood of a wrapping event to have occurred, and therefore there is a need to unwrap the phase (displacement) data prior to performing a least squares estimate. 
+
+The ordinary least squares estimate above is a linear operation, however can be extended to use weight the contribution of each displacement point based on the quality of its signal. The weighted least squares strain estimate utilises the OCT signal attached to each phase difference value to provide an estimate of the standard deviation of each point. The variance of the measured phase difference is equal to the inverse of the SNR of the OCT intensity, $SNR_{OCT}$. Therefore a $\Delta \phi_i$ measurement that has a high $SNR_{OCT}$ has a low variance, and should be assigned more significance in estimating a linear displacement fit. Therefore the weights associated with the weighted least squares estimate is the inverse variance of the phase difference values:
+
+\begin{equation}
+w_i = \frac{1}{\sigma_{u_j}^2} = SNR_{OCT_j}
+\end{equation}
+
+Using these weights, the strain estimate using weighted least squares is given as in \cite{kennedy_strain_2012} by Equation 3.4:
+
+\begin{equation}
+\epsilon_i = \sum \limits_{j=1}^{i+m-1} \frac{\kappa'_0 w_j (z_j - z_{i-1}) u_j - \kappa'_1 w_j u_j}{\kappa'_0 \kappa'_2 - (\kappa'_1)^2}
+\end{equation}
+
+Where in this instance, the $\kappa'_x$ constants are given by:
+
+\begin{equation}
+\kappa'_x = \sum \limits_{j=1}^{i+m-1} w_j (z_j - z_{i-1})^x \text{   for   } x=0,1,2
+\end{equation}
+
+The weighted least squares strain estimate has been shown to improve the strain sensitivity \cite{kennedy_strain_2012} however at the expense of requiring the calculation of the weightings, and the non-linearity of the operation, the consequences of which are discussed in the next section.
+
+\section{Savitzky-Golay Differentiation Filter}
+One benefit of the ordinary least squares approach is that it can be implemented as a filter, since it is a linear operation. The Savitzky-Golay filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate. This filter can be applied to an entire data set by convolving the data and filter together, or a mulitplying them in the Fourier domain. Similarly to how the estimate above for ordinary least squares is derived using the normal equation for least squares minimization (see Appendix 1), the Savitzky-Golay filter is derived by assuming the data is centred around zero and scaled in integer steps, and calculating the filter coefficients for these points for the given fitting model (in this case, linear), and then generalising them to all fit windows. A more detailed derivation can be found in \cite{savitzky_smoothing_1964}. The Savitzky-Golay smoothing filter based on the least squares approximation can be generalised to a Savitzky-Golay differentiation filter by evaluating the gradient, rather than the value, at each point. There is an analytical solution for the Savitzky-Golay first order differentiation filter for a linear least squares model given in Equation 3.7 \cite{madden_comments_1978}.
+
+\begin{equation}
+	C_i = \frac{12 i}{m(m^2-1)}
+\end{equation}
+
+Therefore not only can the filter be applied much faster than a sequential looping over the fit windows and performing the ordinary least squares estimate above, it can be created very quickly as well. However, the weighting information can no longer be utilised in the convolution process. Another aspect to note, is that the Savitzky-Golay filter can only be applied on the unwrapped phase difference - it cannot correct for wrapping events. 
+
+\section{Smoothing Filters}
+
 
 \section{Standard Approach}
 The current standard for phase-sensitive strain estimation in the BRITElab research group is to used weighted least squares, with the inverse of the optical intensity forming the variance of each phase measurement. The non-linear nature of the weighted least squares operation has implications for processing speed however. Making use of the weights means that the filter changes for each fit window, therefore each pixel must be sequentially looped over in order to calculate the approximation within the given fitting window. It cannot be implemented as a filter operation over the entire B-scan.
