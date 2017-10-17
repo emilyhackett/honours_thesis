@@ -1,19 +1,27 @@
-\chapter{Approach}
-The approach to this project consisted of two factors: firstly, making the processing of strain as fast as possible. Secondly, of maintaining image quality for faster processing techniques. The first aim is tackled by addressing the issue of phase unwrapping, which introduces a significant time cost into strain estimation. Further speed up is possible by moving away from sequential operations, to filter convolutions. 
+\chapter{Results}
 
-To enable a filter convolution operation to be applied to an entire B-scan image, the filter must be linear, which means weighted least squares cannot be implemented. This would suggest a degradation of image quality, that must be compensated for. One method of compensation is to introduce lateral averaging along the x-axis in the scan. The benefit of this, is that in Matlab the differentiation filter along the z-axis and the smoothing filter along the x-axis can be applied in one convolution operation, therefore not adding much to the processing time.
+\section{Assessment of Strain Processing}
+\subsection{Processing Speed}
+The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as their ease with which they can be parallelised, and the likelihood of a speed up made possible by parallelising the processing.
+\subsection{Sensitivity}
+\subsection{Image Resolution}
 
-\section{Methods of Phase Unwrapping}
-The issue of phase unwrapping is tackled using three different approaches. Firstly, the current phase unwrapping algorithm using averaging of en face images over a 3D volume is used unchanged, and then the resulting strain estimation using the reconstructed displacements is performed using a convolution filter to maximise speed. 
 
-Secondly, the phase unwrapping algorithm is dropped, and a phase offset is subtracted from each fit segment in the complex domain to remove a possible wrapping event (by returning it to an unwrapped region). From here the strain is estimated using the unwrapped fit segment. However unlike the volume phase unwrapping algorithm, this does not re-produce the displacement field and therefore a differentiation filter cannot be applied to the entire scan at once. Subtraction of the phase offset is a non-linear filter operation, and therefore must be performed on each fit segment separately. This bottleneck slows down the strain estimation process for methods that use a phase offset to unwrap, however it can be mitigated by methods described in the next section.
+\section{Strain Estimation Algorithms}
+A total of six different strain estimation algorithms were implemented and tested, and can be differentiated based on how the phase unwrapping issue is addressed, and the digital differentiation filter used. 
+\subsection{WLS with Unwrapped Phase}
+\subsection{SG Filtering on Unwrapped Phase}
+\subsection{SG Filtering on Offset Phase}
+\subsection{FD on Weighted Smoothing of Phase Difference}
+\subsection{FD on Unweighted Smoothing of Phase Difference}
+\subsection{Pre-filtered Phase Difference with Smoothed FD Strain}
 
-The third approach does not tackle the issue of phase unwrapping directly, but rather makes the fit segment so small it is assumed no wrapping can occur between. Using finite difference to calculate the strain, performed on the complex phase, ensures that no wrapping artefacts enter the image, provided that no wrapping events occur between consecutive pixels, which is a valid assumption with the amount of compression used. The down side to this technique is that finite difference is a noisy differentiation method, resulting in significant degradation of image quality when used alone. Ways to compensate for loss of sensitivity are discussed in the section below.
+\section{Data Acquisition}
+A silicone phantom was imaged using (...)
 
-\section{Strain Estimation Methods}
+\section{Phantom Results for Strain Elastograms}
 
-\section{OCE System}
+On the basis of these results, it was decided to see if implementing lateral averaging over the separated B-scans could improve the sensitivity of the lower-order differentiation techniques towards that of the WLS. 
 
-\section{Data}
+\section{Phantom Results for Laterally Averaged Strain Elastograms}
 
-\section{Strain Estimation Metrics}

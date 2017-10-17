@@ -30,3 +30,13 @@ OCE inherits the high spatial resolution of the underlying OCT imaging system, h
 
 The efficiency of any elastography imaging technique is dependent on its ability to measure the deformation of the tissue in response to the mechanical load accurately. Phase-sensitive displacement measurement in OCE is enabled by Fourier-domain OCT systems, and allows tissue displacements on the order of nanometres to be detected by the system, corresponding to microstrain sensitivity \cite{kennedy_review_2014}. However phase-sensitive OCE methods bring with them their own problems, one being that te detected phase can only take values in the interval $[0,2\pi]$. This results in wrapping of the phase difference and if uncorrected, will result in discontinuities in the calculated displacement field.
 
+
+%% PHASE UNWRAPPING NOT INTEGRATED:
+% Should discuss Zaitsev method in detail here, as well as reference & describe
+% 3D phase unwrapping algorithm implemented by Lixin
+The issue of phase unwrapping is tackled using three different approaches. Firstly, the current phase unwrapping algorithm using averaging of en face images over a 3D volume is used unchanged, and then the resulting strain estimation using the reconstructed displacements is performed using a convolution filter to maximise speed. 
+
+Secondly, the phase unwrapping algorithm is dropped, and a phase offset is subtracted from each fit segment in the complex domain to remove a possible wrapping event (by returning it to an unwrapped region). From here the strain is estimated using the unwrapped fit segment. However unlike the volume phase unwrapping algorithm, this does not re-produce the displacement field and therefore a differentiation filter cannot be applied to the entire scan at once. Subtraction of the phase offset is a non-linear filter operation, and therefore must be performed on each fit segment separately. This bottleneck slows down the strain estimation process for methods that use a phase offset to unwrap, however it can be mitigated by methods described in the next section.
+
+The third approach does not tackle the issue of phase unwrapping directly, but rather makes the fit segment so small it is assumed no wrapping can occur between. Using finite difference to calculate the strain, performed on the complex phase, ensures that no wrapping artefacts enter the image, provided that no wrapping events occur between consecutive pixels, which is a valid assumption with the amount of compression used. The down side to this technique is that finite difference is a noisy differentiation method, resulting in significant degradation of image quality when used alone. Ways to compensate for loss of sensitivity are discussed in the section below.
+
