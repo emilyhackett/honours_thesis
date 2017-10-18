@@ -1,6 +1,6 @@
 \chapter{Review of Strain Estimation Techniques}
 
-Imaging strain is one fundamental application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is calculated by estimating the spatial derivative of the displacement imaged by the OCE system. Making the assumption that tissue is a linearly elastic solid, the displacement can be thought of as linearly related to the depth into the sample. Under small enough compressions (such as those that result in millistrain elastograms) this assumption is valid. 
+Imaging strain is one fundamental application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is calculated by estimating the spatial derivative of the displacement imaged by the OCE system. Making the assumption that tissue is a linearly elastic solid, the displacement can be thought of as linearly related to the depth into the sample. Under small enough compressions this assumption is valid. 
 
 To be able to compare between imaging techniques, the resolution of different strain estimation fits must be derived. This resolution can be thought of as the full-width at half maximum of the impulse response of the filter - that is, the FWHM of the output when the input signal is a delta function in the case of a smoothing filter, or a step function for the differentiation filters. This resolution offers a comparative measure of the extent to which the filtering process has blurred objects in the image together. 
 
@@ -45,7 +45,7 @@ Where in this instance, the $\kappa'_x$ constants are given by:
 The weighted least squares strain estimate has been shown to improve the strain sensitivity \cite{kennedy_strain_2012} however at the expense of requiring the calculation of the weightings, and the non-linearity of the operation, the consequences of which are discussed in the next section.
 
 \section{Savitzky-Golay Filtering}
-One benefit of the ordinary least squares approach is that it can be implemented as a filter, since it is a linear operation. The Savitzky-Golay filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate. This filter can be applied to an entire data set by convolving the data and filter together, or a mulitplying them in the Fourier domain. Similarly to how the estimate above for ordinary least squares is derived using the normal equation for least squares minimization (see Appendix 1), the Savitzky-Golay filter is derived by assuming the data is centred around zero and scaled in integer steps, and calculating the filter coefficients for these points for the given fitting model (in this case, linear), and then generalising them to all fit windows. A more detailed derivation can be found in \cite{savitzky_smoothing_1964}. The Savitzky-Golay smoothing filter based on the least squares approximation can be generalised to a Savitzky-Golay differentiation filter by evaluating the gradient, rather than the value, at each point. There is an analytical solution for the Savitzky-Golay first order differentiation filter for a linear least squares model given in Equation \ref{sg_coeff} \cite{madden_comments_1978}.
+One benefit of the ordinary least squares approach is that it can be implemented as a filter, since it is a linear operation. The Savitzky-Golay filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate. This filter can be applied to an entire data set by convolving the data and filter together, or a multiplying them in the Fourier domain. Similarly to how the estimate above for ordinary least squares is derived using the normal equation for least squares minimization (see Appendix 1), the Savitzky-Golay filter is derived by assuming the data is centred around zero and scaled in integer steps, and calculating the filter coefficients for these points for the given fitting model (in this case, linear), and then generalising them to all fit windows. A more detailed derivation can be found in \cite{savitzky_smoothing_1964}. The Savitzky-Golay smoothing filter based on the least squares approximation can be generalised to a Savitzky-Golay differentiation filter by evaluating the gradient, rather than the value, at each point. There is an analytical solution for the Savitzky-Golay first order differentiation filter for a linear least squares model given in Equation \ref{sg_coeff} \cite{madden_comments_1978}.
 
 \begin{equation}
 	\label{sg_coeff}
@@ -58,7 +58,7 @@ The resolution of the Savitzky-Golay filter can be derived by analysing it's res
 
 \begin{equation}
 	\label{sg_fwhm}
-	\text{FWHM}_{SG} = 
+	\text{FWHM}_{SG} = \frac{m}{\sqrt{2}}
 \end{equation}
 
 \section{Smoothing Filters}
@@ -92,15 +92,86 @@ The simplest approximation to a derivative is to calculate the finite difference
 
 An issue with finite difference approaches is that they tend to amplify high frequency noise in the phase values. However one of its benefits is the simplicity of implementation, and therefore the speed up it offers. In addition, by using consecutive pixels to perform the differentiation, there is little chance of a phase wrapping event to have occurred, and therefore finite difference can be performed on the complex phase data without prior unwrapping.
 
-Since there is no smoothing operation implemented in finite difference, it is assumed that it has no effect on the resolution of the image. Therefore there is no associated fit resolution to the finite difference strain estimation.
+Since there is no smoothing operation implemented in finite difference, it is assumed that it has no effect on the resolution of the image. Therefore there is no assumed a negligible fit resolution contribution using the finite difference strain estimation, and the fit resolution is instead defined by smoothing operations that are implemented alongside it.
 
 \section{Strain Estimation Assessment Criteria}
 
 \subsection{Sensitivity}
+The strain sensitivity is defined as the minimum detectable strain in the elastogram \cite{kennedy_strain_2012}, a quantity that gives insight into how well the OCE imaging system and signal processing is capable of reproducing the physical displacement and strain in the imaged sample. If the strain sensitivity is too large, then it is not possible to detect differences between stiff and soft objects (such as stroma and tumour) without having a much larger compressive force, which invalids many assumptions previously made (such as the linear elasticity of tissue, and uniaxial compression). Therefore it is important to use the strain sensitivity as a metric of image quality. 
+
+The strain sensitivity is defined as the standard deviation of the strain values within a region of uniform elasticity \cite{varghese_theoretical_1997}, such as can be artificially created using a phantom. The ideal characteristics of the region include absence of artefacts, including those that occur near the sample surface reflection, and at a depth shallow enough to minimise the attenuation of the OCT signal and decorrelation noise. Such a region is shown in Figure \ref{sensitivity_region} for a silicon phantom with a stiff inclusion. 
 
 \subsection{Image Resolution}
+The image resolution can be thought of as the ability to distinguish between two objects in the resulting strain elastogram. Traditionally, this has been examined in terms of the impulse response of an optical system, more directly as the FWHM of this impulse response \cite{reynolds_resolution_1989}. However we typically don't have access to the impulse response of the combined strain estimation filter and optical system response, therefore another method of quantifying the image resolution is used based on a previous Masters project \cite{hepburn_improving_2017}.
+
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/image_res_regions.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/lateral_axial_segments.png}
+	\end{subfigure}
+	\label{axial_lateral_regions}
+	\caption{The segments used to calculate the image resolution for both axial and lateral directions, shown imposed on the strain elastogram in a) where the blue corresponds to the scan taken, and the red the region the error function is fitted over. Part b) shows the plots of these scans and segments, with the axial above, and lateral below.}
+\end{figure}
+
+The image resolution is thought of as the 'speed' of transition from one uniform strain region to another, as measurable in a phantom sample which has clearly defined regions of different stiffness. This transition can be seen in both the axial and lateral directions, as shown in Figure \ref{axial_lateral_regions}.
+
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/axial_erf_fit.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/axial_impulse_response.png}
+	\end{subfigure}
+	\\
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/lateral_erf_fit.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/lateral_impulse_response.png}
+	\end{subfigure}
+	\label{error_fit_example}
+	\caption{The left images show the segment over the axial and lateral boundaries respectively with the overlaid error function fit. The right images show the impulse response, which is the derivative of the error function, for the fit, of which the FWHM is the image resolution.}
+\end{figure}
+
+The transition across a feature boundary in the strain elastogram can be approximated by an error function, as given in Equation \ref{erf_normal}, and visualised in Figure \ref{error_fit_example}. 
+
+\begin{equation}
+	\text{erf}(x)=\frac{1}{\sqrt{\pi}} \int_{-x}^{x} \text{e}^{-t^2}
+	\label{erf_normal}
+\end{equation}
+
+The standard error function above can be translated and scaled (see Equation \ref{erf_scaled}) to allow fitting to the strain values over the boundary, and also to allow for the introduction of the parameter $a$ that governs the rise time of the error function. When this scaled error function is fitted to the strain data across the boundary, the $a$ parameter is the most significant and is used to calculate an image resolution.
+
+\begin{equation}
+	n \: \text{erf}(\:a(x-b)\:) + c = \frac{n}{\sqrt{\pi}} \int_{-(x-b)}^{(x-b)} \text{e}^{-a t^2} + c
+	\label{erf_scaled}
+\end{equation}
+
+Once this analytical model is derived from the strain data, the derivative of the fitted error function provides the impulse response of the system, and it is the FWHM of this derivative that provides the image resolution \cite{hepburn_improving_2017}. For the scaled error function, the derivative is a similarly scaled Gaussian function, given in Equation \ref{gaussian_derivative}.
+
+\begin{equation}
+	G(x) = \frac{2\:a\:n}{\sqrt{\pi}} \text{e}^{-a^2 (x-b)^2}
+	\label{gaussian_derivative}
+\end{equation}
+
+The FWHM of this Gaussian is given in Equation \ref{image_res_fwhm} and provides the image resolution in the direction specified (axial or lateral, as in Figure \ref{axial_lateral_regions}).
+
+\begin{equation}
+	\text{FWHM}_{IR} = \frac{2 \sqrt{\text{ln}(2)}}{a}
+	\label{image_res_fwhm}
+\end{equation}
 
 \subsection{Processing Speed}
-The processing speed of the strain estimation technique is not a standard metric for assessing the strain elastogram quality, but in mind of the motivation for this project it is of utmost importance.
-The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as their ease with which they can be parallelised, and the likelihood of a speed up made possible by parallelising the processing.
+The processing speed of the strain estimation technique is not a standard metric for assessing the strain elastogram quality, but keeping in mind the motivation for this project it is of utmost importance.
+The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as the ease with which they can be parallelised, and the likelihood of a speed up made possible by parallelising the processing.
 

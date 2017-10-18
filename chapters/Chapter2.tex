@@ -30,14 +30,13 @@ OCE inherits the high spatial resolution of the underlying OCT imaging system, h
 
 \section{Phase-Sensitive Displacement Measurement}
 
-\begin{figure}
+\begin{figure}[t]
 	\centering
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/phase_difference.png}
 	\end{subfigure}
-	\quad
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{figures/unwrapped_phase.png}
 	\end{subfigure}
@@ -52,7 +51,7 @@ The efficiency of any elastography imaging technique is dependent on its ability
 To prevent phase wrapping in phase-sensitive displacement measurements, the difference in displacement between loaded and unloaded scans must be limited to approximately $0.3-0.46\mu m$ \cite{kennedy_optical_2014}. However in most instances, the amount of compression applied in OCE in order to produce images with sufficient contrast results in displacements large enough to induce phase wrapping in the signal. Therefore the issue of phase wrapping must be tackled in some way. Three different techniques of phase unwrapping are discussed in this project. The first technique is to implement a phase unwrapping algorithm that loops through the data set and detects wrapping events. This algorithm is more completely described elsewhere \cite{kennedy_optical_2014} however at a high level, it works under the assumption that displacements induced at a given depth is uniform over a local region, and performs first axial then lateral unwrapping. The phase difference is assumed to be unwrapped over an initial depth segment, for which a mean phase value is calculated. From here, each subsequent voxel in depth has an integer number of $2\pi$ subtracted from it based on minimising the difference between its phase value and the preceding mean value, in order to axially unwrap. The lateral unwrapping is performed in a similar way, except by minimizing the difference between the phase at a given voxel with the averaged phase of its lateral neighbours. It has been demonstrated that the algorithm can remove up to 5 wrapping discontinuities \cite{kennedy_optical_2014} before artifacts become prominent.
 The benefit of the phase unwrapping algorithm is that it is capable of returning the reconstructed displacement field of the entire B-scan. 
 
-\begin{figure}
+\begin{figure}[b]
 	\centering
 	\begin{subfigure}{0.25\textwidth}
 		\centering
