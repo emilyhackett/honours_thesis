@@ -18,6 +18,23 @@
 
 % ADDED:
 \usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric, arrows}
+
+% Initial set up for algorithm description:
+\tikzstyle{basic} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, text width=3cm]
+\tikzstyle{io} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, text width=3cm, line width=0.5mm,font=\bf]
+\tikzstyle{main} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, text width=3cm, font=\bf]
+\tikzstyle{main_long} = [rectangle, rounded corners, minimum width=6cm, minimum height=1cm, text centered, draw=black, text width=6cm, font=\bf]
+\tikzstyle{temp} = [rectangle, rounded corners, dashed, minimum width=6cm, minimum height=1cm, text centered, draw=black, text width=6cm, font=\bf]
+
+\tikzstyle{wls} = [black,thick]
+\tikzstyle{uwsg} = [blue,thick]
+\tikzstyle{posg} = [red,thick]
+\tikzstyle{wfd} = [cyan,thick]
+\tikzstyle{uwfd} = [green,thick]
+\tikzstyle{fdsm} = [magenta]
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -66,15 +83,15 @@
 %---------------------------------------------------------
 \begin{document}
 
-\include{titlepage/Titlepage}               % This is who you are
+\include{Titlepage}               % This is who you are
 
 \newpage
 
-\include{acknowledgments/Acknowledgments}   % This is who you thank
+\include{Acknowledgments}   % This is who you thank
 
 \newpage
 
-\include{abstract/Abstract}          % This is your thesis abstract
+\include{Abstract}          % This is your thesis abstract
 
 \pagenumbering{roman}
 \newpage
@@ -90,16 +107,16 @@
 %---------------------------------------------------------
 %Include the chapters!
 
-\include{chapters/Chapter1}           
-\include{chapters/Chapter2}          
-\include{chapters/Chapter3}         
-\include{chapters/Chapter4}
-\include{chapters/Chapter5}
+\include{Chapter1}           
+\include{Chapter2}          
+\include{Chapter3}         
+\include{Chapter4}
+\include{Chapter5}
 
 %\newpage
 %---------------------------------------------------------
 \renewcommand{\bibname}{References}
-\bibliography{references/refs}
+\bibliography{refs}
 \bibliographystyle{styles/hplain}   
 %\bibliographystyle{authordate1}
 \addcontentsline{toc}{part}{References}
@@ -107,8 +124,10 @@
 
 % Appendices
 \appendix
-\include{appendices/Appendix1}
-\include{appendices/Appendix2}
+\include{Appendix1}
+\include{Appendix2}
 %---------------------------------------------------------
 
 \end{document}
+
+
