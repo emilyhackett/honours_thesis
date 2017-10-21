@@ -12,7 +12,7 @@ bibtex thesis
 pdflatex thesis
 pdflatex thesis
 
-rm -f *.bbl *.log *.toc *.lof *.blg *.lot
+rm -f *.bbl *.log *.toc *.lof *.blg *.lot *.aux *.out
 
 echo ' '
 echo ' Created thesis.pdf' 
