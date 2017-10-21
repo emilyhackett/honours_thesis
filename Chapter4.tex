@@ -2,9 +2,25 @@
 
 
 \section{Data Acquisition}\label{data}
-A silicone phantom was imaged using (...)
 
-The strain estimation algorithms described following utilise this calculated averaged phase difference as the beginning step of the processing pipeline, and assume that the phase difference data is already loaded into memory.
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.47\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/phantom.png}
+	\end{subfigure}
+	\quad
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/oct.png}
+	\end{subfigure}	
+	\label{oct_image}
+	\caption{The silicone phantom used to investigate strain estimation techniques a) photographed and b) imaged by the OCT system.}
+\end{figure}
+
+To better quantify the image quality, an idealised silicone sample was imaged, to approximate breast tissue, and the strain estimated. This phantom consisted of a bulk, softer silicone material (with a Young's modulus of 6.4kPa) within which was a stiff, rectangular inclusion (Young's modulus of 100kPa) \cite{hepburn_improving_2017}, to which optical scatterers were added to enhance the OCT signal. The phantom was created by a previous Master's student, and was imaged using a desktop OCE system, with a system wavelength of $1300nm$. The imaged area, shown in \autoref{oct_image}, was divided into 2000 A-scans per each B-scan, over a length in x of $4.4\mu m$), and a total of 6817 B-scans were acquired, over the same length in y.
+
+The complex OCT C-scan was initially processed from the raw spectral data produced by the Fourier-domain OCT system, to produce the complex OCT signal values, with associated optical amplitudes and random phase. From here, as described briefly in \autoref{compression_oce}, the difference in phase is calculated between loaded and unloaded B-scans, and averaged over 100 B-scans. The strain estimation algorithms described following utilise this calculated averaged phase difference as the beginning step of the processing pipeline, and assume that the phase difference data is already loaded into memory.
 
 \section{Strain Estimation Algorithms}\label{algorithms}
 

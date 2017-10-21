@@ -59,6 +59,9 @@ Compression OCE produces a displacement field in the tissue, that can be measure
     \label{oce_system}
 \end{figure}
 
+The OCT system produces a complex data value for each voxel inside the imaged volume, which has an amplitude associated with the optical intensity of the backscattered light at that point. The signal also has an associated phase, which is random. Altough the phase is random at each point in space, the change in phase is directly proportional to the amount the tissue is displaced at that location. Therefore there is a direct relationship between the displacement field and these measured phase differences.
+The OCT signal can be thought of as a constant vector, representing the true signal due to a single reflection from the tissue at the given depth, with an attached random phasor sum, representing multiple scattering events within the tissue that introduce noise \cite{goodman_statistical_2015}. To reduce the influence of this approximately Gaussian noise attached to the signal, the complex signal is averaged over multiple B-scans before processing. Therefore each loaded and unloaded phase value actually corresponds to a chunk of values taken at multiple points across the y-axis. 
+
 \begin{equation}
 u_i = \frac{\phi_i^{loaded}-\phi_i^{unloaded}}{4\pi n} = \frac{\Delta\phi_i}{4\pi n}
 \end{equation}
