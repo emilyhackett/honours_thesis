@@ -255,33 +255,34 @@ Since lateral averaging is capable of improving sensitivity for lower fit resolu
 The addition of lateral smoothing heightens the sensitivity of all imaging techniques. At the standard fit resolution, \autoref{sensitivity_2} shows significant improvement in the sensitivity when lateral smoothing is applied, for all techniques.
 
 \begin{table}[h]
-\begin{center}
-\begin{tabular}{|c||c||c|c|c|c|c|c|}
-\hline 
-FR ($\mu m$) & LR ($\mu m$) & WLS & UW SG & PO SG & W FD & UW FD & PF FD \\
-\hline
-40 & 0 & 0.3198 & 0.4372 & 0.4571 & 0.2869 & 0.2886 & 0.2192 \\
-\hline
-70 & 0 & 0.1607 & 0.2559 & 0.2744 & 0.2148 & 0.1737 & 0.1291 \\
-\hline
-100 & 0 & 0.1072 & 0.1403 & 0.1469 & 0.1714 & 0.1090 & 0.0821 \\
-\hline
-40 & 20 & 0.1962 & 0.1976 & 0.1707 & 0.1626 & 0.1385 & 0.1329 \\
-\hline
-60 & 20 & 0.1261 & 0.1265 & 0.1125 & 0.1321 & 0.0956 & 0.0876 \\
-\hline
-100 & 20 & 0.0789 & 0.0878 & 0.0710 & 0.1067 & 0.0771 & 0.0685 \\
-\hline
-40 & 40 & 0.1453 & 0.1417 & 0.1222 & 0.1211 & 0.1046 & 0.0949 \\
-\hline
-60 & 40 & 0.1006 & 0.0982 & 0.0871 & 0.1014 & 0.0798 & 0.0715 \\
-\hline
-100 & 40 & 0.0685 & 0.0772 & 0.0593 & 0.0813 & 0.0709 & 0.0632 \\
-\hline
-\end{tabular}
-\end{center}
-\caption{Strain sensitivity values (given in millistrain) for selected fit and lateral resolutions. The six strain estimation techniques are ordered as defined above in \autoref{algorithms}.}
-\label{sensitivity_table}
+	\begin{center}
+		\begin{tabular}{|c||c||c|c|c|c|c|c|}
+			\hline 
+			FR ($\mu m$) & LR ($\mu m$) & WLS & UW SG & PO SG & W FD & UW FD & PF FD \\
+			\hline
+			\hline
+			40 & 0 & 0.3198 & 0.4372 & 0.4571 & 0.2869 & 0.2886 & 0.2192 \\
+			\hline
+			70 & 0 & 0.1607 & 0.2559 & 0.2744 & 0.2148 & 0.1737 & 0.1291 \\
+			\hline
+			100 & 0 & 0.1072 & 0.1403 & 0.1469 & 0.1714 & 0.1090 & 0.0821 \\
+			\hline
+			40 & 20 & 0.1962 & 0.1976 & 0.1707 & 0.1626 & 0.1385 & 0.1329 \\
+			\hline
+			70 & 20 & 0.1076 & 0.1091 & 0.0961 & 0.1246 & 0.0875 & 0.0793 \\
+			\hline
+			100 & 20 & 0.0789 & 0.0878 & 0.0710 & 0.1067 & 0.0771 & 0.0685 \\
+			\hline
+			40 & 40 & 0.1453 & 0.1417 & 0.1222 & 0.1211 & 0.1046 & 0.0949 \\
+			\hline
+			70 & 40 & 0.0890 & 0.0882 & 0.0770 & 0.0955 & 0.0757 & 0.0678 \\
+			\hline
+			100 & 40 & 0.0685 & 0.0772 & 0.0593 & 0.0813 & 0.0709 & 0.0632 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Strain sensitivity values (given in millistrain) for selected fit and lateral resolutions. The six strain estimation techniques are ordered as defined above in \autoref{algorithms}.}
+	\label{sensitivity_table}
 \end{table}
 
 \autoref{sensitivity_table} shows the sensitivity results for selected combinations of fit and lateral resolutions, for which the images themselves are shown in \autoref{images}.
@@ -289,5 +290,4 @@ FR ($\mu m$) & LR ($\mu m$) & WLS & UW SG & PO SG & W FD & UW FD & PF FD \\
 It has been shown that it is possible to greatly reduce the processing time by using finite difference approaches, and that the sensitivity can be optimised by introducing lateral smoothing, which can be computed very quickly using a convolution operation. However, the image is not infinitely improved with more lateral smoothing and higher fit resolutions. The degradation of the image resolution, due to these processes, must be examined. 
 
 \section{Analysis of Image Resolution} \label{image_res_results}
-It was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral averaging, due to the high frequency noise corrupting the data. The comparison between a lateral segment with no axial smoothing for the unweighted finite difference (with a fit resolution of ??), and the same segment smoothed with a lateral resolution of (??) and their corresponding fitted error functions is shown in Figure ??.
-
+It was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral averaging, due to the high frequency noise corrupting the data. The three 'best' strain estimation techniques were picked based on the results for processing speed and sensitivity in the previous section: unweighted smoothing FD, pre-filtered FD with smoothing, and the unwrapping with SG filtering. The lateral image resolution was plotted for each of these techniques at different lateral resolutions, and for specific fit resolutions ($40\mu m, 70 \mu m, 100\mu m$) in \autoref{lateral_image_res}. The axial image resolution was similarly plotted against the fit resolution, for different values of lateral smoothing: $20\mu m, 40\mu m$, and $70\mu m$ in \autoref{axial_image_res}.
