@@ -316,3 +316,68 @@ It has been shown that it is possible to greatly reduce the processing time by u
 
 \section{Analysis of Image Resolution} \label{image_res_results}
 It was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral averaging, due to the high frequency noise corrupting the data. The three 'best' strain estimation techniques were picked based on the results for processing speed and sensitivity in the previous section: unweighted smoothing FD, pre-filtered FD with smoothing, and the unwrapping with SG filtering. The lateral image resolution was plotted for each of these techniques at different lateral resolutions, and for specific fit resolutions ($40\mu m, 70 \mu m, 100\mu m$) in \autoref{lateral_image_res}. The axial image resolution was similarly plotted against the fit resolution, for different values of lateral smoothing: $20\mu m, 40\mu m$, and $70\mu m$ in \autoref{axial_image_res}.
+
+% AXIAL
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{|c||c||c|c|c|c|c|c|}
+			\hline 
+			FR ($\mu m$) & LR ($\mu m$) & WLS & UW SG & PO SG & W FD & UW FD & PF FD \\
+			\hline
+			\hline
+			40 & 0 & - & - & - & - & - & - \\
+			\hline
+			70 & 0 & 315.8677 & 250.6498 & 293.0489 & 207.2538 & 235.4287 & 239.6929 \\
+			\hline
+			100 & 0 & 343.9671 & 275.604 & 296.8926 & 213.2396 & 246.2783 & 258.0372 \\
+			\hline
+			40 & 20 & 267.6478 & - & 283.7497 & 240.1561 & 258.3663 & 263.8291 \\
+			\hline
+			70 & 20 & 311.8593 & 264.2440 & 325.6273 & 238.4849 & 273.0977 & 285.0533 \\
+			\hline
+			100 & 20 &  329.1628 & 285.8990 & 348.3191 & 246.1572 & 285.3280 & 299.8248 \\
+			\hline
+			40 & 40 & 287.9523 & 261.5968 & 307.2577 &  246.6823 & 271.8010 & 274.7096 \\
+			\hline
+			70 & 40 & 331.9415 & 283.2518 & 351.8148 & 241.3834 & 287.1582 & 296.9245 \\
+			\hline
+			100 & 40 & 0.0685 & 303.7375 & 0.0593 &  240.6475 & 301.3771 & 314.2502 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Axial image resolution values (given in micrometres) for selected fit and lateral resolutions}
+	\label{axial_imageres_table}
+\end{table}
+
+% LATERAL
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{|c||c||c|c|c|c|c|c|}
+			\hline 
+			FR ($\mu m$) & LR ($\mu m$) & WLS & UW SG & PO SG & W FD & UW FD & PF FD \\
+			\hline
+			\hline
+			40 & 0 & - & - & - & - & - & - \\
+			\hline
+			70 & 0 & 133.7245 & - & - & 245.5707 & 155.9207 & 210.3759 \\
+			\hline
+			100 & 0 & 213.1397 & 179.2214 & 217.3244 & 207.1824 & 152.8478 & 181.8592 \\
+			\hline
+			40 & 20 & 127.4863 & - & 104.1938 & 227.4571 & 115.9849 & 209.0691 \\
+			\hline
+			70 & 20 & 115.3585 & 212.9766 & 126.5596 & 244.2001 & 156.7630 &  212.9124 \\
+			\hline
+			100 & 20 & 200.6573 & 179.8630 & 218.4034 & 207.8725 & 158.7470 & 187.7033 \\
+			\hline
+			40 & 40 & 117.8885 &  230.9285 & 126.6490 & 235.2031 & 124.9571 & 214.1584 \\
+			\hline
+			70 & 40 & 112.0383 & 218.4469 & 159.8615 & 244.7615 & 161.8017 & 215.9622 \\
+			\hline
+			100 & 40 & 364.4445 & 181.4423 & 222.0526 & 0.0813 & 164.4827 & 192.4519 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Lateral image resolution values (given in micrometres) for selected fit and lateral resolutions}
+	\label{lateral_imageres_table}
+\end{table}
+
