@@ -16,8 +16,8 @@ Optical coherence tomography (OCT) can be thought of as the optical equivalent t
     	\centering
         \includegraphics[width=\textwidth]{figures/fourier_domain.png}
     \end{subfigure}
-    \label{oct_domain}
     \caption{Set ups for a) time-domain and b) Fourier-domain OCT systems. Taken from \cite{optical+biomedical_engineering_laboratory_introduction_nodate}.}
+    \label{oct_domain}	
 \end{figure}
 
 Time-domain OCT uses a simple low coherence Michelson interferometer set up, as seen in \autoref{oct_domains}, where the interference signal is measured between the light reflecting from the tissue, and an scanned reference mirror that changes the depth imaged \cite{huang_optical_1991}. The scanning of the reference mirror to image into the tissue produces a 1D A-scan, that contains information about the detected irradiance of the interferometer as a function of depth. Taking multiple A-scans across by moving laterally across a sample surface produces a 2D B-scan. Multiple B-scans can be used as cross-sections to build up an entire 3D scan volume, otherwise known as a C-scan, a process which can be seen in Figure 2. These descriptions are taken from those conventionally utilised in ultrasound imaging. The disadvantage of this set up however is the expensive acquisition times for imaging of 3D volumes.
@@ -31,8 +31,8 @@ Many elastography methods based on optical imaging techniques exist, and can be 
 \begin{figure}[t]
 	\centering
     \includegraphics[width=0.8\textwidth]{figures/technique_comparison.png}
-    \label{image_techniques}
     \caption{Relative resolutions and penetrations for different imaging techniques utilised clinically, taken from \cite{optical+biomedical_engineering_laboratory_introduction_nodate}}
+    \label{image_techniques}	
 \end{figure}
 
 On top of these highly variable loading methods, the detection of tissue deformation can be done using speckle tracking via cross-correlation algorithms (which are highly influenced by speckle decorrelation noise), or by phase-sensitive detection \cite{kennedy_strain_2012}.
@@ -80,8 +80,8 @@ OCE inherits the high spatial resolution of the underlying OCT imaging system, h
 		\centering
 		\includegraphics[width=\textwidth]{figures/unwrapped_phase.png}
 	\end{subfigure}
-	\label{phase_wrapping}
 	\caption{Phase unwrapping demonstrated in a phantom scan data set in a) followed by the unwrapped phase difference b) computed using the unwrapping algorithm from \cite{kennedy_optical_2014}.}
+	\label{phase_wrapping}	
 \end{figure}
 
 The efficiency of any elastography imaging technique is dependent on its ability to measure the deformation of the tissue in response to the mechanical load accurately. Phase-sensitive displacement measurement in OCE is enabled by Fourier-domain OCT systems, and allows tissue displacements on the order of nanometres to be detected by the system, corresponding to micro-strain sensitivity \cite{kennedy_review_2014}. However phase-sensitive OCE methods bring with them their own problems, one being that te detected phase can only take values in the interval $[0,2\pi]$. This results in wrapping of the phase difference as seen in \autoref{phase_wrapping} and if uncorrected, will result in discontinuities in the calculated displacement field.
@@ -106,8 +106,8 @@ The benefit of the phase unwrapping algorithm is that it is capable of returning
 		\centering
 		\includegraphics[width=\textwidth]{figures/cplx_segment_shifted.png}
 	\end{subfigure}
-	\label{phase_offset}
 	\caption{The complex phase difference signal using phasor representation in a) as a single data point, b) as a fit window of phase difference data points wrapped around the $\pi/\pi$ discontinuity, and c) those data points shifted to an unwrapped region, based on application of a phase offset \cite{zaitsev_hybrid_2016}.}
+	\label{phase_offset}	
 \end{figure}
 
 \subsection{Phase Offset Correction}

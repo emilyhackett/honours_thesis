@@ -14,8 +14,8 @@
 		\centering
 		\includegraphics[width=\textwidth]{figures/oct.png}
 	\end{subfigure}	
-	\label{oct_image}
 	\caption{The silicone phantom used to investigate strain estimation techniques a) photographed and b) imaged by the OCT system.}
+	\label{oct_image}	
 \end{figure}
 
 To better quantify the image quality, an idealised silicone sample was imaged, to approximate breast tissue, and the strain estimated. This phantom consisted of a bulk, softer silicone material (with a Young's modulus of 6.4kPa) within which was a stiff, rectangular inclusion (Young's modulus of 100kPa) \cite{hepburn_improving_2017}, to which optical scatterers were added to enhance the OCT signal. The phantom was created by a previous Master's student, and was imaged using a desktop OCE system, with a system wavelength of $1300nm$. The imaged area, shown in \autoref{oct_image}, was divided into 2000 A-scans per each B-scan, over a length in x of $4.4\mu m$), and a total of 6817 B-scans were acquired, over the same length in y.
@@ -100,8 +100,8 @@ The WLS with phase unwrapping algorithm unwraps the phase by reading in the enti
    \draw [fdsm] (fd.315) edge[out=270,in=90] (output.45);
    
 \end{tikzpicture}
-\label{flowchart}
 \caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with WLS (black), unwrapping with SG filtering (dark blue), offset phase with SG filtering (red), weighted smoothing with FD (light blue), unweighted smoothing with FD (green), and pre-filtered FD with weighted smoothing.}
+\label{flowchart}
 \end{figure}
 
 \subsection{SG Filtering on Unwrapped Phase}
@@ -135,36 +135,36 @@ In order to maintain consistency between the strain estimation techniques, for t
 
 \subsection{Qualitative Comparison}
 
-\begin{figure}[hb!]
+\begin{figure}[b!]
 	\centering
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/unwrapped_wls}
+        \includegraphics[width=\textwidth]{figures/wls_fr70_lr0.png}
 	\end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/unwrapped_sg}
+        \includegraphics[width=\textwidth]{figures/uwsg_fr70_lr0.png}
 	\end{subfigure}
     \\
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/offset_sg}
+        \includegraphics[width=\textwidth]{figures/posg_fr70_lr0.png}
 	\end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/weighted_fd}
+        \includegraphics[width=\textwidth]{figures/wfd_fr70_lr0.png}
     \end{subfigure}
     \\
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/unweighted_fd}
+        \includegraphics[width=\textwidth]{figures/uwfd_fr70_lr0.png}
 	\end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/fd_smoothed}
+        \includegraphics[width=\textwidth]{figures/fdsm_fr70_lr0.png}
     \end{subfigure}
-    \label{bscan_images_1}
     \caption{Strain B-scans taken from the centre of the phantom for the six strain estimation techniques discussed above. The strain values shown are windowed between -3 and 1 milli-strain.}
+    \label{bscan_images_1}	
 \end{figure}
 
 \autoref{bscan_images_1} shows the resulting B-scan strain images, taken from the centre of the phantom, for the six different strain estimation techniques described above. Note that negative strain corresponds to compressive force, that is a displacement downwards. The fact that there exist positive strain values suggests that our assumption of uniaxial compression is invalid, as stiffer regions are pushing the softer bulk laterally and upwards. It can seen in all images that the stiff inclusion shows less strain than the softer surrounding bulk, as expected. There are similar 'halo' effects, caused by the stiff inclusion taking more of the compressive force than the soft bulk immediately next to it, in all images. The area under the hard inclusion is characterised by low OCT signal, as can be seen in figure \autoref{oct_image}, and is the most prominently noisy in the techniques that utilise a phase unwrapping algorithm over the entire volume, which is highly sensitive to strong fluctuations in OCT signal and as a result creates artefacts in these regions. A similar pattern is seen in this region in the weighted and unweighted smoothing of FD strain, and is very significant in the pre-filter FD image, which has in addition further streaks of strain estimation arguments at the bottom of the image. 
@@ -173,22 +173,24 @@ As mentioned before, the pre-filter FD with smoothed strain algorithm was introd
 
 \subsection{Processing Time}
 
-\begin{figure}
+\autoref{process_time_1} shows the relative processing time for the different strain estimation techniques for both a single @D B-scan and an entire 3D C-scan, at different fit resolutions. Note that in order to compare accurately between the 2D B-scan and C-scan, a 2D unwrapping algorithm was implemented instead of the usual 3D that laterally unwraps as well. Each data point corresponds to an average of 50 processing time measurements. The error bars in the plot are the standard deviations of these 50 measurements. Since this is plotted relatively, the standard deviation of the relative measurement is equal to the addition of the standard deviations of the absolute measurement and the baseline (WLS) measurement.
+
+The relative processing time (with respect to the WLS with unwrapped phase) is shown instead of the actual, to try provide an estimate that is comparable across different machines.
+
+\begin{figure}[h!]
 	\centering
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/2d_time_a.png}
+        \includegraphics[width=\textwidth]{figures/2d_relative_fr.png}
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/3d_time_a.png}
+        \includegraphics[width=\textwidth]{figures/3d_time_2.png}
     \end{subfigure}
-    \caption{Relative processing time for different strain estimation techniques at a fit resolution of $70\mu m$ for a) a single B-scan and b) an entire C-scan.}
+    \caption{Relative processing time for different strain estimation techniques at different fit resolution values for a) a single B-scan and b) an entire C-scan. Error bars are the standard deviation of 50 repeated measurements.}
     \label{process_time_1}
 \end{figure}
 
-\autoref{process_time_1} shows the relative processing time for the different strain estimation techniques for both a single B-scan and an entire 3D C-scan, at different fit resolutions. Note that in order to compare accurately between the 2D B-scan and C-scan, a 2D unwrapping algorithm was implemented instead of the usual 3D that laterally unwraps as well. Each data point corresponds to an average of 50 processing time measurements. 
-The relative processing time (with respect to the WLS with unwrapped phase) is shown instead of the actual, to try provide an estimate that is comparable across different machines.
 
 It can be seen that all new strain estimation techniques show a significant improvement in processing speed compared to the WLS estimate. In particularly, the finite difference techniques are particularly fast. The Savitzky-Golay filter on the unwrapped phase is faster than when applied to the phase offset, suggesting that the bottleneck caused by the non-linear subtraction operation contributes more to slowing the process down than needing to perform unwrapping on the entire volume. 
 
@@ -204,8 +206,8 @@ It can be seen that all new strain estimation techniques show a significant impr
     	\centering
         \includegraphics[width=\textwidth]{figures/sensitivity_lr0_zoom.png}
     \end{subfigure}
-    \label{sensitivity_1}
     \caption{Strain sensitivity values at different fit resolutions for all strain estimation techniques. The plot on the left is zoomed in to show more clearly the differences in behaviour.}
+	\label{sensitivity_1}
 \end{figure}
 
 The strain sensitivity for the six different estimation techniques for different fit resolutions is shown in Figure \autoref{sensitivity_1}. There is a clear trend across all techniques, that at the larger fit resolutions the sensitivity is better. The downside of this is that at larger fit resolutions, the ability to distinguish objects laterally is significantly worsened, as can be seen in strain B-scan images in \autoref{strain_bscan_images}. Therefore there is a need to optimise the trade off between sensitivity and fit resolution. The three techniques that offer the best sensitivity at lower fit resolutions are WLS, unweighted smoothing with FD, and the pre-filtered FD. Note that the weighted smoothing with FD is significantly worse than the other techniques, due to the artefacts discussed above. The phase offset and unwrapping with SG filtering are slightly worse than the WLS estimate, likely due to them being an ordinary least squares estimate, as opposed to a weighted one.
@@ -215,41 +217,25 @@ Although the pre-filtered FD supposedly shows the best sensitivity, it is import
 On the basis of these results, it was decided to see if implementing lateral averaging over the separated B-scans could improve the sensitivity of the lower-order differentiation techniques (in particular the weighted FD and the SG filtering) towards that of the WLS. 
 
 \section{Phantom Strain Elastogram Results with Lateral Averaging}\label{phantom_results_lateral}
-The benefit of adding lateral averaging is that it improves the sensitivity, and in most instances, without adding much time overhead, since it can be implemented as a 2D convolution on a given B-scan. Therefore the focus of this section is on the image quality, rather than the processing time. It was seen that adding lateral smoothing did not change the relative positions of the processing techniques in terms of processing time.
 
 \subsection{Qualitative Comparison}
-Since lateral averaging is capable of improving sensitivity for lower fit resolutions, \autoref{bscan_images_2} shows the B-scan images for a lower fit resolution of $40\mu m$ rather than the standard $70\mu m$, with a lateral smoothing filter of resolution $20\mu m$ applied. 
+It was found that very comparable image quality could be achieved using a smaller fit resolution of $40\mu m$ when lateral smoothing was also applied. \autoref{images} contains the B-scan  images for the different strain estimation techniques for selected fit resolution and lateral resolution values. 
 
-\begin{figure}[bh!]
+\subsection{Processing Time}
+The benefit of adding lateral averaging is that it improves the sensitivity, and in most instances, without adding much time overhead, since it can be implemented as a 2D convolution on a given B-scan. Therefore the focus of this section is mostly on the image quality, rather than the processing time. However, \autoref{process_time_2} shows that adding lateral smoothing did not change the relative positions of the processing techniques in terms of processing time.
+
+\begin{figure}[th!]
 	\centering
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/wls_fr40_lr20.png}
-	\end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-    	\centering
-        \includegraphics[width=\textwidth]{figures/uwsg_fr40_lr20.png}
-	\end{subfigure}
-    \\
-    \begin{subfigure}{0.49\textwidth}
-    	\centering
-        \includegraphics[width=\textwidth]{figures/posg_fr40_lr20.png}
-	\end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-    	\centering
-        \includegraphics[width=\textwidth]{figures/wfd_fr40_lr20.png}
+        \includegraphics[width=\textwidth]{figures/2d_relative_lr.png}
     \end{subfigure}
-    \\
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/uwfd_fr40_lr20.png}
-	\end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-    	\centering
-        \includegraphics[width=\textwidth]{figures/fdsm_fr40_lr20.png}
+        \includegraphics[width=\textwidth]{figures/3d_time_1.png}
     \end{subfigure}
-    \label{bscan_images_2}
-    \caption{Strain B-scans calculated using a fit resolution of $40\mu m$ and a lateral smoothing resolution of $20\mu m$. The strain values shown are windowed between -3 and 1 milli-strain, as previously.}
+    \caption{Relative processing time for different strain estimation techniques at a fit resolution of $40\mu m$ and with different lateral smoothing resolutions for a) a single B-scan and b) an entire C-scan.}
+    \label{process_time_2}
 \end{figure}
 
 \subsection{Sensitivity}
@@ -262,10 +248,10 @@ Since lateral averaging is capable of improving sensitivity for lower fit resolu
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-%        \includegraphics[width=\textwidth]{figures/sensitivity_FR40.png}
+        \includegraphics[width=\textwidth]{figures/sensitivity_FR40.png}
     \end{subfigure}
-    \label{sensitivity_2}
     \caption{Strain sensitivity for different lateral smoothing resolutions for a) Fit resolution of $70\mu m$, and b) $40\mu m$.}
+    \label{sensitivity_2}	
 \end{figure}
 
 The addition of lateral smoothing heightens the sensitivity of all imaging techniques. At the standard fit resolution, \autoref{sensitivity_2} shows significant improvement in the sensitivity when lateral smoothing is applied, for all techniques.
