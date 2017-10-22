@@ -98,6 +98,29 @@ The WLS with phase unwrapping algorithm unwraps the phase by reading in the enti
    \draw [wfd] (fd.280) edge[out=270,in=90] (output.80);
    \draw [uwfd] (fd.300) edge[out=270,in=90] (output.60);
    \draw [fdsm] (fd.315) edge[out=270,in=90] (output.45);
+
+    % LEGEND:
+   \matrix[draw=black,rounded corners] at (5,-1) {  
+   	\node (m1) at (0.5,0) [empty] {};
+	\node (wls) at (3,0) [legendtext] {Unwrapped WLS};
+    \draw [wls] (m1)--(wls.west);
+    \node (m2) at (0.5,-0.5) [empty] {};
+    \node (uwsg) at (3,-0.5) [legendtext] {Unwrapped SG Filter};
+    \draw [uwsg] (m2)--(uwsg.west);
+    \node (m3) at (0.5,-1) [empty] {};
+    \node (posg) at (3,-1) [legendtext] {Offset SG Filter};
+    \draw [posg] (m3)--(posg.west);
+    \node (m4) at (0.5,-1.5) [empty] {};
+    \node (wfd) at (3,-1.5) [legendtext] {Weighted FD};
+    \draw [wfd] (m4)--(wfd.west);
+    \node (m5) at (0.5,-2) [empty] {};
+    \node (uwfd) at (3,-2) [legendtext] {Unweighted FD};
+    \draw [uwfd] (m5)--(uwfd.west);
+    \node (m6) at (0.5,-2.5) [empty] {};
+    \node (fdsm) at (3,-2.5) [legendtext] {Pre-Filter FD Smoothed};
+    \draw [fdsm] (m6)--(fdsm.west);
+    \\
+    };
    
 \end{tikzpicture}
 \caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with WLS (black), unwrapping with SG filtering (dark blue), offset phase with SG filtering (red), weighted smoothing with FD (light blue), unweighted smoothing with FD (green), and pre-filtered FD with weighted smoothing.}
