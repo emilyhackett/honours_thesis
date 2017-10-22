@@ -101,7 +101,21 @@ Since there is no smoothing operation implemented in finite difference, it is as
 \subsection{Sensitivity}
 The strain sensitivity is defined as the minimum detectable strain in the elastogram \cite{kennedy_strain_2012}, a quantity that gives insight into how well the OCE imaging system and signal processing is capable of reproducing the physical displacement and strain in the imaged sample. If the strain sensitivity is too large, then it is not possible to detect differences between stiff and soft objects (such as stroma and tumour) without having a much larger compressive force, which invalids many assumptions previously made (such as the linear elasticity of tissue, and uniaxial compression). Therefore it is important to use the strain sensitivity as a metric of image quality. 
 
-The strain sensitivity is defined as the standard deviation of the strain values within a region of uniform elasticity \cite{varghese_theoretical_1997}, such as can be artificially created using a phantom. The ideal characteristics of the region include absence of artefacts, including those that occur near the sample surface reflection, and at a depth shallow enough to minimise the attenuation of the OCT signal and decorrelation noise. Such a region is shown in \autoref{sensitivity_region} for a silicon phantom with a stiff inclusion. 
+The strain sensitivity is defined as the standard deviation of the strain values within a region of uniform elasticity \cite{varghese_theoretical_1997}, such as can be artificially created using a phantom. The ideal characteristics of the region include absence of artefacts, including those that occur near the sample surface reflection, and at a depth shallow enough to minimise the attenuation of the OCT signal and decorrelation noise. Such a region is shown in \autoref{sensitivity_region} for a silicon phantom with a stiff inclusion.
+
+\begin{figure}	
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/sensitivity_regions.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/regions_zoomed.png}
+	\end{subfigure}
+	\caption{A uniform region within the sample used to measure strain sensitivity, and b) the same region at different fit resolutions.}
+	\label{sensivity_region}
+\end{figure}
 
 \subsection{Image Resolution}
 The image resolution can be thought of as the ability to distinguish between two objects in the resulting strain elastogram. Traditionally, this has been examined in terms of the impulse response of an optical system, more directly as the FWHM of this impulse response \cite{reynolds_resolution_1989}. However we typically don't have access to the impulse response of the combined strain estimation filter and optical system response, therefore another method of quantifying the image resolution is used based on a previous Masters project \cite{hepburn_improving_2017}.
