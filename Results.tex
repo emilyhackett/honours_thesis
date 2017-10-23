@@ -30,6 +30,9 @@ The functions worked by using the complex phase difference C-scan as an input, a
 \subsection{WLS with Unwrapped Phase}
 The WLS with phase unwrapping algorithm unwraps the phase by reading in the entire volume and saves the unwrapped phase data to file. In a sequential loop over each B-scan, wrapped in a Matlab parfor parallel, the process reads in the complex phase and unwrapped phase for each B-scan. If lateral smoothing has been specified, it smooths the unwrapped phase using unweighted Gaussian smoothing by convoluting the unwrapped phase with the 1D lateral filter. A sequential looping is then performed over each A-scan and all fit segments within the given B-scan, which calculates the WLS estimate of strain using summations and the weights from the complex phase data.
 
+\subsection{SG Filtering on Unwrapped Phase}
+This function unwraps the phase by the same process specified above, which requires a read from file of the unwrapped phase for each B-scan. If lateral smoothing required, the unwrapped phase is similarly smoothed via convolution with an unweighted Gaussian smoothing filter. To estimate the strain, this smoothed unwrapped phase data is convolved with the analytically derived Savitzky-Golay filter in a single action of the entire B-scan.
+
 \begin{figure}[th!]
 \begin{tikzpicture}[node distance=2cm, remember picture]
 	\centering
@@ -121,14 +124,12 @@ The WLS with phase unwrapping algorithm unwraps the phase by reading in the enti
     \draw [fdsm] (m6)--(fdsm.west);
     \\
     };
-   
+
 \end{tikzpicture}
 \caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with WLS (black), unwrapping with SG filtering (dark blue), offset phase with SG filtering (red), weighted smoothing with FD (light blue), unweighted smoothing with FD (green), and pre-filtered FD with weighted smoothing.}
 \label{flowchart}
 \end{figure}
 
-\subsection{SG Filtering on Unwrapped Phase}
-This function unwraps the phase by the same process specified above, which requires a read from file of the unwrapped phase for each B-scan. If lateral smoothing required, the unwrapped phase is similarly smoothed via convolution with an unweighted Gaussian smoothing filter. To estimate the strain, this smoothed unwrapped phase data is convolved with the analytically derived Savitzky-Golay filter in a single action of the entire B-scan.
 
 \subsection{SG Filtering on Offset Phase}
 In order to correct for phase unwrapping, the function reads in the complex phase for each B-scan (in a parallel Matlab parfor loop) and loops over all fit segments within the B-scan, taking a matrix of values across all A-scans for the given depths. Using Matlab's inbuilt bsxfun operator, an averaged complex phase value for each fit segment is calculated and divided (corresponding to subtraction of the phase) to move the phase values into an unwrapped region. The Savitzky-Golay filter, which was pre-calculated using the analytical solution, is then convolved with the matrix in the axial direction to produce the strain estimation values at that given depth. 
@@ -196,11 +197,8 @@ As mentioned before, the pre-filter FD with smoothed strain algorithm was introd
 
 \subsection{Processing Time}
 
-\autoref{process_time_1} shows the relative processing time for the different strain estimation techniques for both a single @D B-scan and an entire 3D C-scan, at different fit resolutions. Note that in order to compare accurately between the 2D B-scan and C-scan, a 2D unwrapping algorithm was implemented instead of the usual 3D that laterally unwraps as well. Each data point corresponds to an average of 50 processing time measurements. The error bars in the plot are the standard deviations of these 50 measurements. Since this is plotted relatively, the standard deviation of the relative measurement is equal to the addition of the standard deviations of the absolute measurement and the baseline (WLS) measurement.
 
-The relative processing time (with respect to the WLS with unwrapped phase) is shown instead of the actual, to try provide an estimate that is comparable across different machines.
-
-\begin{figure}[h!]
+\begin{figure}[b!]
 	\centering
     \begin{subfigure}{0.49\textwidth}
     	\centering
@@ -214,6 +212,9 @@ The relative processing time (with respect to the WLS with unwrapped phase) is s
     \label{process_time_1}
 \end{figure}
 
+\autoref{process_time_1} shows the relative processing time for the different strain estimation techniques for both a single @D B-scan and an entire 3D C-scan, at different fit resolutions. Note that in order to compare accurately between the 2D B-scan and C-scan, a 2D unwrapping algorithm was implemented instead of the usual 3D that laterally unwraps as well. Each data point corresponds to an average of 50 processing time measurements. The error bars in the plot are the standard deviations of these 50 measurements. Since this is plotted relatively, the standard deviation of the relative measurement is equal to the addition of the standard deviations of the absolute measurement and the baseline (WLS) measurement.
+
+The relative processing time (with respect to the WLS with unwrapped phase) is shown instead of the actual, to try provide an estimate that is comparable across different machines.
 
 It can be seen that all new strain estimation techniques show a significant improvement in processing speed compared to the WLS estimate. In particularly, the finite difference techniques are particularly fast. The Savitzky-Golay filter on the unwrapped phase is faster than when applied to the phase offset, suggesting that the bottleneck caused by the non-linear subtraction operation contributes more to slowing the process down than needing to perform unwrapping on the entire volume. 
 
@@ -229,7 +230,7 @@ It can be seen that all new strain estimation techniques show a significant impr
     	\centering
         \includegraphics[width=\textwidth]{figures/sensitivity_lr0_zoom.png}
     \end{subfigure}
-    \caption{Strain sensitivity values at different fit resolutions for all strain estimation techniques. The plot on the left is zoomed in to show more clearly the differences in behaviour.}
+    \caption{Strain sensitivity values at different fit resolutions for all strain estimation techniques. The plot on the left is zoomed in to show the differences more clearly.}
 	\label{sensitivity_1}
 \end{figure}
 
@@ -263,7 +264,9 @@ The benefit of adding lateral averaging is that it improves the sensitivity, and
 
 \subsection{Sensitivity}
 
-\begin{figure}
+The addition of lateral smoothing heightens the sensitivity of all imaging techniques. At the standard fit resolution, \autoref{sensitivity_2} shows significant improvement in the sensitivity when lateral smoothing is applied, for all techniques.
+
+\begin{figure}[b!]
 	\centering
     \begin{subfigure}{0.49\textwidth}
     	\centering
@@ -277,7 +280,6 @@ The benefit of adding lateral averaging is that it improves the sensitivity, and
     \label{sensitivity_2}	
 \end{figure}
 
-The addition of lateral smoothing heightens the sensitivity of all imaging techniques. At the standard fit resolution, \autoref{sensitivity_2} shows significant improvement in the sensitivity when lateral smoothing is applied, for all techniques.
 
 \begin{table}[h]
 	\begin{center}
@@ -315,10 +317,11 @@ The addition of lateral smoothing heightens the sensitivity of all imaging techn
 It has been shown that it is possible to greatly reduce the processing time by using finite difference approaches, and that the sensitivity can be optimised by introducing lateral smoothing, which can be computed very quickly using a convolution operation. However, the image is not infinitely improved with more lateral smoothing and higher fit resolutions. The degradation of the image resolution, due to these processes, must be examined. 
 
 \section{Analysis of Image Resolution} \label{image_res_results}
-It was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral averaging, due to the high frequency noise corrupting the data. The three 'best' strain estimation techniques were picked based on the results for processing speed and sensitivity in the previous section: unweighted smoothing FD, pre-filtered FD with smoothing, and the unwrapping with SG filtering. The lateral image resolution was plotted for each of these techniques at different lateral resolutions, and for specific fit resolutions ($40\mu m, 70 \mu m, 100\mu m$) in \autoref{lateral_image_res}. The axial image resolution was similarly plotted against the fit resolution, for different values of lateral smoothing: $20\mu m, 40\mu m$, and $70\mu m$ in \autoref{axial_image_res}.
+
+A goodness of fit limit was placed on the process of fitting an error function to the data set in order to calculate the image resolution, by requiring that the R-squared value of the fit must be over 0.5. Using this, it was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral averaging, due to the high frequency noise corrupting the data. \autoref{axial_imageres_table} and \autoref{lateral_imageres_table} show the values of image resolution for certain combinations of fit and lateral resolutions, for all six strain estimation techniques.
 
 % AXIAL
-\begin{table}[h]
+\begin{table}[b!]
 	\begin{center}
 		\begin{tabular}{|c||c||c|c|c|c|c|c|}
 			\hline 
@@ -327,21 +330,21 @@ It was found that the process of fitting a step response to the object boundarie
 			\hline
 			40 & 0 & - & - & - & - & - & - \\
 			\hline
-			70 & 0 & 315.8677 & 250.6498 & 293.0489 & 207.2538 & 235.4287 & 239.6929 \\
+			70 & 0 & 315.87 & 250.65 & 293.05 & 207.25 & 235.43 & 239.69 \\
 			\hline
-			100 & 0 & 343.9671 & 275.604 & 296.8926 & 213.2396 & 246.2783 & 258.0372 \\
+			100 & 0 & 343.97 & 275.60 & 296.89 & 213.24 & 246.28 & 258.04 \\
 			\hline
-			40 & 20 & 267.6478 & - & 283.7497 & 240.1561 & 258.3663 & 263.8291 \\
+			40 & 20 & 267.65 & - & 283.75 & 240.16 & 258.37 & 263.83 \\
 			\hline
-			70 & 20 & 311.8593 & 264.2440 & 325.6273 & 238.4849 & 273.0977 & 285.0533 \\
+			70 & 20 & 311.86 & 264.24 & 325.63 & 238.48 & 273.10 & 285.05 \\
 			\hline
-			100 & 20 &  329.1628 & 285.8990 & 348.3191 & 246.1572 & 285.3280 & 299.8248 \\
+			100 & 20 &  329.16 & 285.90 & 348.32 & 246.16 & 285.33 & 299.82 \\
 			\hline
-			40 & 40 & 287.9523 & 261.5968 & 307.2577 &  246.6823 & 271.8010 & 274.7096 \\
+			40 & 40 & 287.95 & 261.60 & 307.26 &  246.68 & 271.80 & 274.71 \\
 			\hline
-			70 & 40 & 331.9415 & 283.2518 & 351.8148 & 241.3834 & 287.1582 & 296.9245 \\
+			70 & 40 & 331.94 & 283.25 & 351.81 & 241.38 & 287.16 & 296.92 \\
 			\hline
-			100 & 40 & 0.0685 & 303.7375 & 0.0593 &  240.6475 & 301.3771 & 314.2502 \\
+			100 & 40 & 364.44 & 303.74 & 222.05 &  240.65 & 301.38 & 314.25 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -349,8 +352,12 @@ It was found that the process of fitting a step response to the object boundarie
 	\label{axial_imageres_table}
 \end{table}
 
+
+Looking at these tables, it can be seen that the finite difference methods returned consistently lower axial image resolutions than the unwrapping with WLS and the offset phase with SG filtering, and was approximately equal to the unwrapping with SG filtering. The weighted FD method showed slightly better axial image resolution than the unweighted, whilst the pre-filtered FD with smoothing was larger than both. Overall, the unweighted smoothing with FD strain estimation showed the best axial image resolution. 
+For the lateral image resolution, however, the unwrapping with WLS was much closer to the unweighted finite difference, and there was a less clear difference between the FD methods and the others. The weighted FD performed poorly, and the pre-filtered FD slightly better. 
+
 % LATERAL
-\begin{table}[h]
+\begin{table}[t!]
 	\begin{center}
 		\begin{tabular}{|c||c||c|c|c|c|c|c|}
 			\hline 
@@ -359,21 +366,21 @@ It was found that the process of fitting a step response to the object boundarie
 			\hline
 			40 & 0 & - & - & - & - & - & - \\
 			\hline
-			70 & 0 & 133.7245 & - & - & 245.5707 & 155.9207 & 210.3759 \\
+			70 & 0 & 133.72 & - & - & 245.57 & 155.92 & 210.38 \\
 			\hline
-			100 & 0 & 213.1397 & 179.2214 & 217.3244 & 207.1824 & 152.8478 & 181.8592 \\
+			100 & 0 & 213.14 & 179.22 & 217.32 & 207.18 & 152.85 & 181.86 \\
 			\hline
-			40 & 20 & 127.4863 & - & 104.1938 & 227.4571 & 115.9849 & 209.0691 \\
+			40 & 20 & 127.49 & - & 104.19 & 227.46 & 115.98 & 209.07 \\
 			\hline
-			70 & 20 & 115.3585 & 212.9766 & 126.5596 & 244.2001 & 156.7630 &  212.9124 \\
+			70 & 20 & 115.36 & 212.98 & 126.56 & 244.20 & 156.76 &  212.91 \\
 			\hline
-			100 & 20 & 200.6573 & 179.8630 & 218.4034 & 207.8725 & 158.7470 & 187.7033 \\
+			100 & 20 & 200.66 & 179.86 & 218.40 & 207.87 & 158.75 & 187.70 \\
 			\hline
-			40 & 40 & 117.8885 &  230.9285 & 126.6490 & 235.2031 & 124.9571 & 214.1584 \\
+			40 & 40 & 117.89 &  230.93 & 126.65 & 235.20 & 124.96 & 214.16 \\
 			\hline
-			70 & 40 & 112.0383 & 218.4469 & 159.8615 & 244.7615 & 161.8017 & 215.9622 \\
+			70 & 40 & 112.04 & 218.45 & 159.86 & 244.76 & 161.80 & 215.96 \\
 			\hline
-			100 & 40 & 364.4445 & 181.4423 & 222.0526 & 0.0813 & 164.4827 & 192.4519 \\
+			100 & 40 & 364.44 & 181.44 & 222.05 & 208.25 & 164.48 & 192.45 \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -381,3 +388,61 @@ It was found that the process of fitting a step response to the object boundarie
 	\label{lateral_imageres_table}
 \end{table}
 
+\begin{figure}[hb!]
+	\begin{centering}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/uwfd_axial_imageres.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/uwfd_lateral_imageres.png}
+	\end{subfigure}
+	\end{centering}
+	\\
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/uwfd_sensitivity.png}
+	\end{subfigure}
+	\caption{a) Axial and b) lateral image resolution for the unweighted smoothing of FD strain estimation, for different fit and lateral smoothing resolutions. c) Sensitivity for fit and lateral smoothing resolutions.}
+	\label{uwfd_imageres}
+\end{figure}
+
+
+Considering the results from the sections above, for both sensitivity and processing time, a closer look into the image resolution of the unweighted smoothing with FD was performed. \autoref{uwfd_imageres} shows the axial and lateral image resolution for different combinations of fit and lateral resolutions. In order to minimise the image resolutions (corresponding to maximising the ability to distinguish between fine structures in the sample) whilst also optimising the sensitivity, \autoref{uwfd_imageres} also shows the sensitivity for different fit lengths. Both plots show large image resolution values at high lateral smoothing and fit resolutions. In particular, an increased lateral smoothing leads to significant increase in the FWHM value for both axial and image resolutions. 
+
+%\begin{figure}[ht!]
+%	%\centering
+%	\begin{subfigure}{0.49\textwidth}
+%		\centering
+%		\includegraphics[width=\textwidth]{figures/uwfd_sensitivity.png}
+%	\end{subfigure}
+%	\begin{subfigure}{0.49\textwidth}
+%		\centering
+%	%	\includegraphics[width=\textwidth]{figures
+%	\end{subfigure}
+%	\caption{Sensitvity for the unweighted smoothing of FD strain estimation, to be compared against \autoref{uwfd_imageres}}.
+%	\label{uwfd_sensitivity}
+%\end{figure}
+
+IN SUMMARY ...
+
+\autoref{wls_uwfd_compare} shows the previously used strain estimation technique at a standard fit resolution of $70\mu m$ and with no lateral smoothing, compared to the newly investigate unweighted smoothing with FD, with fit and lateral resolution parameters optimised.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/uwfd_compare.png}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/wls_compare.png}
+	\end{subfigure}
+	\caption{Unweighted smoothing with FD strain estimation B-scan compared with the previously standard unwrapping with WLS.}
+	\label{wls_uwfd_compare}
+\end{figure}
+
+%\section{Breast Sample Analysis}
+%
+%Using the results above, it can be seen that using an unweighted Gaussian smoothing with FD strain estimation, combined with lateral averaging provides the optimum combination of sensitivity, image resolution, and processing speed. In particular, using a fit resolution of $FR=40$ and a lateral resolution of $LR=$.
