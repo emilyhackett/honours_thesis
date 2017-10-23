@@ -188,8 +188,5 @@ The FWHM of this Gaussian is given in \autoref{image_res_fwhm} and provides the 
 \end{equation}
 
 \subsection{Processing Speed}
-The processing speed of the strain estimation technique is not a standard metric for assessing the strain elastogram quality, but keeping in mind the motivation for this project it is of utmost importance.
-The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as the ease with which they can be parallelised, and the likelihood of a speed up made possible by parallelising the processing.
-
-
-
+The processing speed of the strain estimation technique is not a standard metric for assessing the strain elastogram quality, but keeping in mind the motivation for this project it is of utmost importance. To be able to produce strain elastograms in real-time, although Fourier-domain OCT combined with fast 3D scanning techniques allows for fast data acquisition, the estimation of strain can become a bottleneck in the process that degrades it's application to areas like surgical margin assessment.
+The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as the ease with which they can be parallelised, and the likelihood of a speed up made possible by this parallelisation.

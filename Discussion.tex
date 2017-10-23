@@ -1,6 +1,7 @@
 \chapter{Discussion}
 
-Due to the smart scanning patterns, phase-sensitive compression OCE systems are capable of scanning a 3D volume in under 2 seconds. From here, the raw spectral data is 
+%Due to the smart scanning patterns, phase-sensitive compression OCE systems are capable of scanning a 3D volume in under 2 seconds. From here, the raw spectral data is 
+
 All five new strain estimation techniques implemented showed significant speed up, on the order of $10-20\times$ the processing speed of the WLS with phase unwrapping that has been the current standard in the research lab. This alone is enough to consider these techniques in the case of real-time surgery applications. However it was discovered that most of the investigated techniques showed improvements in strain sensitivity and image resolution as well.
 
 \section{Optimal Processing Algorithm}
@@ -19,7 +20,8 @@ Before these possibilities are investigated however, the algorithms will likely 
 
 \section{Conclusion}
 
-In this work, six different strain estimation techniques, characterised by their phase unwrapping methodology and strain differentiation filters, have been developed and implemented on a silicon phantom. The processing speed in 2D and 3D has been evaluated, as well as their resulting strain sensitivity and image resolution, both with and without additional lateral averaging applied. It was decided that the strain estimation algorithm utilising unweighted, axial Gaussian smoothing of the phase difference followed by a FD strain approximation, and with unweighted lateral Gaussian smoothing, best optimised all processing and image parameters, in particular, when a fit resolution of $\mu m$ and a lateral resolution of $\mu m$ were used.
+In summary, this work investigated six different strain estimation techniques, characterised by their phase unwrapping methodology and strain differentiation filters, and implemented them on a silicon phantom. The processing speed in 2D and 3D has been evaluated, as well as their resulting strain sensitivity and image resolution, both with and without additional lateral averaging applied. It was decided that the strain estimation algorithm utilising unweighted, axial Gaussian smoothing of the phase difference followed by a FD strain approximation, and with unweighted lateral Gaussian smoothing, best optimised all processing and image parameters, in particular, when a fit resolution of $\mu m$ and a lateral resolution of $\mu m$ were used.
+
 Further work must be done in translating this strain estimation algorithm into the clinic, by analysing its performance on a range of breast tissue samples. In particular, before being able to apply this technique to assess cancer margins during breast conserving surgery, diagnostic specificity and sensitivity (in this instance, the ability to differentiate healthy tissue from tumour) of the technique must be analysed using large case studies. Further research also could be done in applying these strain estimation techniques to quantitative elastography imaging, to determine which one is optimal.
 
 

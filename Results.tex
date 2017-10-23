@@ -25,6 +25,7 @@ The complex OCT C-scan was initially processed from the raw spectral data produc
 \section{Strain Estimation Algorithms}\label{algorithms}
 
 A total of six different strain estimation algorithms were implemented and tested, and can be differentiated based on how the phase unwrapping issue is addressed, and the digital differentiation filter used. \autoref{flowchart} demonstrates the decision processes in these strain estimation algorithms that separate the way they get from the complex phase difference delivered by the OCT system and pre-processing, to the final strain elastogram image.
+
 The functions worked by using the complex phase difference C-scan as an input, as well as the specifications for the fit (axial) and lateral resolutions of the system. The fit resolution of the system determined the fit window for the WLS and Savitzky-Golay based strain estimation techniques, and the axial Gaussian $\sigma$ value for the finite difference based techniques. The lateral resolution determined to what extent the strain images were laterally averaged by a Gaussian smoothing filter (for reasons discussed in the later section 4.3). If a lateral resolution of 0 was specified, no lateral smoothing was performed. 
 
 \subsection{WLS with Unwrapped Phase}
@@ -206,7 +207,7 @@ As mentioned before, the pre-filter FD with smoothed strain algorithm was introd
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/3d_time_2.png}
+        \includegraphics[width=\textwidth]{figures/3d_relative_fr.png}
     \end{subfigure}
     \caption{Relative processing time for different strain estimation techniques at different fit resolution values for a) a single B-scan and b) an entire C-scan. Error bars are the standard deviation of 50 repeated measurements.}
     \label{process_time_1}
@@ -256,7 +257,7 @@ The benefit of adding lateral averaging is that it improves the sensitivity, and
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
     	\centering
-        \includegraphics[width=\textwidth]{figures/3d_time_1.png}
+        \includegraphics[width=\textwidth]{figures/3d_relative_lr.png}
     \end{subfigure}
     \caption{Relative processing time for different strain estimation techniques at a fit resolution of $40\mu m$ and with different lateral smoothing resolutions for a) a single B-scan and b) an entire C-scan.}
     \label{process_time_2}
@@ -408,7 +409,6 @@ For the lateral image resolution, however, the unwrapping with WLS was much clos
 	\label{uwfd_imageres}
 \end{figure}
 
-
 Considering the results from the sections above, for both sensitivity and processing time, a closer look into the image resolution of the unweighted smoothing with FD was performed. \autoref{uwfd_imageres} shows the axial and lateral image resolution for different combinations of fit and lateral resolutions. In order to minimise the image resolutions (corresponding to maximising the ability to distinguish between fine structures in the sample) whilst also optimising the sensitivity, \autoref{uwfd_imageres} also shows the sensitivity for different fit lengths. Both plots show large image resolution values at high lateral smoothing and fit resolutions. In particular, an increased lateral smoothing leads to significant increase in the FWHM value for both axial and image resolutions. 
 
 %\begin{figure}[ht!]
@@ -425,9 +425,7 @@ Considering the results from the sections above, for both sensitivity and proces
 %	\label{uwfd_sensitivity}
 %\end{figure}
 
-IN SUMMARY ...
-
-\autoref{wls_uwfd_compare} shows the previously used strain estimation technique at a standard fit resolution of $70\mu m$ and with no lateral smoothing, compared to the newly investigate unweighted smoothing with FD, with fit and lateral resolution parameters optimised.
+In summary, \autoref{wls_uwfd_compare} shows the previously used strain estimation technique at a standard fit resolution of $70\mu m$ and with no lateral smoothing, compared to the newly investigate unweighted smoothing with FD, with fit and lateral resolution parameters optimised ($\text{FR}=60\mu m$, $\text{LR}= 20\mu m$). The unweighted smoothing FD algorithm is  
 
 \begin{figure}
 	\centering
