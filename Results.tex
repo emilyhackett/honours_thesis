@@ -40,22 +40,22 @@ This function unwraps the phase by the same process specified above, which requi
 	\node [anchor=north] at (0,0) (input) [io] {INPUT: $\Delta\phi_i$};
     
     \node (volume_unwrap) at (-4,-3) [basic] {Unwrapping Algorithm};
-    \draw [wls] (input.225) edge[out=270,in=90] (volume_unwrap.135);
-    \draw [uwsg] (input.240) edge[out=270,in=90] (volume_unwrap.120);
+    \draw [wls] (input.225) edge[out=270,in=90] (volume_unwrap.100);
+    \draw [uwsg] (input.240) edge[out=270,in=90] (volume_unwrap.80);
     
     \node (bscan_loop) at (0,-5.5) [main_long] {LOOP OVER B-SCANS};
-    \draw [wls] (volume_unwrap.225) edge[out=270,in=90] (bscan_loop.135);
-    \draw [uwsg] (volume_unwrap.240) edge[out=270,in=90] (bscan_loop.120);
+    \draw [wls] (volume_unwrap.260) edge[out=270,in=90] (bscan_loop.135);
+    \draw [uwsg] (volume_unwrap.280) edge[out=270,in=90] (bscan_loop.120);
     \draw [posg] (input.260)--(bscan_loop.100);
     \draw [wfd] (input.280)--(bscan_loop.80);
     \draw [uwfd] (input.300)--(bscan_loop.60);
     \draw [fdsm] (input.315)--(bscan_loop.45);
     
    	\node (variance) at (-4,-8) [basic] {Calculate variances};
-    \draw [wls] (bscan_loop.225) edge[out=270,in=90] (variance.135);
+    \draw [wls] (bscan_loop.225) edge[out=270,in=90] (variance.90);
     
     \node (unweighted) at (4,-8) [basic] {Remove phase weighting};
-    \draw [uwfd] (bscan_loop.300) edge[out=270,in=90] (unweighted.60); 
+    \draw [uwfd] (bscan_loop.300) edge[out=270,in=90] (unweighted.90); 
     
     \node (lateral) at (0,-10.5) [temp] {LATERAL SMOOTHING};
     \draw [uwsg] (bscan_loop.240)--(lateral.120);
@@ -63,40 +63,40 @@ This function unwraps the phase by the same process specified above, which requi
     \draw [wfd] (bscan_loop.280)--(lateral.80);
     \draw [fdsm] (bscan_loop.315)--(lateral.45);
 
-	\draw [wls] (variance.225) edge[out=270,in=90] (lateral.135);
-    \draw [uwfd] (unweighted.300) edge[out=270,in=90] (lateral.60);
+    \draw [wls] (variance.270) edge[out=270,in=90] (lateral.135);
+    \draw [uwfd] (unweighted.270) edge[out=270,in=90] (lateral.60);
     
     \node (fit_loop) at (-4,-13.5) [main] {LOOP OVER FIT SEGMENTS};
-    \draw [wls] (lateral.225) edge[out=270,in=90] (fit_loop.135);
-    \draw [posg] (lateral.260) edge[out=270,in=90] (fit_loop.100);
+    \draw [wls] (lateral.225) edge[out=270,in=90] (fit_loop.100);
+    \draw [posg] (lateral.260) edge[out=270,in=90] (fit_loop.80);
     
     \node (ascan_loop) at (-6.5,-16) [main] {LOOP OVER A-SCANS};
-    \draw [wls] (fit_loop.225) edge[out=270,in=90] (ascan_loop.135);
+    \draw [wls] (fit_loop.260) edge[out=270,in=90] (ascan_loop.90);
     
     \node (wls_strain) at (-4,-18) [basic] {WLS strain estimation};
-    \draw [wls] (ascan_loop.225) edge[out=270,in=90] (wls_strain.135);
+    \draw [wls] (ascan_loop.270) edge[out=270,in=90] (wls_strain.90);
     
     \node (phase_offset) at (-2.5,-16) [basic] {Divide complex phase offset};
-    \draw [posg] (fit_loop.260) edge[out=270,in=90] (phase_offset.100);
+    \draw [posg] (fit_loop.280) edge[out=270,in=90] (phase_offset.90);
     
     \node (sg_filter) at (0,-18) [basic] {Convolve with SG Filter};
-    \draw [posg] (phase_offset.260) edge[out=270,in=90] (sg_filter.100);
+    \draw [posg] (phase_offset.270) edge[out=270,in=90] (sg_filter.100);
     \draw [uwsg] (lateral.240) edge[out=270,in=90] (sg_filter.120);
    
    \node (gauss_filter) at (2,-15.8) [basic] {Convolve with an axial 1D Gaussian filter};
-   \draw [wfd] (lateral.280) edge[out=270,in=90] (gauss_filter.80);
-   \draw [uwfd] (lateral.300) edge[out=270,in=90] (gauss_filter.60);
+   \draw [wfd] (lateral.280) edge[out=270,in=90] (gauss_filter.100);
+   \draw [uwfd] (lateral.300) edge[out=270,in=90] (gauss_filter.80);
    
    \node (pre_filter) at (6,-15.5) [basic] {Convolve with a small 2D Gaussian 'pre-filter'};
-   \draw [fdsm] (lateral.315) edge[out=270,in=90] (pre_filter.45);
+   \draw [fdsm] (lateral.315) edge[out=270,in=90] (pre_filter.90);
    
    \node (fd) at (4,-18) [basic] {FD strain estimation};
-   \draw [wfd] (gauss_filter.280) edge[out=270,in=90] (fd.80);
-   \draw [uwfd] (gauss_filter.300) edge[out=270,in=90] (fd.60);
-   \draw [fdsm] (pre_filter.315) edge[out=270,in=90] (fd.45);
+   \draw [wfd] (gauss_filter.260) edge[out=270,in=90] (fd.80);
+   \draw [uwfd] (gauss_filter.280) edge[out=270,in=90] (fd.60);
+   \draw [fdsm] (pre_filter.270) edge[out=270,in=90] (fd.45);
    
    \node (output) at (0,-20.5) [io] {OUTPUT: $\epsilon$};
-   \draw [wls] (wls_strain.225) edge[out=270,in=90] (output.135);
+   \draw [wls] (wls_strain.270) edge[out=270,in=90] (output.135);
    \draw [uwsg] (sg_filter.240) edge[out=270,in=90] (output.120);
    \draw [posg] (sg_filter.260) edge[out=270,in=90] (output.100);
    \draw [wfd] (fd.280) edge[out=270,in=90] (output.80);
@@ -127,7 +127,7 @@ This function unwraps the phase by the same process specified above, which requi
     };
 
 \end{tikzpicture}
-\caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with WLS (black), unwrapping with SG filtering (dark blue), offset phase with SG filtering (red), weighted smoothing with FD (light blue), unweighted smoothing with FD (green), and pre-filtered FD with weighted smoothing.}
+\caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with WLS (blue), unwrapping with SG filtering (orange), offset phase with SG filtering (yellow), weighted smoothing with FD (purple), unweighted smoothing with FD (green), and pre-filtered FD with weighted smoothing (light blue).}
 \label{flowchart}
 \end{figure}
 
