@@ -23,6 +23,7 @@
 \usepackage{hyperref}
 \usepackage[section]{placeins}
 \usepackage[final]{pdfpages}
+\usepackage{xcolor}
 
 % Initial set up for algorithm description:
 \tikzstyle{basic} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, text width=3cm]
@@ -31,15 +32,23 @@
 \tikzstyle{main_long} = [rectangle, rounded corners, minimum width=6cm, minimum height=1cm, text centered, draw=black, text width=6cm, font=\bf]
 \tikzstyle{temp} = [rectangle, rounded corners, dashed, minimum width=6cm, minimum height=1cm, text centered, draw=black, text width=6cm, font=\bf]
 % For legend
-\tikzstyle{legendtext} = [text width=3.3cm,font=\scriptsize]
+\tikzstyle{legendtext} = [text width=2.5cm]
 \tikzstyle{empty} = [text width=0.1cm]
 
-\tikzstyle{wls} = [black,thick]
-\tikzstyle{uwsg} = [blue,thick]
-\tikzstyle{posg} = [red,thick]
-\tikzstyle{wfd} = [cyan,thick]
-\tikzstyle{uwfd} = [green,thick]
-\tikzstyle{fdsm} = [magenta]
+% Define colours:
+\definecolor{matlab1}{rgb}{0,0.4470,0.7410}
+\definecolor{matlab2}{rgb}{0.85,0.325,0.098}
+\definecolor{matlab3}{rgb}{0.929,0.694,0.125}
+\definecolor{matlab4}{rgb}{0.494,0.184,0.556}
+\definecolor{matlab5}{rgb}{0.466,0.674,0.188}
+\definecolor{matlab6}{rgb}{0.301,0.745,0.933}
+
+\tikzstyle{wls} = [color=matlab1,line width=0.4mm]
+\tikzstyle{uwsg} = [color=matlab2,line width=0.4mm]
+\tikzstyle{posg} = [color=matlab3,line width=0.4mm]
+\tikzstyle{wfd} = [color=matlab4,line width=0.4mm]
+\tikzstyle{uwfd} = [color=matlab5,line width=0.4mm]
+\tikzstyle{fdsm} = [color=matlab6,line width=0.4mm]
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}

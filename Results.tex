@@ -104,24 +104,24 @@ This function unwraps the phase by the same process specified above, which requi
    \draw [fdsm] (fd.315) edge[out=270,in=90] (output.45);
 
     % LEGEND:
-   \matrix[draw=black,rounded corners] at (5,-1) {  
-   	\node (m1) at (0.5,0) [empty] {};
-	\node (wls) at (3,0) [legendtext] {Unwrapped WLS};
+   \matrix[draw=black,rounded corners] at (6,-1) {  
+    \node (m1) at (0.5,0) [empty] {};
+    \node (wls) at (3,0) [legendtext] {UW WLS};
     \draw [wls] (m1)--(wls.west);
     \node (m2) at (0.5,-0.5) [empty] {};
-    \node (uwsg) at (3,-0.5) [legendtext] {Unwrapped SG Filter};
+    \node (uwsg) at (3,-0.5) [legendtext] {UW SG};
     \draw [uwsg] (m2)--(uwsg.west);
     \node (m3) at (0.5,-1) [empty] {};
-    \node (posg) at (3,-1) [legendtext] {Offset SG Filter};
+    \node (posg) at (3,-1) [legendtext] {PO SG};
     \draw [posg] (m3)--(posg.west);
     \node (m4) at (0.5,-1.5) [empty] {};
-    \node (wfd) at (3,-1.5) [legendtext] {Weighted FD};
+    \node (wfd) at (3,-1.5) [legendtext] {WFD};
     \draw [wfd] (m4)--(wfd.west);
     \node (m5) at (0.5,-2) [empty] {};
-    \node (uwfd) at (3,-2) [legendtext] {Unweighted FD};
+    \node (uwfd) at (3,-2) [legendtext] {UWFD};
     \draw [uwfd] (m5)--(uwfd.west);
     \node (m6) at (0.5,-2.5) [empty] {};
-    \node (fdsm) at (3,-2.5) [legendtext] {Pre-Filter FD Smoothed};
+    \node (fdsm) at (3,-2.5) [legendtext] {PF FD};
     \draw [fdsm] (m6)--(fdsm.west);
     \\
     };
@@ -192,7 +192,7 @@ In order to maintain consistency between the strain estimation techniques, for t
     \label{bscan_images_1}	
 \end{figure}
 
-\autoref{bscan_images_1} shows the resulting B-scan strain images, taken from the centre of the phantom, for the six different strain estimation techniques described above. Note that negative strain corresponds to compressive force, that is a displacement downwards. The fact that there exist positive strain values suggests that our assumption of uniaxial compression is invalid, as stiffer regions are pushing the softer bulk laterally and upwards. It can seen in all images that the stiff inclusion shows less strain than the softer surrounding bulk, as expected. There are similar 'halo' effects, caused by the stiff inclusion taking more of the compressive force than the soft bulk immediately next to it, in all images. The area under the hard inclusion is characterised by low OCT signal, as can be seen in figure \autoref{oct_image}, and is the most prominently noisy in the techniques that utilise a phase unwrapping algorithm over the entire volume, which is highly sensitive to strong fluctuations in OCT signal and as a result creates artefacts in these regions. A similar pattern is seen in this region in the weighted and unweighted smoothing of FD strain, and is very significant in the pre-filter FD image, which has in addition further streaks of strain estimation arguments at the bottom of the image. 
+\autoref{bscan_images_1} shows the resulting B-scan strain images, taken from the centre of the phantom, for the six different strain estimation techniques described above. Note that negative strain corresponds to compressive force, that is a displacement downwards. The fact that there exist positive strain values suggests that our assumption of uniaxial compression is invalid, as stiffer regions are pushing the softer bulk laterally and upwards. It can seen in all images that the stiff inclusion shows less strain than the softer surrounding bulk, as expected. There are similar 'halo' effects, caused by the stiff inclusion taking more of the compressive force than the soft bulk immediately next to it, in all images. The area under the hard inclusion is characterised by low OCT signal, as can be seen in \autoref{oct_image}, and is the most prominently noisy in the techniques that utilise a phase unwrapping algorithm over the entire volume, which is highly sensitive to strong fluctuations in OCT signal and as a result creates artefacts in these regions. A similar pattern is seen in this region in the weighted and unweighted smoothing of FD strain, and is very significant in the pre-filter FD image, which has in addition further streaks of strain estimation arguments at the bottom of the image. 
 
 As mentioned before, the pre-filter FD with smoothed strain algorithm was introduced after noticing significant 'ripple' effects in the weighted smoothing of FD algorithm. These can be seen prominently to the top right of the inclusion, and match with features in the OCT image in \autoref{oct_image}. In addition to this, the surface of the sample, which has a high reflectance and therefore strong optical weighting, is a  prominent artefact in the weighted smoothing FD image. The application of a small pre-filter to this prior to smoothing appears to have removed this issue, as well as slightly decreased the impact of the optical features at the top right, however at the expense of introducing a multitude of streak artefacts into the bottom half of the image in areas of low OCT signal.
 
@@ -235,7 +235,7 @@ It can be seen that all new strain estimation techniques show a significant impr
 	\label{sensitivity_1}
 \end{figure}
 
-The strain sensitivity for the six different estimation techniques for different fit resolutions is shown in Figure \autoref{sensitivity_1}. There is a clear trend across all techniques, that at the larger fit resolutions the sensitivity is better. The downside of this is that at larger fit resolutions, the ability to distinguish objects laterally is significantly worsened, as can be seen in strain B-scan images in \autoref{strain_bscan_images}. Therefore there is a need to optimise the trade off between sensitivity and fit resolution. The three techniques that offer the best sensitivity at lower fit resolutions are WLS, unweighted smoothing with FD, and the pre-filtered FD. Note that the weighted smoothing with FD is significantly worse than the other techniques, due to the artefacts discussed above. The phase offset and unwrapping with SG filtering are slightly worse than the WLS estimate, likely due to them being an ordinary least squares estimate, as opposed to a weighted one.
+The strain sensitivity for the six different estimation techniques for different fit resolutions is shown in \autoref{sensitivity_1}. There is a clear trend across all techniques, that at the larger fit resolutions the sensitivity is better. The downside of this is that at larger fit resolutions, the ability to distinguish objects laterally is significantly worsened, as can be seen in strain B-scan images in \autoref{strain_bscan_images}. Therefore there is a need to optimise the trade off between sensitivity and fit resolution. The three techniques that offer the best sensitivity at lower fit resolutions are WLS, unweighted smoothing with FD, and the pre-filtered FD. Note that the weighted smoothing with FD is significantly worse than the other techniques, due to the artefacts discussed above. The phase offset and unwrapping with SG filtering are slightly worse than the WLS estimate, likely due to them being an ordinary least squares estimate, as opposed to a weighted one.
 
 Although the pre-filtered FD supposedly shows the best sensitivity, it is important to note the artefacts present in the qualitative evaluation of the image. Therefore this sensitivity measurement is not indicative of the image quality as a whole, but only a segment of it.
 
