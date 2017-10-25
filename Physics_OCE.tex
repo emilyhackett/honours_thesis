@@ -20,9 +20,22 @@ Optical coherence tomography (OCT) can be thought of as the optical equivalent t
     \label{oct_domain}	
 \end{figure}
 
+\subsection{Time-Domain OCT}
 Time-domain OCT uses a simple low coherence Michelson interferometer set up, as seen in \autoref{oct_domains}, where the interference signal is measured between the light reflecting from the tissue, and an scanned reference mirror that changes the depth imaged \cite{huang_optical_1991}. The scanning of the reference mirror to image into the tissue produces a 1D A-scan, that contains information about the detected irradiance of the interferometer as a function of depth. Taking multiple A-scans across by moving laterally across a sample surface produces a 2D B-scan. Multiple B-scans can be used as cross-sections to build up an entire 3D scan volume, otherwise known as a C-scan, a process which can be seen in Figure 2. These descriptions are taken from those conventionally utilised in ultrasound imaging. The disadvantage of this set up however is the expensive acquisition times for imaging of 3D volumes.
 
+\subsection{Fourier-Domain OCT}
 Fourier-domain OCT systems remove the need for a scanning mirror, and allows the reproduction of a single A-scan with one detection event based on principles of spectral interferometry \cite{chin_parametric_2016}. Rather than detecting the reflected intensity as a function of depth as in time-domain OCT, it is detected as a function of wavenumber of a broadband or swept frequency light source. The Wiener-Khinchin theorem dictates that the inverse Fourier transform of this measured spectral density provides the complex coherence function at different depths along the A-scan line \cite{schmitt_optical_1999}. The speed up using Fourier-domain OCT over time-domain OCT allows the imaging of 3D volumes, of approximately $10mm \times 10mm \times 2mm$ to be acquired in less than 1 second \cite{kennedy_emergence_2017}. The benefit of Fourier-domain OCT over time-domain is not only in allowing a much faster acquisition time, but it also produces a complex signal that carries phase information, allowing it to be used as to quantify displacement within a sample, as described in \autoref{phase_sensitive}.
+
+\subsection{Speckle in OCT}
+\begin{itemize}
+	\item Coherent imaging technique (constructive interference of a broadband light source)
+	\item NOTE - where broadband source removes periodicity of constructive/destructive interference pattern
+	\item Detects reflection from scatterers within a tissue (i.e. net scattering vector produced by difference in refractive indices - otherwise scatterers are randomly oriented within a volume of uniform optical properties/refractive index)
+	\item Coherence length (range within which matches and produces an intensity maximum) is defined by the size of the frequency bandwidth of the laser used. This defines the optical resolution of the system.
+	\item COHERENCE LENGTH IN OUR SYSTEM?
+	\item Since this intensity pattern is dependent on the intensity of the constructive interference with reference and backscattered light field, a higher intensity implies a better match, and suggests that the estimate of displacement in that region (determined by assessing the 'position' of the reference arm) more accurately specifies the location of the scatterers within the volume.
+	\item Think of this as a random phasor?? Where the intensity = addition of both, has associated phase, but added to this is random phasor sum of sub-resolution scatterers (see paper about this).
+\end{itemize}
 
 \section{Application to Elastography}\label{application_elastography}
 
