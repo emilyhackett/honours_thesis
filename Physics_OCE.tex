@@ -1,30 +1,32 @@
 \chapter{The Physics of \ac{oce}}\label{oce}
 
-\ac{oce} can be thought of as the combination of a foundational imaging technique, optical coherence tomography, and its application to imaging mechanical properties: elastography. The underlying imaging technique, \ac{oct}, is discussed in \autoref{oct}, then \ac{oce} as a connected application of \ac{oct} and elastography in \autoref{application_elastography}. In \autoref{compression_oce}, the characteristics of a standard compression \ac{oce} system are discussed, as the one used in this project. As well, the implications of using phase-sensitive methods to measure displacement is discussed in \autoref{phase_sensitive}.
+Elastography in general uses an underlying imaging modality to capture images of a sample undergoing mechanical loading, and estimates the sampel deformation (and hence sample mechanical properties) from these images. In particular, \ac{oce} utilises \ac{oct} as the underlying modality to producex high resolution images. \ac{oct} as an imaging technique is discussed in \autoref{oct}, followed by \ac{oce} as a connected application of \ac{oct} and elastography in \autoref{application_elastography}. 
+This work focuses on the \ac{oce} technique in use at \ac{britelab}, which is based on phase-sensitive detection of compressive loading, and is discussed in detail in \autoref{compression_oce}.
 
 \section{Optical Coherence Tomography}\label{oct}
-\ac{oct} can be thought of as the optical equivalent to ultrasound, in that it detects the light reflected from scatterers within a tissue. The reflected light interferes with a reference beam, enabling depth-resolved reconstruction of the location of the scatterers within the sample \cite{chin_parametric_2016}. Because the speed of light in tissue is significantly higher than that of sound, \ac{oct} offers a much higher resolution than ultrasound, on the order of $5-15 \mu m$ \cite{kennedy_emergence_2017}, as limited by the coherence length of the light source \cite{huang_optical_1991}. However, this higher resolution comes at the expense of depth of penetration into the tissue, which for \ac{oct}, is only $1-2mm$ beneath the surface \cite{schmitt_optical_1999}, in comparison to the relatively deep imaging capabilities of ultrasound.
+\ac{oct} detects the light reflected from scatterers within a tissue, producing spatially localised intensity information by interference with a reference beam, enabling depth-resolved reconstruction of the location of the scatterers within the sample \cite{chin_parametric_2016}. Because the wavelength of light in tissue is significantly smaller than that of sound, \ac{oct} offers a much higher spatial resolution than ultrasound, on the order of $5-15 \mu m$ \cite{kennedy_emergence_2017}, as limited by the coherence length of the light source \cite{huang_optical_1991}. However, this higher resolution comes at the expense of depth of penetration into the tissue, which for \ac{oct}, is only 1-2mm beneath the surface \cite{schmitt_optical_1999}, in comparison to the relatively deep imaging capabilities of ultrasound.
 
 \begin{figure}
 	\centering
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.49\textwidth}
     	\centering
         \includegraphics[width=\textwidth]{bground_figs/time_domain}
     \end{subfigure}
     \quad
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.49\textwidth}
     	\centering
         \includegraphics[width=\textwidth]{bground_figs/fourier_domain.png}
     \end{subfigure}
 	\caption{Set ups for a) time-domain and b) Fourier-domain \ac{oct} systems. Taken from \cite{optical+biomedical_engineering_laboratory_introduction_nodate}.}
-    \label{oct_domain}	
+    \label{oct_domains}	
 \end{figure}
 
-\subsection{Time-Domain \ac{oct}}
-Time-domain \ac{oct} uses a simple low coherence Michelson interferometer set up, as seen in \autoref{oct_domains}, where the interference signal is measured between the light reflecting from the tissue, and an scanned reference mirror that changes the depth imaged \cite{huang_optical_1991}. The scanning of the reference mirror to image into the tissue produces a 1D A-scan, that contains information about the detected irradiance of the interferometer as a function of depth. Taking multiple A-scans across by moving laterally across a sample surface produces a 2D B-scan. Multiple B-scans can be used as cross-sections to build up an entire 3D scan volume, otherwise known as a C-scan, a process which can be seen in Figure 2. These descriptions are taken from those conventionally utilised in ultrasound imaging. The disadvantage of this set up however is the expensive acquisition times for imaging of 3D volumes.
+\ac{oct} is fundamentally a coherent imaging technique, that relies on detecting constructive interference of a broadband light source, to produce an intensity field in depth. Constructive interference is only detected when the pathlength of the reflected field matches that of the reference to within the coherence length of the light source \cite{wijesinghe_improving_2017}, which defines the system resolution. 
+Since this interference intensity pattern is dependent on the summation of multiple light fields, which interfere constructively and destructively, a characteristic mottled pattern appears in \ac{oct} images known as speckle, and is temporally invariant \cite{wijesinghe_improving_2017}.
 
-\subsection{Fourier-Domain \ac{oct}}
-Fourier-domain \ac{oct} systems remove the need for a scanning mirror, and allows the reproduction of a single A-scan with one detection event based on principles of spectral interferometry \cite{chin_parametric_2016}. Rather than detecting the reflected intensity as a function of depth as in time-domain \ac{oct}, it is detected as a function of wavenumber of a broadband or swept frequency light source. The Wiener-Khinchin theorem dictates that the inverse Fourier transform of this measured spectral density provides the complex coherence function at different depths along the A-scan line \cite{schmitt_optical_1999}. The speed up using Fourier-domain \ac{oct} over time-domain \ac{oct} allows the imaging of 3D volumes, of approximately $10mm \times 10mm \times 2mm$ to be acquired in less than 1 second \cite{kennedy_emergence_2017}. The benefit of Fourier-domain \ac{oct} over time-domain is not only in allowing a much faster acquisition time, but it also produces a complex signal that carries phase information, allowing it to be used as to quantify displacement within a sample, as described in \autoref{phase_sensitive}.
+** TALK ABOUT OCT WEIGHTINGS HERE **
+
+Speckle produces highly variable intensities
 
 \subsection{Speckle in \ac{oct}}
 \begin{itemize}
@@ -36,6 +38,11 @@ Fourier-domain \ac{oct} systems remove the need for a scanning mirror, and allow
 	\item Since this intensity pattern is dependent on the intensity of the constructive interference with reference and backscattered light field, a higher intensity implies a better match, and suggests that the estimate of displacement in that region (determined by assessing the 'position' of the reference arm) more accurately specifies the location of the scatterers within the volume.
 	\item Think of this as a random phasor?? Where the intensity = addition of both, has associated phase, but added to this is random phasor sum of sub-resolution scatterers (see paper about this).
 \end{itemize}
+
+\subsection{Time and Fourier-Domain \ac{oct}}
+Time-domain \ac{oct} uses a simple low coherence Michelson interferometer set up, as seen in \autoref{oct_domains}, where the interference signal is measured between the light reflecting from the tissue, and an scanned reference mirror that changes the depth imaged \cite{huang_optical_1991}. The scanning of the reference mirror to image into the tissue produces a 1D A-scan, that contains information about the detected irradiance of the interferometer as a function of depth. Taking multiple A-scans across by moving laterally across a sample surface produces a 2D B-scan. Multiple B-scans can be used as cross-sections to build up an entire 3D scan volume, otherwise known as a C-scan. These descriptions are taken from those conventionally utilised in ultrasound imaging. The disadvantage of this set up are long acquisition times for the imaging of 3D volumes.
+
+In contrast, Fourier-domain \ac{oct} systems remove the need for a scanning mirror, and allows imaging of an entire A-scan with one detection event based on principles of spectral interferometry \cite{chin_parametric_2016}. Rather than detecting the reflected intensity as a function of depth as in time-domain \ac{oct}, it is detected as a function of wavenumber of a broadband or swept frequency light source. The Wiener-Khinchin theorem dictates that the inverse Fourier transform of this measured spectral density provides the complex coherence function at different depths along the A-scan line \cite{schmitt_optical_1999}, from which the \ac{oct} signal is derived. The speed up using Fourier-domain \ac{oct} compared to time-domain \ac{oct} allows the imaging of 3D volumes, of approximately 10mm $\times$ 10mm $\times$ 2mm to be acquired in less than 1 second \cite{kennedy_emergence_2017}. The benefit of Fourier-domain \ac{oct} over time-domain is not only in allowing a much faster acquisition time, but also detects more accurately the complex signal. While it is possible to image phase information using time-domain \ac{oct} systems, mechanical jitter introduced by the reference mirror scanning makes this difficult \cite{wijesinghe_improving_2017}.
 
 \section{Application to Elastography}\label{application_elastography}
 
@@ -54,7 +61,7 @@ On top of these highly variable loading methods, the detection of tissue deforma
 
 \section{Compression \ac{oce}}\label{compression_oce}    
 
-Compression \ac{oce} systems introduce a mechanical load to the sample by applying force to it in the axial direction, which results in displacement of the tissue, dependent on its constituent elastic properties. The typical system set up can be seen in \autoref{oce_system}.
+Compression \ac{oce} systems introduce a mechanical load to the sample by applying force to it in the axial direction, which results in displacement of the tissue, dependent on its constituent elastic properties. The typical system set up can be seen in \autoref{oce_system}. The tissue is first preloaded (compressed) to ensure good even contact with the loading mechanism (the sample window in \autoref{oce_system}). From here, a controlled step-load is applied using either an actuator or a translation stage.
 
 Compression \ac{oce} produces a displacement field in the tissue, that can be measured in order to calculate the strain present. The local strain is estimated as the spatial derivative of these displacements with respect to depth \cite{kennedy_review_2014} over a given axial fit window. For phase-sensitive compression \ac{oce}, this displacement is directly related to the phase difference between an unloaded (not compressed) and loaded (compressed) scan, by Equation 2 \cite{kennedy_strain_2012}. However compressive loading techniques provide only qualitative comparison in strain elastograms, since it is dependent on the amount of compressive loading applied to the tissue. It is possible to produce quantitative elastogram images by measuring the stress locally applied to the sample by introducing a known stress layer above the imaged sample, as discussed in detail in \cite{kennedy_quantitative_2015}, however this will not be discussed further here. The benefit of compression techniques is their fast acquisition speeds for entire 3D volumes, as well as their ability to be extended to needle based \ac{oce} systems for imaging deep within the tissue \cite{kennedy_review_2014}. 
 
@@ -71,7 +78,7 @@ Compression \ac{oce} produces a displacement field in the tissue, that can be me
     \label{oce_system}
 \end{figure}
 
-The \ac{oct} system produces a complex data value for each voxel inside the imaged volume, which has an amplitude associated with the optical intensity of the backscattered light at that point. The signal also has an associated phase, which is random. Altough the phase is random at each point in space, the change in phase is directly proportional to the amount the tissue is displaced at that location. Therefore there is a direct relationship between the displacement field and these measured phase differences.
+The \ac{oct} system produces a complex data value for each voxel inside the imaged volume, which has an amplitude associated with the optical intensity of the backscattered light at that point. The signal also has an associated phase, which is random. Although the phase is random at each point in space, the change in phase is directly proportional to the amount the tissue is displaced at that location. Therefore there is a direct relationship between the displacement field and these measured phase differences.
 The \ac{oct} signal can be thought of as a constant vector, representing the true signal due to a single reflection from the tissue at the given depth, with an attached random phasor sum, representing multiple scattering events within the tissue that introduce noise \cite{goodman_statistical_2015}. To reduce the influence of this approximately Gaussian noise attached to the signal, the complex signal is averaged over multiple B-scans before processing. Therefore each loaded and unloaded phase value actually corresponds to a chunk of values taken at multiple points across the y-axis. 
 
 \begin{equation}
@@ -81,6 +88,8 @@ u_i = \frac{\phi_i^{loaded}-\phi_i^{unloaded}}{4\pi n} = \frac{\Delta\phi_i}{4\p
 \ac{oce} inherits the high spatial resolution of the underlying \ac{oct} imaging system, however the strain estimation process that is applied to the phase-sensitive data has the potential to degrade this slightly, although still allowing imaging of tissue micro-architecture. However \ac{oce} also maintains the low penetration depth of \ac{oct} imaging, making the need for intra-operative \ac{oce} set ups, capable of scanning deep tissue temporarily exposed in surgery, even more essential. 
 
 \section{Phase-Sensitive Displacement Measurement}\label{phase_sensitive}
+
+*NOTE* Phase-sensitive measurement is only capable of capturing displacement in the axial direction, along the line of the light source. 
 
 \begin{figure}[t]
 	\centering
