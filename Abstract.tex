@@ -1,20 +1,12 @@
 \begin{abstract}
 
-	In WA, re-excision rates for breast conserving surgery were estimated to be 30\% in 2017, due to inaccurate detection of tumour margins during surgery. There is a need for real-time imaging techniques capable of assessing tumour margins in breast tissue with high resolution. Elastography allows imaging of the mechanical properties, such as the strain in tissue, in response to mechanical loading, allowing differentiation between stiff tumour and softer healthy tissue. OCE is an elastography technique using OCT as the underlying imaging technique, capable of producing images of stiffness (strain elastograms) on the micrometre scale, at shallow depths. To utilise OCE in intra-operative surgical margin assessment for breast cancer, there is a need to produce images of strain in real-time. In order to do this, fast strain estimation algorithms must be developed, that maintain high image quality in terms of sensitivity and image resolution. 
+	In WA, re-excision rates for breast conserving surgery were estimated to be 30\% in 2017, due to inaccurate detection of tumour margins during surgery. There is a need for fast imaging techniques capable of assessing tumour margins in breast tissue with high resolution and within intra-operative time frames. Cancer often causes changes in the mechanical properties of tissue, with tumour masses often reported to be stiffer than surrounding healthy tissue.
+	Elastography describes a family of imaging techniques capable of imaging these changes in mechanical properties by examining their response to mechanical loading. \ac{oce} refers to a number of elastography techniques that utilise \ac{oct} as the underlying imaging technique, and are therefore capable of producing images of mechanical properties (such as stiffness, or strain response), on the micrometre resolution scale, with mm to cm field of view size, however only at shallow (mm) penetration depths. To make use of \ac{oce} in intra-operative surgical margin assessment for breast cancer, there is a need to produce images of strain rapidly. In order to do this, fast strain estimation algorithms must be developed, that maintain high image quality in terms of sensitivity and image resolution. 
 	
 	Six strain estimation algorithms, differentiated by their phase unwrapping technique and the strain differentiation filter applied, are implemented and analysed on a silicon phantom, using the metrics of processing time, strain sensitivity and image resolution. It was found that strain estimation techniques utilising Gaussian smoothing with finite difference were the fastest, and had similar sensitivity to other techniques. Applying lateral averaging on top of the strain estimation further increased the sensitivity, however at the cost of axial and lateral image resolution. 
 
-	It was found that using an unweighted Gaussian filter on the phase difference, followed by finite difference, produced the optimum combination of processing speed, sensitivity and image resolution. Further work is suggested in terms of implementing the algorithms in parallel, possibly on GPUs, and further extension into quantitative elastography.
+	It was found that using an unweighted Gaussian filter on the phase difference, followed by finite difference, produced the optimum combination of processing speed, sensitivity and image resolution. Further work is suggested in terms of implementing the algorithms in parallel, possibly on \ac{gpu}s, and further extension into quantitative elastography.
 	
-%\begin{itemize}
-%\item Rationale (the problem, real-time margin detection in breast cancer surgery)
-%\item Solution (OCE scanning of tumour boundaries in surgery)
-%\item Need (fast strain estimation algorithms)
-%\item Project (develop strain estimation techniques based on processing speed, and optimise the image quality)
-%\item Results (found that strain estimation results reliant on finite difference estimated strain combined with Gaussian smoothing was fastest. Adding lateral smoothing significantly increased the sensitivity, and made an investigation into image resolution possible). 
-%\item Further work (parallel application on GPUs to increase the processing speed even further)
-%\end{itemize}
-
 \end{abstract}
 
 

@@ -2,15 +2,15 @@
 
 %Due to the smart scanning patterns, phase-sensitive compression OCE systems are capable of scanning a 3D volume in under 2 seconds. From here, the raw spectral data is 
 
-All five new strain estimation techniques implemented showed significant speed up, on the order of $10-20\times$ the processing speed of the WLS with phase unwrapping that has been the current standard in the research lab. This alone is enough to consider these techniques in the case of real-time surgery applications. However it was discovered that most of the investigated techniques showed improvements in strain sensitivity and image resolution as well.
+All five new strain estimation techniques implemented showed significant speed up, on the order of $10-20\times$ the processing speed of the \ac{uwwls} that has been the current standard in the research lab. This alone is enough to consider these techniques in the case of real-time surgery applications. However it was discovered that most of the investigated techniques showed improvements in strain sensitivity and image resolution as well.
 
 \section{Optimal Processing Algorithm}
 
-The optimal strain estimation technique in this context appears to be the unweighted Gaussian smoothing with FD, applied with lateral averaging. At a fit resolution of $40\mu m$ and a lateral smoothing resolution of $40\mu m$, 
+The optimal strain estimation technique in this context appears to be the \ac{uwfd} algorithm, applied with lateral averaging. At a fit resolution of $40\mu m$ and a lateral smoothing resolution of $40\mu m$, all image quality parameters are improved in comparison with the previously standard \ac{uwwls} approach (\autoref{comparison_table}).
 
 \section{Further Computational Speed Ups}
 
-It has beeen shown that GPUs can greatly accelerate the processing of strain imaging for techniques such as ultrasound elastography that utilise speckle-tracking (rather than phase-sensitive measurement) \cite{peng_gpu-accelerated_2017}, therefore there is reason to believe this could also benefit in the phase-sensitive OCE case. Of particular benefit is the fact that all four strain estimation techniques that do not involve the volume phase unwrapping algorithm, are able to process individual B-scans completely independently, making it very likely that introducing parallel processing to these methods would significantly speed up the computation time. Applying filter convolutions (as in SG filtering, and Gaussian smoothing in the FD case) in parallel and on GPUs could further improve the processing speed, towards real-time, even video-rate imaging.
+It has beeen shown that \ac{gpu}s can greatly accelerate the processing of strain imaging for techniques such as ultrasound elastography that utilise speckle-tracking (rather than phase-sensitive measurement) \cite{peng_gpu-accelerated_2017}, therefore there is reason to believe this could also benefit in the phase-sensitive \ac{oce} case. Of particular benefit is the fact that all four strain estimation techniques that do not involve the volume phase unwrapping algorithm, are able to process individual B-scans completely independently, making it very likely that introducing parallel processing to these methods would significantly speed up the computation time. Applying filter convolutions (as in \ac{sg} filtering, and Gaussian smoothing in the \ac{fd} case) in parallel and on \ac{gpu}s could further improve the processing speed, towards real-time, even video-rate imaging.
 Before these possibilities are investigated however, the algorithms will likely need to be moved out of the Matlab interface, and applied in another language more easily workable with parallelisation, such as C++.
 
 %\begin{itemize}

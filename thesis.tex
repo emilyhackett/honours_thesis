@@ -26,6 +26,29 @@
 \usepackage{xcolor}
 \usepackage{booktabs,tabularx,array}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X} 
+\usepackage[single=true,macros=true,xspace=true]{acro}
+
+% Reset all acronyms at the start of the chapter
+\usepackage{etoolbox}
+\preto\section\acresetall
+
+% Abbreviations used
+\DeclareAcronym{oce}{short=OCE,long=Optical Coherence Elastography}
+\DeclareAcronym{oct}{short=OCT,long=Optical Coherence Tomography}
+\DeclareAcronym{gpu}{short=GPU,long=Graphics Processing Unit}
+\DeclareAcronym{britelab}{short=BRITElab,long=Bio-imaging Research and Innovation for Translational Engineering} 
+\DeclareAcronym{ols}{short=OLS,long=ordinary least squares}
+\DeclareAcronym{wls}{short=WLS,long=weighted least squares}
+\DeclareAcronym{fwhm}{short=FWHM,long=Full-Width at Half Maximum}
+\DeclareAcronym{snr}{short=SNR,long=signal-to-noise ratio}
+\DeclareAcronym{sg}{short=SG,long=Savitzky-Golay}
+\DeclareAcronym{fd}{short=FD,long=finite difference}
+\DeclareAcronym{uwwls}{short=UW WLS,long=unwrapped phase with \ac{wls}}
+\DeclareAcronym{uwsg}{short=UW SG,long=unwrapped phase with \ac{sg} filtering}
+\DeclareAcronym{posg}{short=PO SG,long=phase offset with \ac{sg} filtering}
+\DeclareAcronym{wfd}{short=WFD,long=weighted smoothing of \ac{fd}}
+\DeclareAcronym{uwfd}{short=UWFD,long=unweighted smoothing of \ac{fd}}
+\DeclareAcronym{pffd}{short=PF FD,long=pre-filtered smoothing of \ac{fd}}
 
 % Initial set up for algorithm description:
 \tikzstyle{basic} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, text width=3cm]

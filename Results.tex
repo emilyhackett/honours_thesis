@@ -14,25 +14,25 @@
 		\centering
 		\includegraphics[width=\textwidth]{figures/oct.png}
 	\end{subfigure}	
-	\caption{The silicone phantom used to investigate strain estimation techniques a) photographed and b) imaged by the OCT system.}
+	\caption{The silicone phantom used to investigate strain estimation techniques a) photographed and b) imaged by the \ac{oct} system.}
 	\label{oct_image}	
 \end{figure}
 
-To better quantify the image quality, an idealised silicone sample was imaged, to approximate breast tissue, and the strain estimated. This phantom consisted of a bulk, softer silicone material (with a Young's modulus of 6.4kPa) within which was a stiff, rectangular inclusion (Young's modulus of 100kPa) \cite{hepburn_improving_2017}, to which optical scatterers were added to enhance the OCT signal. The phantom was created by a previous Master's student, and was imaged using a desktop OCE system, with a system wavelength of $1300nm$. The imaged area, shown in \autoref{oct_image}, was divided into 2000 A-scans per each B-scan, over a length in x of $4.4\mu m$), and a total of 6817 B-scans were acquired, over the same length in y.
+To better quantify the image quality, an idealised silicone sample was imaged, to approximate breast tissue, and the strain estimated. This phantom consisted of a bulk, softer silicone material (with a Young's modulus of 6.4kPa) within which was a stiff, rectangular inclusion (Young's modulus of 100kPa) \cite{hepburn_improving_2017}, to which optical scatterers were added to enhance the \ac{oct} signal. The phantom was created by a previous Master's student, and was imaged using a desktop \ac{oce} system, with a system wavelength of $1300nm$. The imaged area, shown in \autoref{oct_image}, was divided into 2000 A-scans per each B-scan, over a length in x of $4.4\mu m$), and a total of 6817 B-scans were acquired, over the same length in y.
 
-The complex OCT C-scan was initially processed from the raw spectral data produced by the Fourier-domain OCT system, to produce the complex OCT signal values, with associated optical amplitudes and random phase. From here, as described briefly in \autoref{compression_oce}, the difference in phase is calculated between loaded and unloaded B-scans, and averaged over 100 B-scans. The strain estimation algorithms described following utilise this calculated averaged phase difference as the beginning step of the processing pipeline, and assume that the phase difference data is already loaded into memory.
+The complex \ac{oct} C-scan was initially processed from the raw spectral data produced by the Fourier-domain \ac{oct} system, to produce the complex \ac{oct} signal values, with associated optical amplitudes and random phase. From here, as described briefly in \autoref{compression_oce}, the difference in phase is calculated between loaded and unloaded B-scans, and averaged over 100 B-scans. The strain estimation algorithms described following utilise this calculated averaged phase difference as the beginning step of the processing pipeline, and assume that the phase difference data is already loaded into memory.
 
 \section{Strain Estimation Algorithms}\label{algorithms}
 
-A total of six different strain estimation algorithms were implemented and tested, and can be differentiated based on how the phase unwrapping issue is addressed, and the digital differentiation filter used. \autoref{flowchart} demonstrates the decision processes in these strain estimation algorithms that separate the way they get from the complex phase difference delivered by the OCT system and pre-processing, to the final strain elastogram image.
+A total of six different strain estimation algorithms were implemented and tested, and can be differentiated based on how the phase unwrapping issue is addressed, and the digital differentiation filter used. \autoref{flowchart} demonstrates the decision processes in these strain estimation algorithms that separate the way they get from the complex phase difference delivered by the \ac{oct} system and pre-processing, to the final strain elastogram image.
 
-The functions worked by using the complex phase difference C-scan as an input, as well as the specifications for the fit (axial) and lateral resolutions of the system. The fit resolution of the system determined the fit window for the WLS and Savitzky-Golay based strain estimation techniques, and the axial Gaussian $\sigma$ value for the finite difference based techniques. The lateral resolution determined to what extent the strain images were laterally averaged by a Gaussian smoothing filter (for reasons discussed in the later section 4.3). If a lateral resolution of 0 was specified, no lateral smoothing was performed. 
+The functions worked by using the complex phase difference C-scan as an input, as well as the specifications for the fit (axial) and lateral resolutions of the system. The fit resolution of the system determined the fit window for the \ac{wls} and \ac{sg} based strain estimation techniques, and the axial Gaussian $\sigma$ value for the \ac{fd} based techniques. The lateral resolution determined to what extent the strain images were laterally averaged by a Gaussian smoothing filter (for reasons discussed in the later section 4.3). If a lateral resolution of 0 was specified, no lateral smoothing was performed. 
 
-\subsection{WLS with Unwrapped Phase}
-The WLS with phase unwrapping algorithm unwraps the phase by reading in the entire volume and saves the unwrapped phase data to file. In a sequential loop over each B-scan, wrapped in a Matlab parfor parallel, the process reads in the complex phase and unwrapped phase for each B-scan. If lateral smoothing has been specified, it smooths the unwrapped phase using unweighted Gaussian smoothing by convoluting the unwrapped phase with the 1D lateral filter. A sequential looping is then performed over each A-scan and all fit segments within the given B-scan, which calculates the WLS estimate of strain using summations and the weights from the complex phase data.
+\subsection{\ac{wls} with Unwrapped Phase}
+The \ac{uwwls} algorithm unwraps the phase by reading in the entire volume and saves the unwrapped phase data to file. In a sequential loop over each B-scan, wrapped in a Matlab parfor parallel, the process reads in the complex phase and unwrapped phase for each B-scan. If lateral smoothing has been specified, it smooths the unwrapped phase using unweighted Gaussian smoothing by convoluting the unwrapped phase with the 1D lateral filter. A sequential looping is then performed over each A-scan and all fit segments within the given B-scan, which calculates the \ac{wls} estimate of strain using summations and the weights from the complex phase data.
 
-\subsection{SG Filtering on Unwrapped Phase}
-This function unwraps the phase by the same process specified above, which requires a read from file of the unwrapped phase for each B-scan. If lateral smoothing required, the unwrapped phase is similarly smoothed via convolution with an unweighted Gaussian smoothing filter. To estimate the strain, this smoothed unwrapped phase data is convolved with the analytically derived Savitzky-Golay filter in a single action of the entire B-scan.
+\subsection{\ac{sg} Filtering on Unwrapped Phase}
+The \ac{uwsg} unwraps the phase by the same process specified above, which requires a read from file of the unwrapped phase for each B-scan. If lateral smoothing required, the unwrapped phase is similarly smoothed via convolution with an unweighted Gaussian smoothing filter. To estimate the strain, this smoothed unwrapped phase data is convolved with the analytically derived \ac{sg} filter in a single action of the entire B-scan.
 
 \begin{figure}[th!]
 \begin{tikzpicture}[node distance=2cm, remember picture]
@@ -127,21 +127,21 @@ This function unwraps the phase by the same process specified above, which requi
     };
 
 \end{tikzpicture}
-\caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with WLS (blue), unwrapping with SG filtering (orange), offset phase with SG filtering (yellow), weighted smoothing with FD (purple), unweighted smoothing with FD (green), and pre-filtered FD with weighted smoothing (light blue).}
+\caption{Flowchart of pivotal processes for the six different strain estimation techniques investigated: unwrapping with \ac{wls} (blue), unwrapping with \ac{sg} filtering (orange), offset phase with \ac{sg} filtering (yellow), weighted smoothing with \ac{fd} (purple), unweighted smoothing with \ac{fd} (green), and pre-filtered \ac{fd} with weighted smoothing (light blue).}
 \label{flowchart}
 \end{figure}
 
-\subsection{SG Filtering on Offset Phase}
-In order to correct for phase unwrapping, the function reads in the complex phase for each B-scan (in a parallel Matlab parfor loop) and loops over all fit segments within the B-scan, taking a matrix of values across all A-scans for the given depths. Using Matlab's inbuilt bsxfun operator, an averaged complex phase value for each fit segment is calculated and divided (corresponding to subtraction of the phase) to move the phase values into an unwrapped region. The Savitzky-Golay filter, which was pre-calculated using the analytical solution, is then convolved with the matrix in the axial direction to produce the strain estimation values at that given depth. 
+\subsection{\ac{sg} Filtering on Offset Phase}
+In order to correct for phase unwrapping, the \ac{posg} function reads in the complex phase for each B-scan (in a parallel Matlab parfor loop) and loops over all fit segments within the B-scan, taking a matrix of values across all A-scans for the given depths. Using Matlab's inbuilt bsxfun operator, an averaged complex phase value for each fit segment is calculated and divided (corresponding to subtraction of the phase) to move the phase values into an unwrapped region. The \ac{sg} filter, which was pre-calculated using the analytical solution, is then convolved with the matrix in the axial direction to produce the strain estimation values at that given depth. 
 
-\subsection{FD on Weighted Smoothing of Phase Difference}
-The complex weighted phase difference that acts as the function's input is smoothed using an axial Gaussian filter dependent on the fit resolution supplied (and a lateral filter if specified). For strain estimation, finite difference is performed using bsxfun on the complex phase data (in order to prevent the introduction of  wrapping artefacts), by dividing one pixel by the conjugate of the previous pixel in order to subtract the phase values. This estimate of the spatial derivative of the phase difference is then converted into strain values.
+\subsection{\ac{fd} on Weighted Smoothing of Phase Difference}
+The \ac{wfd} smooths complex weighted phase difference that acts as the function's input using an axial Gaussian filter dependent on the fit resolution supplied (and a lateral filter if specified). For strain estimation, \ac{fd} is performed using bsxfun on the complex phase data (in order to prevent the introduction of  wrapping artefacts), by dividing one pixel by the conjugate of the previous pixel in order to subtract the phase values. This estimate of the spatial derivative of the phase difference is then converted into strain values.
 
-\subsection{FD on Unweighted Smoothing of Phase Difference}
-This algorithm works almost identically to the one described in the previous section, except that prior to using a Gaussian smoothing filter on the complex phase data, the amplitude is normalised to 1 for all phase difference values, effectively removing the optical weighting that comes from the OCT signal. From here the finite difference is calculated, and from this the strain. 
+\subsection{\ac{fd} on Unweighted Smoothing of Phase Difference}
+This \ac{uwfd} algorithm works almost identically to the one described in the previous section, except that prior to using a Gaussian smoothing filter on the complex phase data, the amplitude is normalised to 1 for all phase difference values, effectively removing the optical weighting that comes from the OCT signal. From here the \ac{fd} is calculated, and from this the strain. 
 
-\subsection{Pre-Filtered Phase Difference with Smoothed FD Strain}
-The 'Pre-Filtered' phase difference algorithm was implemented as an effort to remove 'ripples' introduced by high intensity pixels in the finite difference with weighted smoothing described in Section 4.2.4, which will be discussed later in the chapter. Using the weighted complex phase difference data, a small 2D Gaussian filter is applied to smooth out high intensity 'speckle' pixels. This pre-filter is set at $20 \mu m$ resolution, approximately on the order of the speckle size. This action aims to counter the disproportionate influence of high intensity pixels. From here, the strain is estimated using a finite difference, and the resulting strain is smoothed using a 2D Gaussian filter to match the required fit and lateral resolution values. Since the pre-filter contributes to the fit and lateral resolutions, for any given fit resolution $\text{FR}_{total}$ and lateral resolution $\text{LR}_{total}$ supplied to the function as input parameters, the resulting Gaussian smoothing resolutions must take into account the contribution from the pre-filter as in \autoref{prefilter_res_FR} and \autoref{prefilter_res_LR} below.
+\subsection{Pre-Filtered Phase Difference with Smoothed \ac{fd} Strain}
+The \ac{pffd} algorithm was implemented as an effort to remove 'ripples' introduced by high intensity pixels in the finite difference with weighted smoothing, which will be discussed later in the results (see \autoref{qualitative1}). Using the weighted complex phase difference data, a small 2D Gaussian filter is applied to smooth out high intensity 'speckle' pixels. This pre-filter is set at $20 \mu m$ resolution, approximately on the order of the speckle size. This action aims to counter the disproportionate influence of high intensity pixels. From here, the strain is estimated using \ac{fd}, and the resulting strain is smoothed using a 2D Gaussian filter to match the required strain and lateral smoothing filter resolution values. Since the pre-filter contributes to the fit and lateral resolutions, for any given fit resolution $\text{FR}_{total}$ and lateral resolution $\text{LR}_{total}$ supplied to the function as input parameters, the resulting Gaussian smoothing resolutions must take into account the contribution from the pre-filter as in \autoref{prefilter_res_FR} and \autoref{prefilter_res_LR} below.
 
 \begin{equation}
 	\text{FR}_{Gauss} = \sqrt{\text{FR}_{total}^2 - \text{FR}_{pre}^2}
@@ -163,12 +163,12 @@ The table below, \autoref{strain_methods}, summarises the six strain estimation 
 		\toprule
 		Name & Abbreviation & Phase Unwrapping & Strain Filter \\
 		\midrule
-		WLS with Unwrapped Phase & UW WLS & Volume unwrapping algorithm & Sequential WLS \\
-		SG Filtering on Unwrapped Phase & UW SG & Volume unwrapping algorithm & SG filter convolution \\
-		SG Filtering on Offset Phase & PO SG & Phase offset & Sequential SG filter convolution \\
-		FD on Weighted Smoothing of Phase & WFD & None & FD with (weighted) Gaussian smoothing \\
-		FD on Unweighted Smoothing of Phase & UWFD & None & FD with (unweighted) Gaussian smoothing \\
-		Pre-Filtered Phase with Smoothed FD & PF FD & None & FD with (weighted then unweighted) Gaussian smoothing \\
+		\ac{wls} with Unwrapped Phase & \ac{uwwls} & Volume unwrapping algorithm & Sequential WLS \\
+		\ac{sg} Filtering on Unwrapped Phase & \ac{uwsg} & Volume unwrapping algorithm & SG filter convolution \\
+		\ac{sg} Filtering on Offset Phase & \ac{posg} & Phase offset & Sequential SG filter convolution \\
+		\ac{fd} on Weighted Smoothing of Phase & \ac{wfd} & None & FD with (weighted) Gaussian smoothing \\
+		\ac{fd} on Unweighted Smoothing of Phase & \ac{uwfd} & None & FD with (unweighted) Gaussian smoothing \\
+		Pre-Filtered Phase with Smoothed \ac{fd} & \ac{pffd} & None & FD with (weighted then unweighted) Gaussian smoothing \\
 		\bottomrule
 	\end{tabularx}
 	\caption{Description of the six strain estimation techniques investigated, including their abbreviation, and their method of tackling a) phase unwrapping and b) strain filtering.}
@@ -178,7 +178,7 @@ The table below, \autoref{strain_methods}, summarises the six strain estimation 
 
 \section{Phantom Strain Elastogram Results}\label{phantom_results}
 
-\subsection{Qualitative Comparison}
+\subsection{Qualitative Comparison}{qualitative1}
 
 \begin{figure}[b!]
 	\centering
@@ -212,9 +212,9 @@ The table below, \autoref{strain_methods}, summarises the six strain estimation 
     \label{bscan_images_1}	
 \end{figure}
 
-\autoref{bscan_images_1} shows the resulting B-scan strain images, taken from the centre of the phantom, for the six different strain estimation techniques described above. Note that negative strain corresponds to compressive force, that is a displacement downwards. The fact that there exist positive strain values suggests that our assumption of uniaxial compression is invalid, as stiffer regions are pushing the softer bulk laterally and upwards. It can seen in all images that the stiff inclusion shows less strain than the softer surrounding bulk, as expected. There are similar 'halo' effects, caused by the stiff inclusion taking more of the compressive force than the soft bulk immediately next to it, in all images. The area under the hard inclusion is characterised by low OCT signal, as can be seen in \autoref{oct_image}, and is the most prominently noisy in the techniques that utilise a phase unwrapping algorithm over the entire volume, which is highly sensitive to strong fluctuations in OCT signal and as a result creates artefacts in these regions. A similar pattern is seen in this region in the weighted and unweighted smoothing of FD strain, and is very significant in the pre-filter FD image, which has in addition further streaks of strain estimation arguments at the bottom of the image. 
+\autoref{bscan_images_1} shows the resulting B-scan strain images, taken from the centre of the phantom, for the six different strain estimation techniques described above. Note that negative strain corresponds to compressive force, that is a displacement downwards. The fact that there exist positive strain values suggests that our assumption of uniaxial compression is invalid, as stiffer regions are pushing the softer bulk laterally and upwards. It can seen in all images that the stiff inclusion shows less strain than the softer surrounding bulk, as expected. There are similar 'halo' effects, caused by the stiff inclusion taking more of the compressive force than the soft bulk immediately next to it, in all images. The area under the hard inclusion is characterised by low \ac{oct} signal, as can be seen in \autoref{oct_image}, and is the most prominently noisy in the techniques that utilise a phase unwrapping algorithm over the entire volume, which is highly sensitive to strong fluctuations in \ac{oct} signal and as a result creates artefacts in these regions. A similar pattern is seen in this region in the weighted and unweighted smoothing of \ac{fd} strain, and is very significant in the pre-filter \ac{fd} image, which has in addition further streaks of strain estimation arguments at the bottom of the image. 
 
-As mentioned before, the pre-filter FD with smoothed strain algorithm was introduced after noticing significant 'ripple' effects in the weighted smoothing of FD algorithm. These can be seen prominently to the top right of the inclusion, and match with features in the OCT image in \autoref{oct_image}. In addition to this, the surface of the sample, which has a high reflectance and therefore strong optical weighting, is a  prominent artefact in the weighted smoothing FD image. The application of a small pre-filter to this prior to smoothing appears to have removed this issue, as well as slightly decreased the impact of the optical features at the top right, however at the expense of introducing a multitude of streak artefacts into the bottom half of the image in areas of low OCT signal.
+As mentioned before, the pre-filter \ac{fd} with smoothed strain algorithm was introduced after noticing significant 'ripple' effects in the weighted smoothing of \ac{fd} algorithm. These can be seen prominently to the top right of the inclusion, and match with features in the \ac{oct} image in \autoref{oct_image}. In addition to this, the surface of the sample, which has a high reflectance and therefore strong optical weighting, is a  prominent artefact in the weighted smoothing \ac{fd} image. The application of a small pre-filter to this prior to smoothing appears to have removed this issue, as well as slightly decreased the impact of the optical features at the top right, however at the expense of introducing a multitude of streak artefacts into the bottom half of the image in areas of low \ac{oct} signal.
 
 \subsection{Processing Time}
 
@@ -233,11 +233,11 @@ As mentioned before, the pre-filter FD with smoothed strain algorithm was introd
     \label{process_time_1}
 \end{figure}
 
-\autoref{process_time_1} shows the relative processing time for the different strain estimation techniques for both a single @D B-scan and an entire 3D C-scan, at different fit resolutions. Note that in order to compare accurately between the 2D B-scan and C-scan, a 2D unwrapping algorithm was implemented instead of the usual 3D that laterally unwraps as well. Each data point corresponds to an average of 50 processing time measurements. The error bars in the plot are the standard deviations of these 50 measurements. Since this is plotted relatively, the standard deviation of the relative measurement is equal to the addition of the standard deviations of the absolute measurement and the baseline (WLS) measurement.
+\autoref{process_time_1} shows the relative processing time for the different strain estimation techniques for both a single B-scan and an entire 3D C-scan, at different fit resolutions. Note that in order to compare accurately between the 2D B-scan and C-scan, a 2D unwrapping algorithm was implemented instead of the usual 3D that laterally unwraps as well. Each data point corresponds to an average of 50 processing time measurements. The error bars in the plot are the standard deviations of these 50 measurements. Since this is plotted relatively, the standard deviation of the relative measurement is equal to the addition of the standard deviations of the absolute measurement and the baseline (WLS) measurement.
 
-The relative processing time (with respect to the WLS with unwrapped phase) is shown instead of the actual, to try provide an estimate that is comparable across different machines.
+The relative processing time (with respect to the \ac{wls} with unwrapped phase) is shown instead of the actual, to try provide an estimate that is comparable across different machines.
 
-It can be seen that all new strain estimation techniques show a significant improvement in processing speed compared to the WLS estimate. In particularly, the finite difference techniques are particularly fast. The Savitzky-Golay filter on the unwrapped phase is faster than when applied to the phase offset, suggesting that the bottleneck caused by the non-linear subtraction operation contributes more to slowing the process down than needing to perform unwrapping on the entire volume. 
+It can be seen that all new strain estimation techniques show a significant improvement in processing speed compared to the \ac{wls} estimate. In particularly, the finite difference techniques are particularly fast. The \ac{sg} filter on the unwrapped phase is faster than when applied to the phase offset, suggesting that the bottleneck caused by the non-linear subtraction operation contributes more to slowing the process down than needing to perform unwrapping on the entire volume. 
 
 \subsection{Sensitivity}
 
@@ -255,16 +255,16 @@ It can be seen that all new strain estimation techniques show a significant impr
 	\label{sensitivity_1}
 \end{figure}
 
-The strain sensitivity for the six different estimation techniques for different fit resolutions is shown in \autoref{sensitivity_1}. There is a clear trend across all techniques, that at the larger fit resolutions the sensitivity is better. The downside of this is that at larger fit resolutions, the ability to distinguish objects laterally is significantly worsened, as can be seen in strain B-scan images in \autoref{strain_bscan_images}. Therefore there is a need to optimise the trade off between sensitivity and fit resolution. The three techniques that offer the best sensitivity at lower fit resolutions are WLS, unweighted smoothing with FD, and the pre-filtered FD. Note that the weighted smoothing with FD is significantly worse than the other techniques, due to the artefacts discussed above. The phase offset and unwrapping with SG filtering are slightly worse than the WLS estimate, likely due to them being an ordinary least squares estimate, as opposed to a weighted one.
+The strain sensitivity for the six different estimation techniques for different fit resolutions is shown in \autoref{sensitivity_1}. There is a clear trend across all techniques, that at the larger fit resolutions the sensitivity is better. The downside of this is that at larger fit resolutions, the ability to distinguish objects laterally is significantly worsened, as can be seen in strain B-scan images in \autoref{strain_bscan_images}. Therefore there is a need to optimise the trade off between sensitivity and fit resolution. The three techniques that offer the best sensitivity at lower fit resolutions are \ac{wls}, unweighted smoothing with \ac{fd}, and the pre-filtered \ac{fd}. Note that the weighted smoothing with \ac{fd} is significantly worse than the other techniques, due to the artefacts discussed above. The phase offset and unwrapping with \ac{sg} filtering are slightly worse than the \ac{wls} estimate, likely due to them being an ordinary least squares estimate, as opposed to a weighted one.
 
-Although the pre-filtered FD supposedly shows the best sensitivity, it is important to note the artefacts present in the qualitative evaluation of the image. Therefore this sensitivity measurement is not indicative of the image quality as a whole, but only a segment of it.
+Although the pre-filtered \ac{fd} supposedly shows the best sensitivity, it is important to note the artefacts present in the qualitative evaluation of the image. Therefore this sensitivity measurement is not indicative of the image quality as a whole, but only a segment of it.
 
-On the basis of these results, it was decided to see if implementing lateral averaging over the separated B-scans could improve the sensitivity of the lower-order differentiation techniques (in particular the weighted FD and the SG filtering) towards that of the WLS. 
+On the basis of these results, it was decided to see if implementing lateral averaging over the separated B-scans could improve the sensitivity of the lower-order differentiation techniques (in particular the weighted \ac{fd} and the \ac{sg} filtering) towards that of the \ac{wls}. 
 
 \section{Phantom Strain Elastogram Results with Lateral Averaging}\label{phantom_results_lateral}
 
 \subsection{Qualitative Comparison}
-It was found that very comparable image quality could be achieved using a smaller fit resolution of $40\mu m$ when lateral smoothing was also applied. \autoref{images} contains the B-scan  images for the different strain estimation techniques for selected fit resolution and lateral resolution values. 
+It was found that very comparable image quality could be achieved using a smaller fit resolution of $40\mu m$ when lateral smoothing was also applied. \autoref{images} contains the B-scan  images for the different strain estimation techniques for selected strain and lateral smoothing filter resolution values. 
 
 \subsection{Processing Time}
 The benefit of adding lateral averaging is that it improves the sensitivity, and in most instances, without adding much time overhead, since it can be implemented as a 2D convolution on a given B-scan. Therefore the focus of this section is mostly on the image quality, rather than the processing time. However, \autoref{process_time_2} shows that adding lateral smoothing did not change the relative positions of the processing techniques in terms of processing time.
@@ -301,9 +301,9 @@ The addition of lateral smoothing heightens the sensitivity of all imaging techn
     \label{sensitivity_2}	
 \end{figure}
 
-It has been shown that it is possible to greatly reduce the processing time by using finite difference approaches, and that the sensitivity can be optimised by introducing lateral smoothing, which can be computed very quickly using a convolution operation. However, the image is not infinitely improved with more lateral smoothing and higher fit resolutions. The degradation of the image resolution, due to these processes, must be examined.
+It has been shown that it is possible to greatly reduce the processing time by using \ac{fd} approaches, and that the sensitivity can be optimised by introducing lateral smoothing, which can be computed very quickly using a convolution operation. However, the image is not infinitely improved with more lateral smoothing and higher fit resolutions. The degradation of the image resolution as a result of these processes, must be examined.
 
-As a summary of the above two sections, \autoref{sensitivity_time} shows plots of the sensitivity against the relative processing time for the six strain estimation techniques. Looking at these, clearly the finite difference based approaches have a significant speed advantage over the other methods, without loosing any sensitivity. In fact, the unweighted smoothing with FD and the pre-filtered smoothing with FD show better sensitivity than other methods when lateral averaging is implemented also.
+As a summary of the above two sections, \autoref{sensitivity_time} shows plots of the sensitivity against the relative processing time for the six strain estimation techniques. Looking at these, clearly the \ac{fd} based approaches have a significant speed advantage over the other methods, without loosing any sensitivity. In fact, the \ac{uwfd} and the \ac{pffd} show better sensitivity than other methods when lateral averaging is implemented also.
 
 \begin{figure}
 	\centering
@@ -325,13 +325,13 @@ As a summary of the above two sections, \autoref{sensitivity_time} shows plots o
 		\includegraphics[width=\textwidth]{figures/sensitivity_3dtime_lr.png}
 	\end{subfigure}
 
-	\caption{Relative processing time in 2D (top) and 3D (bottom) for different sensitivity values based on differing strain filters (left) and lateral smoothing filters (right) for the five strain estimation techniques, relative to the unwrapped WLS technique. The bottom left region of the plots corresponds to the optimum processing time and sensitivity values.}
+	\caption{Relative processing time in 2D (top) and 3D (bottom) for different sensitivity values based on differing strain filters (left) and lateral smoothing filters (right) for the five strain estimation techniques, relative to \ac{uwwls}. The bottom left region of the plots corresponds to the optimum processing time and sensitivity values.}
 	\label{sensitivity_time}
 \end{figure}
 
 \section{Analysis of Image Resolution} \label{image_res_results}
 
-A goodness of fit limit was placed on the process of fitting an error function to the data set in order to calculate the image resolution, by requiring that the R-squared value of the fit must be over 0.5, which is quite low. However by visually examining the fits made, it was found that the high amounts of noise in the strain filter and lateral filters with low FWHM degraded the R-squared value, however visual inspection showed a fit that was still reasonably followed the data trend. Using these filtered results, it was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral smoothing and for very low strain filtering resolutions, due to the high frequency noise corrupting the data. \autoref{imageres_figs} show density plots of the axial and lateral image resolution FWHM for the different strain estimation techniques.
+A goodness of fit limit was placed on the process of fitting an error function to the data set in order to calculate the image resolution, by requiring that the R-squared value of the fit must be over 0.5, which is quite low. However by visually examining the fits made, it was found that the high amounts of noise in the strain filter and lateral filters with low \ac{fwhm} degraded the R-squared value, however visual inspection showed a fit that was still reasonably followed the data trend. Using these filtered results, it was found that the process of fitting a step response to the object boundaries was impossible for strain elastograms with no lateral smoothing and for very low strain filtering resolutions, due to the high frequency noise corrupting the data. \autoref{imageres_figs} show density plots of the axial and lateral image resolution \ac{fwhm} for the different strain estimation techniques.
 
 \begin{figure}[b!]
 	\centering
@@ -389,18 +389,18 @@ A goodness of fit limit was placed on the process of fitting an error function t
 		\centering
 		\includegraphics[width=\textwidth]{imageres_figs/pffd_lateral.png}
 	\end{subfigure}
-	\caption{The images on the left show the axial image resolution, and those on the right the lateral image resolution for the six different strain estimation techniques, at different strain and lateral smoothing filter FWHM resolutions. Regions that are red correspond to worse image resolution.}
+	\caption{The images on the left show the axial image resolution, and those on the right the lateral image resolution for the six different strain estimation techniques, at different strain and lateral smoothing filter \ac{fwhm} resolutions. Regions that are red correspond to worse image resolution.}
 	\label{imageres_figs}
 \end{figure}
 
-\autoref{imageres_figs} show some interesting trends. The phase offset algorithm with SG filtering performs the worst over both axial and lateral image resolution, although has some good lateral resolution for the mid-range strain filter FWHM. The weighted FD has a high lateral image FWHM for any strain filter above approximately 40$\mu$m, however the axial resolution performs extremely well in comparison to other techniques. The WLS strain filter performs poorly for axial image resolution, however significantly better in the lateral resolution, which contrasts to the other technique utilising phase unwrapping, suggesting the problem arises in the strain filtering process. Both techniques that utilise SG filtering have streak-like features in the lateral resolution at different strain filter FWHM values, and are relatively high. Both the unweighted FD and pre-filtered FD show the best overall image resolution, with very similar axial resolution patterns, that are better at low strain and lateral smoothing filter FWHM values, as is expected. The pre-filtered FD 
+\autoref{imageres_figs} show some interesting trends. The \ac{posg} algorithm performs the worst over both axial and lateral image resolution, although has some good lateral resolution for the mid-range strain filter \ac{fwhm}. The \ac{wfd} has a high lateral image \ac{fwhm} for any strain filter above approximately 40$\mu$m, however the axial resolution performs extremely well in comparison to other techniques. The \ac{uwwls} strain filter performs poorly for axial image resolution, however significantly better in the lateral resolution, which contrasts to the other technique utilising phase unwrapping, suggesting the problem arises in the strain filtering process. Both techniques that utilise \ac{sg} filtering have streak-like features in the lateral resolution at different strain filter \ac{fwhm} values, and are relatively high. Both the \ac{uwfd} and \ac{pffd} show the best overall image resolution, with very similar axial resolution patterns, that are better at low strain and lateral smoothing filter \ac{fwhm} values, as is expected. The \ac{pffd} however has slightly worse lateral resolution for higher strain and lateral smoothing filter \ac{fwhm}.
 
-Taking these results in conjunction with those regarding processing time and sensitivity in the sections above, it is decided that the unweighted FD strain estimation algorithm provides optimal processing speed, sensitivity, and image resolution. In particular, using a strain filter FWHM of 40$\mu$m and a lateral smoothing filter FWHM of 20$\mu$m should provide good axial and image resolution
+Taking these results in conjunction with those regarding processing time and sensitivity in the sections above, it is decided that the \ac{uwfd} strain estimation algorithm provides optimal processing speed, sensitivity, and image resolution. In particular, using a strain filter \ac{fwhm} of 40$\mu$m and a lateral smoothing filter \ac{fwhm} of 20$\mu$m should provide the best axial and image resolution, in conjunction with high sensitivity. 
 
 \begin{table}
 	\begin{tabularx}{\textwidth}{Yrrc}
 		\toprule
-		& \textbf{UW WLS} & \textbf{UWFD} & \textbf{Improved?}\\
+		& \textbf{\ac{uwwls}} & \textbf{\ac{uwfd}} & \textbf{Improved?}\\
 		\midrule 
 		Strain Filter FWHM ($\mu$m) & 70 & 40 \\
 		Lateral Smoothing Filter FWHM ($\mu$m) & 0 & 20 \\
@@ -412,7 +412,7 @@ Taking these results in conjunction with those regarding processing time and sen
 		Lateral Image Resolution FWHM ($\mu$m) & 131.33 & 115.98 & 13\% \\
 		\bottomrule
 	\end{tabularx}
-	\caption{Comparison of the previously standard UW WLS strain estimation technique and the optimised UWFD.}
+	\caption{Comparison of the previously standard \ac{uwwls} strain estimation technique and the optimised \ac{uwfd}.}
 	\label{comparison_table}
 \end{table}
 
@@ -426,7 +426,7 @@ Taking these results in conjunction with those regarding processing time and sen
 		\centering
 		\includegraphics[width=\textwidth]{figures/wls_compare.png}
 	\end{subfigure}
-	\caption{Unweighted smoothing with FD strain estimation B-scan compared with the previously standard unwrapping with WLS.}
+	\caption{\ac{uwfd} strain estimation B-scan compared with the previously standard unwrapping with \ac{uwwls}.}
 	\label{wls_uwfd_compare}
 \end{figure}
 
