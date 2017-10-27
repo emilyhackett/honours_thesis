@@ -41,10 +41,6 @@ Since the intensity pattern measured by the \ac{oct} signal is dependent on the 
 
 \section{Application to Elastography}\label{application_elastography}
 
-%Many elastography methods based on optical imaging techniques exist, and can be differentiated between by examining how the mechanical load is applied to the tissue, as well as what parameter is utilised to form the image, or 'elastogram' (as discussed in \autoref{elastography}). These different factors, as well as the underlying imaging technique, determine the resolution and penetration of the resulting imaging. In addition these parameters may be quantitative or qualitative, which has implications for diagnostic capability, and mechanical loading methods can be simple or complex, which introduces limitations on image acquisition time.
-
-%On top of these highly variable loading methods, the detection of tissue deformation can be done using speckle tracking via cross-correlation algorithms (which are highly influenced by speckle decorrelation noise), or by phase-sensitive detection \cite{kennedy_strain_2012}.
-
 \ac{oce} is the combination of elastography with an \ac{oct} imaging system, as first proposed by Schmitt in 1998 \cite{schmitt_oct_1998}. The micro-architecture of tissue carries important information about disease states \cite{fung_biomechanics_1981}, however these are poorly demonstrated utilising only optical contrast. Using elastography with \ac{oct} as the underlying imaging modality allows high resolution mechanical contrast imaging on scales previously inaccessible to ultrasound and MRI-based elastography techniques. Of particular interest in this project is compressive \ac{oce} utilising phase-sensitive detection. Other techniques exist that may be utilised also to detect tissue displacement, such as speckle tracking via cross-correlation algorithms \cite{kennedy_review_2014}. However the advantage of phase-sensitive detection, which owes its origin to Doppler imaging in \ac{oct}, is in superior resolution and sensitivity (as set by the optical wavelength, therefore on the nanometre scale) compared to other techniques. 
 
 \section{Phase-Sensitive Compression \ac{oce}}\label{compression_oce}    
@@ -74,7 +70,7 @@ For phase-sensitive detection, the displacement induced by the step-loading is d
 As mentioned in \autoref{compression_oce}, large variations in \ac{oct} \ac{snr} due to speckle produces spatially varying phase values, that are often averaged to improve the overall displacement sensitivity. This is commonly performed using a Kasai estimator \cite{zaitsev_hybrid_2016} \cite{wijesinghe_improving_2017} to perform weighted averaging on the complex number. The phase difference using this is then:
 
 \begin{equation}
-	\Delta\phi = \frac{1}{n} \sum_\Omega A_i^{(k)} \cdot \text{conj}(A_i^{(l)})
+	\Delta\phi = \text{angle}\bigg( \frac{1}{n} \sum_\Omega A_i^{(k)} \cdot \text{conj}(A_i^{(l)}) \bigg)
 	\label{kasai_estimate}
 \end{equation}
 
@@ -144,4 +140,4 @@ A third range of approaches do not tackle the issue of phase unwrapping directly
 
 From the processed phase difference data, the strain is estimated as the spatial derivative of the displacement in the axial direction. For phase wrapping approaches that utilise small fit windows as described in the previous section, noisy derivative estimates are produced that result in significant degradation of image quality when used alone. Other techniques that operate on unwrapped phase values (and hence a reconstructed displacement field) apply more detailed derivative estimations based on least squares regression approaches, aimed at minimising this noise.
 
-These derivative estimators can be thought of as differentiation filters, or in this instance, strain filters. The following chapter discusses a variety of strain filters from the literature in more detail.
+These derivative estimators can be thought of as differentiation filters, or in this instance, strain filters \cite{lindop_general_2008} \cite{varghese_theoretical_1997}. The following chapter discusses a variety of strain filters from the literature in more detail.

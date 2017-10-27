@@ -1,62 +1,82 @@
 \chapter{Review of Strain Estimation Techniques}\label{review}
 
-Imaging strain is one fundamental application of OCE, which produces qualitative images of the stiffness of tissue. The tissue strain is defined as the amount of displacement induced in the tissue by the mechanical loading per spatial region. It is calculated by estimating the spatial derivative of the displacement imaged by the OCE system. 
+Strain is a measure of the deformation of a body, and a building block towards producing quantitative elastic measurements of Young's modulus \cite{wang_optical_2015}. The Young's modulus is defined as the ratio of the axial stress $\sigma$ and strain $\varepsilon$ \cite{kennedy_review_2014}:
 
-Most elastography techniques utilise the assumption that tissue is a linearly elastic solid \cite{kennedy_review_2014}, an assumption that is valid for applications of small mechanical loads, and that greatly simplifies elastogram processing. Making this assumption, the displacement can be thought of as linearly related to the depth into the sample. Under small enough compressions this assumption is valid. 
+\begin{equation}
+	E = \frac{\sigma}{\varepsilon}
+	\label{youngs_modulus}
+\end{equation}
 
-To be able to compare between imaging techniques, the resolution of different strain estimation fits must be derived. This resolution can be thought of as the full-width at half maximum of the impulse response of the filter - that is, the \ac{fwhm} of the output when the input signal is a delta function in the case of a smoothing filter, or a step function for the differentiation filters. This resolution offers a comparative measure of the extent to which the filtering process has blurred objects in the image together. 
+When calculating mechanical properties of tissue, the assumption is made that tissue linear-elastic, isotropic, and undergoes infinitesimal deformation under loading \cite{kennedy_review_2014}. For small deformations, it is also assumed that the stress due to loading is uniform and axial in depth, such that the strain may be linearly related to Young's modulus.
+
+In compression \ac{oce}, strain is calculated from the measured axial displacement by fitting locally the gradient of the displacement. This relationship between strain and displacement can be thought of as a numerical differentiation process \cite{luo_axial_2004} described by a digital differentiator (a differentiation filter).
+
+To be able to compare between imaging techniques, the resolution of different strain estimation fits must be derived. This resolution can be thought of as the \ac{fwhm} of the impulse response of the strain differentiation filter, which is the output when the input signal is a delta function in the case of a smoothing filter, or a step function for the differentiation filters. This resolution offers a comparative measure of the extent to which the filtering process has blurred objects in the image together. 
 
 \section{Least Squares Approaches}\label{least_squares}
 Least squares approach aim to fit a straight line to the phase data by minimising the squared error between the fitted and actual values. The strain value is then taken to be the gradient of this line. The \ac{ols} estimate for the strain value within a fit window of size $m$ is given in \cite{kennedy_strain_2012} as:
 
 \begin{equation}
 	\label{ols_strain}
-	\epsilon_z = \sum\limits_{j=1}^{j=i+m-1} \bigg(\frac{\kappa_0 (z_j-z_{i-1})-\kappa_1}{\kappa_0 \kappa_2 - \kappa_1^2} \bigg) u_j
+	\varepsilon_i = \sum\limits_{j=i}^{j=i+m-1} \bigg(\frac{\kappa_0 (z_l-z_{l-1})-\kappa_1}{\kappa_0 \kappa_2 - \kappa_1^2} \bigg) u_j
 \end{equation}
 
 Where $u_j$ is the displacement at the point, and the simplifying constants $\kappa_x$ are defined as:
 
 \begin{equation}
 	\label{ols_k}
-	\kappa_x = \sum \limits_{j=1}^{i+m-1} (z_j - z_{i-1})^x \text{   for   } x = 0,1,2
+	\kappa_x = \sum \limits_{j=i}^{i+m-1} (z_j - z_{i-1})^x \text{   for   } x = 0,1,2
 \end{equation}
 
-Depending on the size of the fit window, there is a likelihood of a wrapping event to have occurred, and therefore there is a need to unwrap the phase (displacement) data prior to performing a least squares estimate. 
+This estimate is performed on the angle assuming that underlying data is real, and therefore not wrapped. Therefore wrapping may occur even in small windows so there is a need to unwrap the phase (displacement) data prior to performing a least squares estimate. 
 
-The \ac{ols} estimate above is a linear operation, however can be extended to use weight the contribution of each displacement point based on the quality of its signal. The \ac{wls} strain estimate utilises the \ac{oct} signal attached to each phase difference value to provide an estimate of the standard deviation of each point. The variance of the measured phase difference is equal to the inverse of the \ac{snr} of the \ac{oct} intensity, $SNR_{OCT}$. Therefore a $\Delta \phi_i$ measurement that has a high $SNR_{OCT}$ has a low variance, and should be assigned more significance in estimating a linear displacement fit. Therefore the weights associated with the \ac{wls} estimate is the inverse variance of the phase difference values:
+The \ac{ols} estimate above is a linear operation, however can be extended to weight the contribution of each displacement point based on the quality of its signal. 
+The weight in the \ac{wls} estimator is the inverse of the variance of each data point.
+The variance of the measured phase difference is equal to the inverse of the \ac{snr} of the \ac{oct} intensity, $SNR_{OCT}$ \cite{goodman_statistical_2015}. Therefore a $\Delta \phi_i$ measurement that has a high $SNR_{OCT}$ has a low variance, and should be assigned more significance in estimating a linear displacement fit. 
 
 \begin{equation}
 	\label{wls_w}
-	w_i = \frac{1}{\sigma_{u_j}^2} = SNR_{OCT_j}
+	w_i = \frac{1}{\sigma_{u_I}^2} = SNR_{OCT_I}
 \end{equation}
 
 Using these weights, the strain estimate using \ac{wls} is given as in \cite{kennedy_strain_2012} by \autoref{wls_strain}:
 
 \begin{equation}
 	\label{wls_strain}
-	\epsilon_i = \sum \limits_{j=1}^{i+m-1} \frac{\kappa'_0 w_j (z_j - z_{i-1}) u_j - \kappa'_1 w_	j u_j}{\kappa'_0 \kappa'_2 - (\kappa'_1)^2}
+	\epsilon_i = \sum \limits_{j=I}^{i+m-1} \frac{\kappa_0 w_j (z_j - z_{i-1}) u_j - \kappa'_1 w_	j u_j}{\kappa_0 \kappa_2 - (\kappa_1)^2}
 \end{equation}
 
-Where in this instance, the $\kappa'_x$ constants are given by:
+Where in this instance, the $\kappa_x$ constants are given by:
 
 \begin{equation}
 	\label{wls_k}
-	\kappa'_x = \sum \limits_{j=1}^{i+m-1} w_j (z_j - z_{i-1})^x \text{   for   } x=0,1,2
+	\kappa_x = \sum \limits_{j=i}^{i+m-1} w_j (z_j - z_{i-1})^x \text{   for   } x=0,1,2
 \end{equation}
 
-The weighted least squares strain estimate has been shown to improve the strain sensitivity \cite{kennedy_strain_2012} however at the expense of requiring the calculation of the weightings, and the non-linearity of the operation, the consequences of which are discussed in the next section.
+The \ac{ols} derivative estimator gives the optimal estimate when errors in the data are zero-mean, uncorrelated and have the same variance (by the Gauss-Markove theorem). However since the phase variance in \ac{oct} is related to the highly varying \ac{oct} \ac{snr} and noise in neighbouring pixels. In contrast, \ac{wls} can handle weights (non-uniform variances), which has been shown to improve the strain sensitivity \cite{kennedy_strain_2012}. However this is more computationally expensive, requiring a weight calculation and being a non-linear operation, the consequences of which are discussed in the next section.
 
 \section{\ac{sg} Filtering}\label{sg_filter}
-One benefit of the \ac{ols} approach is that it can be implemented as a filter, since it is a linear operation. The \ac{sg} filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate. This filter can be applied to an entire data set by convolving the data and filter together, or a multiplying them in the Fourier domain. Similarly to how the estimate above for \ac{ols} is derived using the normal equation for least squares minimization (see \autoref{normal_equations}), the \ac{sg} filter is derived by assuming the data is centred around zero and scaled in integer steps, and calculating the filter coefficients for these points for the given fitting model (in this case, linear), and then generalising them to all fit windows. A more detailed derivation can be found in \cite{savitzky_smoothing_1964}. The \ac{sg} smoothing filter based on the least squares approximation can be generalised to a \ac{sg} differentiation filter by evaluating the gradient, rather than the value, at each point. There is an analytical solution for the \ac{sg} first order differentiation filter for a linear least squares model given in \autoref{sg_coeff} \cite{madden_comments_1978}.
+One benefit of the \ac{ols} approach is that it can be implemented as a filter to uniformly sampled data, since it is a linear operation. The \ac{sg} filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate about a window around each point in the data. This filter can be applied to an entire data set by convolving the data and filter together, or multiplying them in the Fourier domain. 
+Similarly to how the estimate above for \ac{ols} is derived, the \ac{sg} filter is calculated for the case where the data is sampled at uniform intervals, typically expressed as integer valued points about the centre of the fit window. The \ac{sg} smoothing filter replaces each data point with the \ac{ols} estimate at that point \cite{savitzky_smoothing_1964}. However this can generalised to a \ac{sg} differentiation filter by instead evaluating the gradient at each point. 
+The analytical solution for the first order \ac{sg} differentiation filter is given by \cite{madden_comments_1978}:
 
 \begin{equation}
 	\label{sg_coeff}
 	C_i = \frac{12 i}{m(m^2-1)}
 \end{equation}
 
-Therefore not only can the filter be applied much faster than a sequential looping over the fit windows and performing the \ac{ols} estimate above, it can be created very quickly as well. However, the weighting information can no longer be utilised in the convolution process. Another aspect to note, is that the \ac{sg} filter can only be applied on the unwrapped phase difference - it cannot correct for wrapping events. 
+Where the $m$ is the integer size of the fit window, and must be odd.
 
-The resolution of the \ac{sg} filter can be derived by analysing it's response to an impulse. It can be seen that the impulse response of the filter is quadratic in form, and the \ac{fwhm} can be solved for, giving the value in \autoref{sg_fwhm}:
+Using this result, not only can this filter be applied much faster by convolution compared to performing sequential looping over all fit windows and using the \ac{ols} summation expression, it can be created very quickly as well. The limitation is that the weight information can no longer be utilised in the convolution process. Also, the \ac{sg} filter can only be applied on the real unwrapped phase difference, since it cannot correct for wrapping events. 
+
+The resolution of the \ac{sg} filter can be derived by analysing it's response to an impulse. Applying the derivative filter of \autoref{sg_coeff} to a unit step response yields the equivalent impulse response of the \ac{sg} filter:
+
+\begin{equation}
+	\text{PSF} (C_i)=\frac{6 i^2}{m(m^2-1)}
+	\label{impulse_response}
+\end{equation}
+
+Which is quadratic in form, and the \ac{fwhm} can be solved for, giving the value in \autoref{sg_fwhm}:
 
 \begin{equation}
 	\label{sg_fwhm}
@@ -64,7 +84,13 @@ The resolution of the \ac{sg} filter can be derived by analysing it's response t
 \end{equation}
 
 \section{Smoothing Filters}
-In most biological signal processing, high frequency noise is a significant degrading factor, one that is amplified in applications such as elastograpy where derivatives are estimated to produce the signal \cite{usui_digital_1982}. As a result, low-pass differentiation filters are ideal signal processing techniques. The \ac{sg} filter acts as a low-pass differentiation filter \cite{luo_axial_2004}, as does a sequential application of \ac{wls}. However the simple finite difference strain estimation described in \autoref{fd} makes no effort to smooth out high frequency noise. It makes sense to combine a low-pass smoothing filter with the \ac{fd} derivative estimation in order to do this. Since linear filter operations are commutative, the filter convolution operation can be done to the phase difference or to the \ac{fd} strain estimate. This smoothing filter could be implemented as a simple moving average, however with the goal of minimising the contribution of high frequency noise, it makes sense to take a Gaussian smoothing filter, the discretised version of which is seen in \autoref{gauss_1d} for a 1D filter, and \autoref{gauss_2d} for the 2D filter.
+In most biological signal processing, high frequency noise is a significant degrading factor, one that is amplified in applications such as elastograpy where derivatives are estimated to produce the signal \cite{usui_digital_1982}. As a result, low-pass differentiation filters are ideal signal processing techniques. \ac{ols}, and as a result the \ac{sg} filter acts as a low-pass differentiation filter \cite{luo_axial_2004}, as does \ac{wls}.
+Conceptually these filters can be thought of as the combination of an estimate of the derivative of the displacement, followed by smoothing by the impulse response kernel in \ref{impulse_response}.
+
+Using this two stage structure, the simplest form of derivative estimation is \ac{fd}, compared to using the \ac{sg} impulse response estimate. However as mentioned in \autoref{least_squares}, the \ac{sg} filter is not optimal for the characteristics of typical \ac{oct} noise.
+This raises the question as to whether a different form of smoothing filter may produce better results in estimating strain in \ac{oce}. 
+
+There are a range of smoothing filters to choose from, however this study examines the use of a Gaussian filter, chosen because it has a smooth kernel and a smooth frequency response. The 1D and 2D discretised Gaussian filters are given by:
 
 \begin{equation}
 	\label{gauss_1d}
@@ -77,24 +103,29 @@ In most biological signal processing, high frequency noise is a significant degr
 	\bigg( - \frac{(i_0 - i)^2}{2 \sigma_i^2} - \frac{(j_0 - j)^2}{2 \sigma_j^2} \bigg)}
 \end{equation}
 
-Using a Gaussian smoothing filter in addition to \ac{fd} removes high frequency noise, where the resolution of this smoothing filter is defined as the \ac{fwhm} of the Gaussian filter used, dependent on the $\sigma$ value as shown in \autoref{gauss_fwhm}.
+Using a Gaussian smoothing filter in addition to the \ac{fd} derivative estimate removes high frequency noise. The resolution of this smoothing filter is defined as the \ac{fwhm} of the Gaussian filter used, and is dependent on the value of $\sigma$:
 
 \begin{equation}
 	\label{gauss_fwhm}
 	\text{FWHM}_{Gaussian} = 2 \sqrt{2 \log{2}} \sigma
 \end{equation}
 
+Since linear filter operations are commutative, the filter convolution operation can be performed on the real phase difference or to the \ac{fd} strain estimate. Applying the filter to the estimated phase derivative does not require unwrapping of the phase, instead it assumes that the derivative estimate has taken this into account, providing more flexibility over \ac{ols} or \ac{wls} techniques.
+
 \section{\ac{fd}}\label{fd}
-The simplest approximation to a derivative is to calculate the \ac{fd} between two consecutive displacement measurements. That is, dividing the change in displacement by the change in depth, as per \autoref{fd_strain}.
+
+The simplest approximation to a derivative is to calculate the \ac{fd} between two consecutive displacement measurements. That is, dividing the change in displacement by the change in depth. However this allows wrapping events as a result of using the real phase data. The calculation of strain from the phase difference is a linear operation (\autoref{phasedif_displacement}), therefore the \ac{fd} can be performed on the complex phase difference instead. Similarly to how the Kasai estimate was implemented to determine the phase difference between loaded and unloaded scans in \autoref{kasai_estimate}, this can be applied again to calculate the \ac{fd} derivative of the phase difference:
 
 \begin{equation}
+	\varepsilon_i = \frac{\lambda_0}{4\pi n} \cdot \frac{1}{\Delta z} \text{angle}\bigg( \Delta \phi_i \cdot \text(conj)(\Delta \phi_{i-1}) \bigg)
 	\label{fd_strain}
-	\epsilon_z = \frac{\Delta u_z}{\Delta z}
 \end{equation}
 
-An issue with \ac{fd} approaches is that they tend to amplify high frequency noise in the phase values. However one of its benefits is the simplicity of implementation, and therefore the speed up it offers. In addition, by using consecutive pixels to perform the differentiation, there is little chance of a phase wrapping event to have occurred, and therefore finite difference can be performed on the complex phase data without prior unwrapping.
+Where $\Delta z$ is the difference in depth of the two phase difference values (the axial length of each pixel). The fraction in front corresponds to the strain unit correction.
 
-Since there is no smoothing operation implemented in \ac{fd}, it is assumed that it has no effect on the resolution of the image. Therefore there is no assumed a negligible fit resolution contribution using the finite difference strain estimation, and the fit resolution is instead defined by smoothing operations that are implemented alongside it.
+A limitation of \ac{fd} approaches are their sensitivity to noise. In particular, \ac{fd} strain estimators tend to amplify high frequency noise. One of their benefits however is the simplicity (and therefore speed) of their implementation. In addition, use of the Kasai estimate on the complex phase data removes the need to unwrap the real phase first.
+
+Since there is no smoothing operation implemented in \ac{fd}, it is assumed that it has a negligible fit resolution contribution, and therefore the strain filter resolution (quantified by the filter \ac{fwhm})s is instead defined by the smoothing filter implemented in conjunction with it.
 
 \section{Strain Estimation Assessment Criteria}\label{criteria}
 
