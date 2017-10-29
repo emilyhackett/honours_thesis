@@ -17,7 +17,7 @@
 	\label{oct_image}	
 \end{figure}
 
-To better quantify the image quality, an idealised silicone sample was imaged, to approximate breast tissue, and the strain estimated. This phantom consisted of a bulk, softer silicone material (with a Young's modulus of 6.4kPa) within which was a stiff, rectangular inclusion (Young's modulus of 100kPa) \cite{hepburn_improving_2017}, to which optical scatterers were added to enhance the \ac{oct} signal. The phantom was created by a previous Master's student, and was imaged using a desktop \ac{oce} system, with a system wavelength of $1300nm$. The imaged area, shown in \autoref{oct_image}, was divided into 2000 A-scans per each B-scan, over a length in x of $4.4\mu m$), and a total of 6817 B-scans were acquired, over the same length in y.
+To better quantify the image quality, an idealised silicone sample was imaged, to approximate breast tissue, and the strain estimated. This phantom consisted of a bulk, softer silicone material (with a Young's modulus of 6.4kPa) within which was a stiff, rectangular inclusion (Young's modulus of 100kPa) \cite{hepburn_improving_2017}, to which optical scatterers were added to enhance the \ac{oct} signal. The phantom was created by a previous Master's student, and was imaged using a desktop \ac{oce} system, with a system wavelength of $1300nm$. The imaged area, shown in \autoref{oct_image}, was divided into 2000 A-scans per each B-scan, over a length in x of 8.8mm), and a total of 6817 B-scans were acquired, over a length in y of 0.3mm.
 
 The complex \ac{oct} C-scan was initially processed from the raw spectral data produced by the Fourier-domain \ac{oct} system, to produce the complex \ac{oct} signal values, with associated optical amplitudes and random phase. From here, as described briefly in \autoref{compression_oce}, the difference in phase is calculated between loaded and unloaded B-scans, and averaged over 50 B-scan pairs. The strain estimation algorithms described following utilise this calculated averaged phase difference as the beginning step of the processing pipeline, and assume that the phase difference data is already loaded into memory.
 
@@ -183,7 +183,7 @@ In order to maintain consistency between the strain estimation techniques, for t
 
 \section{Phantom Strain Elastogram Results}\label{phantom_results}
 
-\subsection{Qualitative Comparison}\label{qualitative1}
+%\subsection{Qualitative Comparison}\label{qualitative1}
 
 \begin{figure}[b!]
 	\centering
@@ -274,7 +274,7 @@ On the basis of these results, it was decided to see if implementing lateral ave
 
 \section{Phantom Strain Elastogram Results with Lateral Averaging}\label{phantom_results_lateral}
 
-\subsection{Qualitative Comparison}
+%\subsection{Qualitative Comparison}
 It was found that very comparable image quality to higher strain filter \ac{fwhm} could be achieved using a smaller strain filter \ac{fwhm} of $40\mu m$ when lateral smoothing was also applied. \autoref{images} contains the B-scan  images for the different strain estimation techniques for selected strain and lateral smoothing filter \ac{fwhm} values. 
 
 \subsection{Processing Time}
@@ -323,7 +323,7 @@ The addition of lateral smoothing heightens the sensitivity of all imaging techn
 		\centering
 		\includegraphics[width=\textwidth]{figures/sensitivity_3dtime.png}
 	\end{subfigure}
-	\caption{Absolute processing time in 2D and 3D for different sensitivity values based on differing strain filters (\textit{o})and lateral smoothing filters (\textit{x}) for the six strain estimation techniques, plotted on a log scale. The bottom left region of the plots corresponds to the optimum processing time and sensitivity values.}
+	\caption{Absolute processing time in 2D and 3D for different sensitivity values based on differing strain filters (o)and lateral smoothing filters ($\times$) for the six strain estimation techniques, plotted on a log scale. The bottom left region of the plots corresponds to the optimum processing time and sensitivity values.}
 	\label{sensitivity_time}
 \end{figure}
 
