@@ -36,7 +36,7 @@ The variance of the measured phase difference is equal to the inverse of the \ac
 
 \begin{equation}
 	\label{wls_w}
-	w_i = \frac{1}{\sigma_{u_I}^2} = SNR_{OCT_I}
+	w_i = \frac{1}{\sigma_{u_i}^2} = SNR_{OCT_i}
 \end{equation}
 
 Using these weights, the strain estimate using \ac{wls} is given as in \cite{kennedy_strain_2012} by \autoref{wls_strain}:
@@ -112,12 +112,12 @@ Using a Gaussian smoothing filter in addition to the \ac{fd} derivative estimate
 
 Since linear filter operations are commutative, the filter convolution operation can be performed on the real phase difference or to the \ac{fd} strain estimate. Applying the filter to the estimated phase derivative does not require unwrapping of the phase, instead it assumes that the derivative estimate has taken this into account, providing more flexibility over \ac{ols} or \ac{wls} techniques.
 
-\section{\ac{fd}}\label{fd}
+\section{Finite Difference}\label{fd}
 
 The simplest approximation to a derivative is to calculate the \ac{fd} between two consecutive displacement measurements. That is, dividing the change in displacement by the change in depth. However this allows wrapping events as a result of using the real phase data. The calculation of strain from the phase difference is a linear operation (\autoref{phasedif_displacement}), therefore the \ac{fd} can be performed on the complex phase difference instead. Similarly to how the Kasai estimate was implemented to determine the phase difference between loaded and unloaded scans in \autoref{kasai_estimate}, this can be applied again to calculate the \ac{fd} derivative of the phase difference:
 
 \begin{equation}
-	\varepsilon_i = \frac{\lambda_0}{4\pi n} \cdot \frac{1}{\Delta z} \text{angle}\bigg( \Delta \phi_i \cdot \text(conj)(\Delta \phi_{i-1}) \bigg)
+	\varepsilon_i = \frac{\lambda_0}{4\pi n} \cdot \frac{1}{\Delta z} \text{angle}\bigg( \Delta \phi_i \cdot \text{conj}(\Delta \phi_{i-1}) \bigg)
 	\label{fd_strain}
 \end{equation}
 
@@ -130,7 +130,7 @@ Since there is no smoothing operation implemented in \ac{fd}, it is assumed that
 \section{Strain Estimation Assessment Criteria}\label{criteria}
 
 \subsection{Sensitivity}
-The strain sensitivity is defined as the minimum detectable strain in the elastogram \cite{kennedy_strain_2012}, a quantity that gives insight into how well the \ac{oce} imaging system and signal processing is capable of reproducing the physical displacement and strain in the imaged sample. If the strain sensitivity is too large, then it is not possible to detect differences between stiff and soft objects (such as stroma and tumour) without having a much larger compressive force, which invalids many assumptions previously made (such as the linear elasticity of tissue, and uniaxial compression). Therefore it is important to use the strain sensitivity as a metric of image quality. 
+The strain sensitivity is defined as the minimum detectable strain in the elastogram \cite{kennedy_strain_2012}, a quantity that gives insight into how well the \ac{oce} imaging system and signal processing is capable of reproducing the physical displacement and strain in the imaged sample. If the strain sensitivity is too large, then it is not possible to detect differences between stiff and soft objects (such as stroma and tumour) without having a much larger compressive force, which invalidates many assumptions previously made (such as the linear elasticity of tissue, and uniaxial compression). Therefore it is important to use the strain sensitivity as a metric of image quality. 
 
 The strain sensitivity is defined as the standard deviation of the strain values within a region of uniform elasticity \cite{varghese_theoretical_1997}, such as can be artificially created using a phantom. The ideal characteristics of the region include absence of artefacts, including those that occur near the sample surface reflection, and at a depth shallow enough to minimise the attenuation of the \ac{oct} signal and decorrelation noise. Such a region is shown in \autoref{sensitivity_region} for a silicon phantom with a stiff inclusion.
 
@@ -144,12 +144,12 @@ The strain sensitivity is defined as the standard deviation of the strain values
 		\centering
 		\includegraphics[width=\textwidth]{strainreview_figs/regions_zoomed.png}
 	\end{subfigure}
-	\caption{A uniform region within the sample used to measure strain sensitivity, and b) the same region at different fit resolutions.}
-	\label{sensivity_region}
+	\caption{A uniform region within a strain elastogram B-scan of a phantom used to measure strain sensitivity, and b) the same region at different fit resolutions. The sensitivity is the standard deviation within the regions, which is higher at lower fit resolutions (FR). The phantom shows high a stiff inclusion (higher strain) surrounded by a softer bulk.}
+	\label{sensitivity_region}
 \end{figure}
 
 \subsection{Image Resolution}
-The image resolution can be thought of as the ability to distinguish between two objects in the resulting strain elastogram. Traditionally, this has been examined in terms of the impulse response of an optical system, more directly as the \ac{fwhm} of this impulse response \cite{reynolds_resolution_1989}. However we typically don't have access to the impulse response of the combined strain estimation filter and optical system response, therefore another method of quantifying the image resolution is used based on a previous Masters project \cite{hepburn_improving_2017}.
+The image resolution can be thought of as the ability to distinguish between two objects in the resulting strain elastogram. Traditionally, this has been examined in terms of the impulse response of an optical system, more directly as the \ac{fwhm} of this impulse response \cite{reynolds_resolution_1989}. In order to measure the image resolution experimentally, a technique employed in a previous Masters project \cite{hepburn_improving_2017} was employed.
 
 \begin{figure}[t]
 	\centering
@@ -165,7 +165,7 @@ The image resolution can be thought of as the ability to distinguish between two
 	\label{axial_lateral_regions}	
 \end{figure}
 
-The image resolution is thought of as the 'speed' of transition from one uniform strain region to another, as measurable in a phantom sample which has clearly defined regions of different stiffness. This transition can be seen in both the axial and lateral directions, as shown in \autoref{axial_lateral_regions}.
+The image resolution is thought of as the `speed' of transition from one uniform strain region to another, as measurable in a phantom sample which has clearly defined regions of different stiffness. This transition can be seen in both the axial and lateral directions, as shown in \autoref{axial_lateral_regions}.
 
 \begin{figure}[t]
 	\centering
@@ -220,4 +220,5 @@ The \ac{fwhm} of this Gaussian is given in \autoref{image_res_fwhm} and provides
 
 \subsection{Processing Speed}
 The processing speed of the strain estimation technique is not a standard metric for assessing the strain elastogram quality, but keeping in mind the motivation for this project it is of utmost importance. To be able to produce strain elastograms in real-time, although Fourier-domain \ac{oct} combined with fast 3D scanning techniques allows for fast data acquisition, the estimation of strain can become a bottleneck in the process that degrades it's application to areas like surgical margin assessment.
-The processing speed of the different strain estimation algorithms was assessed using both the processing of a single B-scan, and for a complete 3D volume. In addition, differences in algorithm complexity are pointed out between the methods, as well as the ease with which they can be parallelised, and the likelihood of a speed up made possible by this parallelisation.
+
+The processing speed of the different strain estimation algorithms is assessed by timing the time taken for a single 2D B-scan to process (with 2000 A-scans per B-scan, and ~1000 pixels in depth) as well as for a 3D C-scan (~70 B-scans after spatial averaging). In addition, differences in algorithm complexity are pointed out between the methods, as well as the ease with which they can be parallelised, and the likelihood of a speed up made possible by this parallelisation.

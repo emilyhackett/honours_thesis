@@ -1,32 +1,42 @@
 \chapter{Discussion}
 
-%Due to the smart scanning patterns, phase-sensitive compression OCE systems are capable of scanning a 3D volume in under 2 seconds. From here, the raw spectral data is 
-
-All five new strain estimation techniques implemented showed significant speed up, on the order of $10-20\times$ the processing speed of the \ac{uwwls} that has been the current standard in the research lab. This alone is enough to consider these techniques in the case of real-time surgery applications. However it was discovered that most of the investigated techniques showed improvements in strain sensitivity and image resolution as well.
-
-\section{Optimal Processing Algorithm}
+\begin{itemize}
+\item \ac{uwwls}
+\item \ac{uwsg}
+\item \ac{posg}
+\item \ac{wfd}
+\item \ac{uwfd}
+\item \ac{pffd}
+\end{itemize}
 
 The optimal strain estimation technique in this context appears to be the \ac{uwfd} algorithm, applied with lateral averaging. At a fit resolution of $40\mu m$ and a lateral smoothing resolution of $40\mu m$, all image quality parameters are improved in comparison with the previously standard \ac{uwwls} approach (\autoref{comparison_table}).
 
-\section{Further Computational Speed Ups}
+\begin{table}[h]
+	\begin{tabularx}{\textwidth}{Yrrc}
+		\toprule
+		& \textbf{\ac{uwwls}} & \textbf{\ac{uwfd}} & \textbf{Improved?}\\
+		\midrule 
+		Strain Filter FWHM ($\mu$m) & 70 & 40 \\
+		Lateral Smoothing Filter FWHM ($\mu$m) & 0 & 20 \\
+		\midrule
+		2D Processing Time (s) & & \\
+		3D Processing Time (s) & 153.67 & \\
+		Strain Sensitivity (m$\epsilon$) & 0.1607 & 0.1385 & 16\% \\
+		Axial Image Resolution FWHM ($\mu$m) & 315.87 & 258.37 & \textbf{20\%} \\
+		Lateral Image Resolution FWHM ($\mu$m) & 131.33 & 115.98 & 13\% \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Comparison of the previously standard \ac{uwwls} strain estimation technique and the optimised \ac{uwfd}.}
+	\label{comparison_table}
+\end{table}
 
-It has beeen shown that \ac{gpu}s can greatly accelerate the processing of strain imaging for techniques such as ultrasound elastography that utilise speckle-tracking (rather than phase-sensitive measurement) \cite{peng_gpu-accelerated_2017}, therefore there is reason to believe this could also benefit in the phase-sensitive \ac{oce} case. Of particular benefit is the fact that all four strain estimation techniques that do not involve the volume phase unwrapping algorithm, are able to process individual B-scans completely independently, making it very likely that introducing parallel processing to these methods would significantly speed up the computation time. Applying filter convolutions (as in \ac{sg} filtering, and Gaussian smoothing in the \ac{fd} case) in parallel and on \ac{gpu}s could further improve the processing speed, towards real-time, even video-rate imaging.
-Before these possibilities are investigated however, the algorithms will likely need to be moved out of the Matlab interface, and applied in another language more easily workable with parallelisation, such as C++.
+\section{Future Work}
 
-%\begin{itemize}
-%\item Parallel capabilities of independent looping operations (e.g. any without lateral unwrapping)
-%\item Convolution on GPUs (need to develop a matlab interface)
-%\end{itemize}
+It has been discovered that \ac{gpu}s can greatly accelerate the processing of strain imaging for techniques such as ultrasound elastography that utilise speckle-tracking (rather than phase-sensitive measurement) \cite{peng_gpu-accelerated_2017}, therefore there is reason to believe this could also benefit in the phase-sensitive \ac{oce} case. Of particular benefit is the fact that all four strain estimation techniques that do not involve the volume phase unwrapping algorithm, are capable of processing individual B-scans completely independently, making it very likely that introducing parallel processing to these methods would significantly decrease the computation time. Applying filter convolutions (as in \ac{sg} filtering, and Gaussian smoothing in the \ac{fd} case) in parallel and on \ac{gpu}s could further improve the processing speed, towards intra-operative time frames, and even video-rate imaging.
 
-\section{Conclusion}
+Before these possibilities are investigated however, the algorithms will likely need to be moved out of the Matlab interface, and applied in another language more suited to fast numerical processing.
 
-In summary, this work investigated six different strain estimation techniques, characterised by their phase unwrapping methodology and strain differentiation filters, and implemented them on a silicon phantom. The processing speed in 2D and 3D has been evaluated, as well as their resulting strain sensitivity and image resolution, both with and without additional lateral averaging applied. It was decided that the strain estimation algorithm utilising unweighted, axial Gaussian smoothing of the phase difference followed by a FD strain approximation, and with unweighted lateral Gaussian smoothing, best optimised all processing and image parameters, in particular, when a fit resolution of $\mu m$ and a lateral resolution of $\mu m$ were used.
+Further work also must be done in translating this strain estimation algorithm into the clinic, by analysing its performance on a range of breast tissue samples. In particular, before being able to apply this technique to assess cancer margins during breast conserving surgery, diagnostic specificity and sensitivity (the ability to accurately differentiate healthy tissue from tumour) of the technique must be analysed using large case studies.
 
-Further work must be done in translating this strain estimation algorithm into the clinic, by analysing its performance on a range of breast tissue samples. In particular, before being able to apply this technique to assess cancer margins during breast conserving surgery, diagnostic specificity and sensitivity (in this instance, the ability to differentiate healthy tissue from tumour) of the technique must be analysed using large case studies. Further research also could be done in applying these strain estimation techniques to quantitative elastography imaging, to determine which one is optimal.
+In conjunction with this, research also could be done in applying these strain estimation techniques to quantitative elastography imaging, to determine which one is optimal. Measurement of a stress using a stress layer is relatively fast, and most of the computational burden falls on the strain estimation, therefore strain estimators that optimise the processing speed would benefit in this area also. 
 
-
-%\begin{itemize}
-%\item Specificity and sensitivity of diagnosis in breast tissue
-%\item Quantitative measurements of elasticity
-%\item Maintaining image quality with removal of B-scan averaging to decrease acquisition time
-%\end{itemize}
