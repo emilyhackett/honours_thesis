@@ -8,31 +8,29 @@ This discussion will point towards an optimum strain estimation algorithm, in th
 \section{Phase Unwrapping}
 
 Examining the B-scan images in \autoref{bscan_images_1} and \autoref{images} show that the techniques that utilise the volume phase unwrapping algorithm all exhibit artefacts in the region of low signal directly below the inclusion. This is echoed in the \ac{fd} methods to an extent, but are quite clearly not visible in the \ac{posg}. Examining images at lower strain filter \ac{fwhm} show that the phase offset still produces noise in these regions. 
+
 Beyond these concerns, even when applying the \ac{sg} filter as a convolution to the unwrapped phase, the strain estimation processing does not allow more than a 10$\times$ speed up over the \ac{uwwls} technique (for 3D processing), and with little improvement in image quality. Alongside this, the need to read in the data set in order to unwrap it over multiple B-scans is a significant limitations to further applications of parallel processing.
 
 Applying a phase offset, as per \cite{zaitsev_hybrid_2016}, does appear to be faster than the unwrapping algorithm when processing the 3D data set, and also decreases the noise artefacts seen below the inclusion in the low \ac{snr} region. It performs on the same order in sensitivity as the \ac{uwsg}, which is still worse than the \ac{uwwls} and the unweighted \ac{fd} techniques. Although a useful proof of concept, it does not appear to add significant improvements in either processing speed or sensitivity in comparison to the \ac{fd} techniques that remove the need for phase unwrapping altogether. In addition, the phase offset performed poorly in regards to image resolution. Looking at the \ac{uwsg} algorithm in comparison, which used the same strain estimator but a different phase unwrapping technique, the loss of image resolution must be traced back to the phase offset unwrapping method applied.
 
 \section{Strain Estimator}
 
+The \ac{sg} filter strain estimators performed as expected: at slightly less sensitivity than the \ac{wls} estimator, although their ability to be applied as a convolution did result in a ~10$\times$ speed up. Surprisingly, use of \ac{ols} in \ac{uwsg} significantly improved the axial resolution with the unwrapping algorithm compared to the \ac{wls}. Both \ac{posg} and \ac{uwsg} techniques that utilised the filter showed streak patterns across certain strain filter \ac{fwhm} values in the lateral image resolution, suggesting that optimal filter sizes exist (at least for this phantom data). 
 
+What was particularly surprising was how poorly the \ac{wfd} technique performed in the image quality metrics. This technique presented strong artefacts in comparison to other images, and had a degraded sensitivity and lateral image resolution, despite having significantly better axial resolutions, particularly at high strain filter \ac{fwhm} values than other techniques.
+These results are surprising considering the fact the weighted smoothing was meant to compensate for noisy, and therefore inaccurate, data points, and instead showed significant artefacts. One reason as to why this hasn't appeared to work could be that our assumptions about the associated variances of the phase value are incorrect for this phantom. This could be if the scatterers were not evenly distributed within the bulk as they would be in tissue. The poor results for lateral resolution could be a result of one of these optical artefacts appearing in the region where the error function was fitted, and therefore exaggerating the image resolution.
 
-\begin{itemize}
-	\item Strong artefacts in comparison to other images - why? Perhaps because our $OCT_{SNR}$ assumptions are breaking down sooner than we thought, and therefore not fitting accurately.
-	\item Need to decide if this has something to do with OUR phantom (i.e. not actually a homogenous bulk, scatterers were not evenly distributed through as they would be in tissue), or if similar results would be seen in all images, tissue and otherwise.
-	\item Another way of thinking about it would be whether these artefacts could have merit, show more contrast. However there is a need to investigate and outline more clearly what the image \textit{actually} shows. 
-	\item Why did it perform so badly in the lateral image resolution? Was it a result of the region imaged (was there an optical artefact here that the lateral averaging picked up?).
-\end{itemize}
+Another way of approaching the problem with the \ac{wfd} strain estimator could be that instead of seeing these features as artefacts, since they were also observed in the \ac{oct} image and therefore exist physically in the phantom, that the technique increases contrast by weighting the optical component more heavily. The question to ask then, is if this is beneficial to the overall image. In the case of this phantom, and using metrics of sensitivity and image resolution, it appeared not. 
 
-Looks very similar to the WLS result, which is interesting considering this method did not make use of the optical weighting. Need to investigate whether this method was only the best because of the homogeneous phantom imaged, and whether or not other methods 
+In response to these concerns, the \ac{pffd} strain estimator was implemented to try and smooth the influence of these high intensity optical features. As a result, the \ac{pffd} technique did show an increase in sensitivity above the \ac{wfd} (as well as all other techniques), and a better lateral image resolution. Because the strain and lateral smoothing filter were corrected for added smoothing performed by the pre-filter, the improvement in sensitivity must be a result of the combination of weighted and unweighted smoothing. It is interesting, but perhaps not surprising, to note that this technique also appeared to produce a combination of the patterns that appeared in both the \ac{wfd} and \ac{uwfd} image resolution plots. Although not significantly compared to the processing time of the \ac{uwwls}, the \ac{pffd} did show a slight increase in processing time compared to the other \ac{fd} methods, due to the double filter convolution that had to be applied.
 
-\begin{itemize}
-	\item Did show increase in sensitivity over all other techniques. Because the strain and lateral smoothing filter were corrected for added smoothing performed by the pre-filter, this must be due to the combination of weighted and unweighted smoothing.
- 	\item Interesting to note, that took on a combination of sorts of the \ac{wfd} and \ac{uwfd} image resolutions. 
-\end{itemize}
+The \ac{uwfd} algorithm performed well in all image quality metrics, and was among the other \ac{fd} techniques in having a significant improvement in processing speed. The resulting images look very similar to the \ac{wls} result, which is interesting considering this method did not make use of the optical weighting. 
+
+What the results have shown is that the performance of the \ac{fd} strain estimator in terms of image quality metrics is highly dependent on the smoothing filter used in combination. However there is no doubt that these algorithms show the best improvement in processing speed. 
 
 \section{Optimal Processing Algorithm}
 
-Taking these results in conjunction with those regarding processing time and sensitivity in the sections above, it is decided that the \ac{uwfd} strain estimation algorithm provides optimal processing speed, sensitivity, and image resolution. In particular, using a strain filter \ac{fwhm} of 40$\mu$m and a lateral smoothing filter \ac{fwhm} of 20$\mu$m should provide the best axial and image resolution, in conjunction with high sensitivity. 
+Taking these results in conjunction with those regarding the unwrapping techniques in the sections above, it is decided that the \ac{uwfd} strain estimation algorithm provides optimal processing speed, sensitivity, and image resolution. In particular, using a strain filter \ac{fwhm} of 40$\mu$m and a lateral smoothing filter \ac{fwhm} of 20$\mu$m should provide the best axial and image resolution, in conjunction with high sensitivity. 
 
 \begin{figure}
 	\centering
@@ -48,9 +46,9 @@ Taking these results in conjunction with those regarding processing time and sen
 	\label{wls_uwfd_compare}
 \end{figure}
 
-\autoref{comparison_table} shows that all image quality parameters are improved in comparison with the previously used \ac{uwwls} approach, at least for this particular phantom. It is important to note that the other strain estimation techniques performed very similarly in areas of sensitivity and relatively so in image resolution, therefore application on a different, less homogenous phantom, or on an actual tissue sample, may prove another to be optimal.
+\autoref{comparison_table} shows that all image quality parameters are improved in comparison with the previously used \ac{uwwls} approach, at least for this particular phantom. It is important to note that the other strain estimation techniques performed very similarly in areas of sensitivity and relatively so in image resolution, therefore application on a different, less homogeneous phantom, or on an actual tissue sample, may prove another to be optimal.
 
-\begin{table}[h]
+\begin{table}
 	\begin{tabularx}{\textwidth}{Yrrc}
 		\toprule
 		& \textbf{\ac{uwwls}} & \textbf{\ac{uwfd}} & \textbf{Improved?}\\
