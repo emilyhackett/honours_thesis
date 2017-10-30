@@ -41,7 +41,7 @@ Since the intensity pattern measured by the \ac{oct} signal is dependent on the 
 
 \section{Application to Elastography}\label{application_elastography}
 
-\ac{oce} is the combination of elastography with an \ac{oct} imaging system, as first proposed by Schmitt in 1998 \cite{schmitt_oct_1998}. The micro-architecture of tissue carries important information about disease states \cite{fung_biomechanics_1981}, however these are poorly demonstrated utilising only optical contrast. Using elastography with \ac{oct} as the underlying imaging modality allows high resolution mechanical contrast imaging on scales previously inaccessible to ultrasound and MRI-based elastography techniques. Of particular interest in this project is compressive \ac{oce} utilising phase-sensitive detection. Other techniques exist that may be utilised also to detect tissue displacement, such as speckle tracking via cross-correlation algorithms \cite{kennedy_review_2014}. However the advantage of phase-sensitive detection, which owes its origin to Doppler imaging in \ac{oct}, is in superior resolution and sensitivity (as set by the optical wavelength, therefore on the nanometre scale) compared to other techniques. 
+\ac{oce} is the combination of elastography with an \ac{oct} imaging system, as first proposed by Schmitt in 1998 \cite{schmitt_oct_1998}. The micro-architecture of tissue carries important information about disease states \cite{fung_biomechanics_1981}, however these are often poorly detected utilising only optical contrast. Using elastography with \ac{oct} as the underlying imaging modality allows high resolution mechanical contrast imaging on scales previously inaccessible to ultrasound and MRI-based elastography techniques. Of particular interest in this project is compressive \ac{oce} utilising phase-sensitive detection. Other techniques exist that may be utilised also to detect tissue displacement, such as speckle tracking via cross-correlation algorithms \cite{kennedy_review_2014}. However the advantage of phase-sensitive detection, which owes its origin to Doppler imaging in \ac{oct}, is in superior resolution and sensitivity (as set by the optical wavelength, therefore on the nanometre scale) compared to other techniques. 
 
 \section{Phase-Sensitive Compression \ac{oce}}\label{compression_oce}    
 \begin{figure}
@@ -62,7 +62,8 @@ Compression \ac{oce} systems introduce a mechanical load to the sample by applyi
 
 Compression \ac{oce} produces a displacement field in the tissue, that can be measured in order to calculate the strain. The local strain is estimated as the spatial derivative of these displacements with respect to depth \cite{kennedy_review_2014} over a given axial fit window. 
 
-Compressive loading techniques provide only qualitative comparison in strain elastograms, since it the resulting strain is dependent on the amount of compressive loading applied to the tissue. It is possible to produce quantitative elastogram images by measuring the stress locally applied to the sample by introducing a known stress layer above the imaged sample, as discussed in detail in \cite{kennedy_quantitative_2015}, however this will not be discussed further here. The benefit of compression techniques is their fast acquisition speeds for entire 3D volumes, as well as their ability to be extended to needle based \ac{oce} systems for imaging deep within the tissue \cite{kennedy_review_2014}. 
+Strain elastography provides only qualitative information, as the strain in the sample is dependent on the amount of applied loading, and the sample geometry.
+It is possible to produce quantitative elastogram images by measuring the stress locally applied to the sample by introducing a known stress layer above the imaged sample, as discussed in detail in \cite{kennedy_quantitative_2015}, however this will not be discussed further here. The benefit of compression techniques is their fast acquisition speeds for entire 3D volumes, as well as their ability to be extended to needle based \ac{oce} systems for imaging deep within the tissue \cite{kennedy_review_2014}. 
 
 %\section{Phase-Sensitive Displacement Measurement}\label{phase_sensitive}
 For phase-sensitive detection, the displacement induced by the step-loading is directly related to the phase difference between an unloaded and loaded scan, as in \autoref{phasedif_displacement} \cite{kennedy_strain_2012}. A limitation of phase-sensitive detection however is that only displacement co-axial to the imaging beam may be measured, which corresponds to axial strain only \cite{wijesinghe_improving_2017}. As mentioned, 
@@ -78,7 +79,7 @@ Where $A$ is the complex number associated with the \ac{oct} image for the loade
 
 \section{Strain Elastogram Image Formation}
 
-The phase difference described in \autoref{kasai_estimate} above is calculated by buffering B-scan images in the data and averaging over a spatial region in the y-direction. Although the raw phase is random at each point in space, the change in phase is directly proportional to the displacement of the tissue at that location, as per \autoref{phasedif_displacement}:
+The phase difference described in \autoref{kasai_estimate} above is calculated by buffering B-scan images in the data and averaging over a spatial region in the y-direction. Although the raw phase is random at each point in space, the change in phase is directly proportional to the displacement of the tissue at that location \cite{wang_tissue_2006}:
 
 \begin{equation}
 	u_i = \frac{\lambda_0 \Delta\phi_i}{4\pi n}
@@ -87,7 +88,7 @@ The phase difference described in \autoref{kasai_estimate} above is calculated b
 
 \subsection{Phase Unwrapping}
 
-A significant limitation of phase-sensitive detection is that the measured phase can only take values in the interval $[0,2\pi]$. This results in wrapping of the phase difference as seen in \autoref{phase_wrapping} and if uncorrected, will result in discontinuities in the calculated displacement field.
+A significant limitation of phase-sensitive detection is that the measured phase can only take values in the interval $[-\pi,\pi]$. This results in wrapping of the phase difference as seen in \autoref{phase_wrapping} and if uncorrected, will result in discontinuities in the calculated displacement field.
 
 To prevent phase wrapping in phase-sensitive displacement measurements, the difference in displacement between loaded and unloaded scans must be limited to approximately 0.3-0.46$\mu$m \cite{kennedy_optical_2014}. However in most instances, the amount of compression applied in \ac{oce} in order to produce images with sufficient contrast results in displacements large enough to induce phase wrapping in the signal. 
 
