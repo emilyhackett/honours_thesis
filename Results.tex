@@ -27,7 +27,7 @@ A total of six different strain estimation algorithms were implemented and teste
 
 The functions worked by using the complex phase difference C-scan as an input, as well as the specifications for the fit (axial) and lateral resolutions of the system. The fit resolution of the system determined the fit window for the \ac{wls} and \ac{sg} based strain estimation techniques, and the axial Gaussian $\sigma$ value for the \ac{fd} based techniques. The lateral resolution determined to what extent the strain images were laterally averaged by a Gaussian smoothing filter (for reasons discussed in the later section 4.3). If a lateral resolution of 0 was specified, no lateral smoothing was performed. 
 
-\subsection{\ac{wls} with Unwrapped Phase}
+\subsection{Unwrapped Phase with Weighted Least Squares}
 The \ac{uwwls} algorithm unwraps the phase by reading in the entire volume and saves the unwrapped phase data to file. In a sequential loop over each B-scan the process reads in the complex phase and unwrapped phase for each B-scan. If lateral smoothing has been specified, it smooths the unwrapped phase using unweighted Gaussian smoothing by convoluting the unwrapped phase with the 1D lateral filter. A sequential looping is then performed over each A-scan and all fit segments within the given B-scan, which calculates the \ac{wls} estimate of strain using summations and the weights from the complex phase data.
 
 \afterpage{
@@ -132,19 +132,19 @@ The \ac{uwwls} algorithm unwraps the phase by reading in the entire volume and s
 \clearpage
 }
 
-\subsection{\ac{sg} Filtering on Unwrapped Phase}
+\subsection{Unwrapped Phase with SG Filtering}
 The \ac{uwsg} unwraps the phase by the same process specified above, which requires a read from file of the unwrapped phase for each B-scan. If lateral smoothing required, the unwrapped phase is similarly smoothed via convolution with an unweighted Gaussian smoothing filter. To estimate the strain, this smoothed unwrapped phase data is convolved with the analytically derived \ac{sg} filter in a single action of the entire B-scan.
    
-\subsection{\ac{sg} Filtering on Offset Phase}
+\subsection{Phase Offset with SG Filtering}
 In order to correct for phase unwrapping, the \ac{posg} function reads in the complex phase for each B-scan and loops over all fit segments within the B-scan, taking a matrix of values across all A-scans for the given depths. An averaged complex phase value for each fit segment is calculated and divided (corresponding to subtraction of the phase) to move the phase values into an unwrapped region. The \ac{sg} filter, which was pre-calculated using the analytical solution, is then convolved with the matrix in the axial direction to produce the strain estimation values at that given depth. 
 
-\subsection{\ac{fd} on Weighted Smoothing of Phase Difference}
+\subsection{Weighted Smoothing of FD}
 The \ac{wfd} smooths complex weighted phase difference that acts as the function's input using an axial Gaussian filter dependent on the fit resolution supplied (and a lateral filter if specified). For strain estimation, \ac{fd} is performed using bsxfun on the complex phase data (in order to prevent the introduction of  wrapping artefacts), by dividing one pixel by the conjugate of the previous pixel in order to subtract the phase values. This estimate of the spatial derivative of the phase difference is then converted into strain values.
 
-\subsection{\ac{fd} on Unweighted Smoothing of Phase Difference}
+\subsection{Unweighted Smoothing of FD}
 This \ac{uwfd} algorithm works almost identically to the one described in the previous section, except that prior to using a Gaussian smoothing filter on the complex phase data, the amplitude is normalised to 1 for all phase difference values, effectively removing the optical weighting that comes from the OCT signal. From here the \ac{fd} is calculated, and from this the strain. 
 
-\subsection{Pre-Filtered Phase Difference with Smoothed \ac{fd} Strain}
+\subsection{Pre-Filtered Smoothing of FD}
 
 The \ac{pffd} algorithm was implemented as an effort to remove artefacts introduced by high intensity variable pixels in the \ac{wfd}. Using the weighted complex phase difference data, a small 2D Gaussian filter is applied to smooth out high intensity `speckle' pixels. This pre-filter is set at $20 \mu m$ resolution, approximately on the order of a few speckle. 
 This action aims to counter the disproportionate influence of high intensity pixels over their neighbouring pixels, biasing the phase difference values towards them in the Kasai estimate. 
