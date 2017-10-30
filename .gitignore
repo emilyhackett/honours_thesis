@@ -9,3 +9,5 @@ Supervisor.xls
 # Ignore swap files
 ~$*
 *.swp
+# Ignore zipped files
+*.zip
