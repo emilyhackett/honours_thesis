@@ -56,23 +56,24 @@ Where in this instance, the $\kappa_x$ constants are given by:
 The \ac{ols} derivative estimator gives the optimal estimate when errors in the data are zero-mean, uncorrelated and have the same variance (by the Gauss-Markove theorem). However, the phase variance in \ac{oct} is related to the highly varying \ac{oct} \ac{snr} and noise in neighbouring pixels. In contrast, \ac{wls} can handle weights (non-uniform variances), which has been shown to improve the strain sensitivity \cite{kennedy_strain_2012}. However this is more computationally expensive, requiring a weight calculation and being a non-linear operation, the consequences of which are discussed in the next section.
 
 \section{\ac{sg} Filtering}\label{sg_filter}
-One benefit of the \ac{ols} approach is that it can be implemented as a filter to uniformly sampled data, since it is a linear operation. The \ac{sg} filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate about a window around each point in the data. This filter can be applied to an entire data set by convolving the data and filter together, or multiplying them in the Fourier domain. 
+One benefit of the \ac{ols} approach is that it can be implemented as a filter to uniformly sampled data, since it is a linear operation. The \ac{sg} filter \cite{savitzky_smoothing_1964} can be applied to data to smooth it to a linear fit, equivalent to performing a least squares estimate about a window around each point in the data. 
+This filter can be applied to an entire data set by convolving the data and filter together, or multiplying them in the Fourier domain. 
 Similarly to how the estimate above for \ac{ols} is derived, the \ac{sg} filter is calculated for the case where the data is sampled at uniform intervals, typically expressed as integer valued points about the centre of the fit window. The \ac{sg} smoothing filter replaces each data point with the \ac{ols} estimate at that point \cite{savitzky_smoothing_1964}. However this can be generalised to a \ac{sg} differentiation filter by instead evaluating the gradient at each point. 
 The analytical solution for the first order \ac{sg} differentiation filter is given by \cite{madden_comments_1978}:
 
 \begin{equation}
 	\label{sg_coeff}
-	C_i = \frac{12 i}{m(m^2-1)}
+	C_i = \frac{3 i}{(2m+1)(m+1)(m)}
 \end{equation}
 
-Where the $m$ is the integer size of the fit window, and must be odd.
+Where the $2m+1$ is the integer size of the fit window ($m$ being any integer), and therefore must be odd. 
 
 Using this result, not only can this filter be applied much faster by convolution compared to performing sequential looping over all fit windows and using the \ac{ols} summation expression, it can be created very quickly as well. The limitation is that the weight information can no longer be utilised in the convolution process. Also, the \ac{sg} filter can only be applied on the real unwrapped phase difference, since it cannot correct for wrapping events. 
 
 The resolution of the \ac{sg} filter can be derived by analysing it's response to an impulse. Applying the derivative filter of \autoref{sg_coeff} to a unit step response yields the equivalent impulse response of the \ac{sg} filter:
 
 \begin{equation}
-	\text{PSF} (C_i)=\frac{6 i^2}{m(m^2-1)}
+	\text{PSF} (C_i)=\frac{C_i}{2}(m^2 - i^2)
 	\label{impulse_response}
 \end{equation}
 
@@ -80,7 +81,7 @@ Which is quadratic in form, and the \ac{fwhm} can be solved for, giving the valu
 
 \begin{equation}
 	\label{sg_fwhm}
-	\text{FWHM}_{SG} = \frac{m}{\sqrt{2}}
+	\text{FWHM}_{SG} = \frac{2m+1}{\sqrt{2}}
 \end{equation}
 
 \section{Smoothing Filters}

@@ -22,21 +22,22 @@ The use of optical imaging techniques as underlying imaging tools for elastograp
 
 These maps offer insight into the study of disease at scales varying from organs to tissue micro-architecture, which can be probed by utilising different imaging techniques to investigate the deformation of the tissue.
 
-\begin{figure}[t!]
-	\centering
-    \includegraphics[width=\textwidth]{bground_figs/oce_example.png}
-	\caption{An example \ac{oce} image of breast tissue, taken from \cite{kennedy_investigation_2015}. B,F and G show strain elastograms, C, H and I the \ac{oct} images. Below the main images, magnified regions of tumour (D,F and E as indicated in A, B and C) and healthy tissue (E, G and I, corresponding to the regions indicated by the arrows in A, B and C) are presented side-by-side for contrast for each imaging technique.}
-    \label{oce_example}	
-\end{figure}
-
 \section{Optical Coherence Elastography}\label{solution}
-\ac{oce} utilises \ac{oct} as the underlying imaging technique, which relies on the optical properties of tissue to generate contrast in an image formed by backscattered light, and can be thought of as the optical analog to ultrasound imaging. The significance of \ac{oce} lies in its ability to provide high resolution images at low sample depths. These properties differentiate it from other elastography techniques, such as those based on ultrasound, which could be used to image deep within the body due to the higher penetration of sound waves into tissue, but only at a much lower resolution due to the size difference between acoustic and optical waves. \autoref{image_techniques} shows the relative resolution and penetration capabilities compared to other clinical imaging techniques. An example of \ac{oce} imaging is shown in \autoref{oce_example}. The ideal application of \ac{oce} is at surface tissue (such as imaging the retina, or skin \cite{kennedy_review_2014}), on excised tissue in a surgical setting, or used as a tool during surgery on uncovered tissue. The third application forms the main motive for this project.
 
-\begin{figure}[t]
+\begin{figure}[b!]
 	\centering
     	\includegraphics[width=0.7\textwidth]{bground_figs/technique_comparison.png}
     	\caption{Relative resolutions and penetrations for different imaging techniques utilised clinically, taken from \cite{optical+biomedical_engineering_laboratory_introduction_nodate}}
     	\label{image_techniques}	
+\end{figure}
+
+\ac{oce} utilises \ac{oct} as the underlying imaging technique, which relies on the optical properties of tissue to generate contrast in an image formed by backscattered light, and can be thought of as the optical analog to ultrasound imaging. The significance of \ac{oce} lies in its ability to provide high resolution images at low sample depths. These properties differentiate it from other elastography techniques, such as those based on ultrasound, which could be used to image deep within the body due to the higher penetration of sound waves into tissue, but only at a much lower resolution due to the size difference between acoustic and optical waves. \autoref{image_techniques} shows the relative resolution and penetration capabilities compared to other clinical imaging techniques. An example of \ac{oce} imaging is shown in \autoref{oce_example}. The ideal application of \ac{oce} is at surface tissue (such as imaging the retina, or skin \cite{kennedy_review_2014}), on excised tissue in a surgical setting, or used as a tool during surgery on uncovered tissue. The third application forms the main motive for this project.
+
+\begin{figure}[t]
+	\centering
+    \includegraphics[width=\textwidth]{bground_figs/oce_example.png}
+	\caption{An example \ac{oce} image of breast tissue, taken from \cite{kennedy_investigation_2015}. B,F and G show strain elastograms, C, H and I the \ac{oct} images. Below the main images, magnified regions of tumour (D,F and E as indicated in A, B and C) and healthy tissue (E, G and I, corresponding to the regions indicated by the arrows in A, B and C) are presented side-by-side for contrast for each imaging technique.}
+    \label{oce_example}	
 \end{figure}
 
 Improvements to \ac{oce} system hardware and protocols have allowed scanning of entire lumpectomy surfaces in under 20 minutes \cite{allen_wide-field_2016}. To be able to provide \ac{oce} images within intra-operative time frames during surgery, the processing of the optical data from the \ac{oct} system to produce elastography images must also be done this rapidly. Essential in this processing for many \ac{oce} techniques is the computation of the local strain within the tissue from the measured deformations. 

@@ -71,35 +71,38 @@ The \ac{uwwls} algorithm unwraps the phase by reading in the entire volume and s
     \node (ascan_loop) at (-6.5,-16) [main] {LOOP OVER A-SCANS};
     \draw [wls] (fit_loop.260) edge[out=270,in=90] (ascan_loop.90);
     
-    \node (wls_strain) at (-4,-18) [basic] {WLS strain estimation};
+    \node (wls_strain) at (-6.5,-18) [basic] {WLS strain estimation};
     \draw [wls] (ascan_loop.270) edge[out=270,in=90] (wls_strain.90);
     
     \node (phase_offset) at (-2.5,-16) [basic] {Divide complex phase offset};
     \draw [posg] (fit_loop.280) edge[out=270,in=90] (phase_offset.90);
     
-    \node (sg_filter) at (0,-18) [basic] {Convolve with SG Filter};
+    \node (sg_filter) at (-0,-18) [basic] {Convolve with SG Filter};
     \draw [posg] (phase_offset.270) edge[out=270,in=90] (sg_filter.100);
     \draw [uwsg] (lateral.240) edge[out=270,in=90] (sg_filter.120);
    
-   \node (gauss_filter) at (2,-15.8) [basic] {Convolve with an axial 1D Gaussian filter};
+   \node (gauss_filter) at (2,-13.5) [basic] {Convolve with an axial 1D Gaussian filter};
    \draw [wfd] (lateral.280) edge[out=270,in=90] (gauss_filter.100);
    \draw [uwfd] (lateral.300) edge[out=270,in=90] (gauss_filter.80);
    
-   \node (pre_filter) at (6,-15.5) [basic] {Convolve with a small 2D Gaussian `pre-filter'};
-   \draw [fdsm] (lateral.315) edge[out=270,in=90] (pre_filter.90);
+   \node (pre_filter) at (6,-13.5) [basic] {Convolve with a small 2D `pre-filter'};
+   \draw [fdsm] (lateral.315) edge[out=285,in=100] (pre_filter.90);
    
-   \node (fd) at (4,-18) [basic] {FD strain estimation};
+   \node (fd) at (4,-16) [basic] {FD strain estimation};
    \draw [wfd] (gauss_filter.260) edge[out=270,in=90] (fd.80);
    \draw [uwfd] (gauss_filter.280) edge[out=270,in=90] (fd.60);
    \draw [fdsm] (pre_filter.270) edge[out=270,in=90] (fd.45);
    
-   \node (output) at (0,-20.5) [io] {OUTPUT: $\epsilon$};
+   \node (strain_sm) at (6,-18) [basic] {Convolve with axial Gaussian};
+   \draw [fdsm]  (fd.315) edge[out=270,in=90] (strain_sm.90);
+
+   \node (output) at (0,-21) [io] {OUTPUT: $\epsilon$};
    \draw [wls] (wls_strain.270) edge[out=270,in=90] (output.135);
    \draw [uwsg] (sg_filter.240) edge[out=270,in=90] (output.120);
    \draw [posg] (sg_filter.260) edge[out=270,in=90] (output.100);
    \draw [wfd] (fd.280) edge[out=270,in=90] (output.80);
    \draw [uwfd] (fd.300) edge[out=270,in=90] (output.60);
-   \draw [fdsm] (fd.315) edge[out=270,in=90] (output.45);
+   \draw [fdsm] (strain_sm.270) edge[out=270,in=90] (output.45);
 
     % LEGEND:
    \matrix[draw=black,rounded corners] at (6,-1) {  
