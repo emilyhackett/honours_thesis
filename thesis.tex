@@ -20,7 +20,7 @@
 \usepackage{subcaption}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows,positioning,matrix}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage[section]{placeins}
 \usepackage[final]{pdfpages}
 \usepackage{xcolor}
@@ -34,9 +34,9 @@
 \preto\chapter\acresetall
 
 % Abbreviations used
-\DeclareAcronym{oce}{short=OCE,long=Optical Coherence Elastography}
-\DeclareAcronym{oct}{short=OCT,long=Optical Coherence Tomography}
-\DeclareAcronym{gpu}{short=GPU,long=Graphics Processing Unit}
+\DeclareAcronym{oce}{short=OCE,long=optical coherence elastography}
+\DeclareAcronym{oct}{short=OCT,long=optical coherence tomography}
+\DeclareAcronym{gpu}{short=GPU,long=graphics processing unit}
 \DeclareAcronym{britelab}{short=BRITElab,long=Bio-imaging Research and Innovation for Translational Engineering} 
 \DeclareAcronym{ols}{short=OLS,long=ordinary least squares}
 \DeclareAcronym{wls}{short=WLS,long=weighted least squares}
@@ -169,6 +169,7 @@
 % Appendices
 \appendix
 \include{Bscan_Images}
+\include{Sensitivity_Heat}
 \include{Research_Proposal}
 \include{Summary_Achievements}
 %---------------------------------------------------------
